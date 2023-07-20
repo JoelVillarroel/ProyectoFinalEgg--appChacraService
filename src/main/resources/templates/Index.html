@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <link rel="stylesheet" href="./css/main.css">
+        <link rel="icon" type="image/png" sizes="16x16" href="../static/logo/Logo_Chacras_naranja.ico"/>
+        <title>Chacra Service</title>
+
+    </head>
+</head>
+<body>
+    <!--ENCABEZADO-->
+
+    <nav class="nav.navbar.bg-body-tertiary" style="background-color:  #f1ffcf ;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/" style="display: inline-block;">
+                <img src="./logo/Logo_Chacras_naranja.png" alt="Logo" width="100" height="100" style="vertical-align: middle;">
+                <p class="chacras" style="color: #E57C3A; text-align: center; margin-left: 10px; display: inline-block; vertical-align: middle;">Chacras Services</p>
+            </a>
+        </div>
+    </nav>
+
+    <!--------NAVBAR 2------>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/conocenos">Nosotros</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Servicios
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" alt="Reparación y mantenimiento de sistemas de fontanería." href="#">Servicio de Fontanería</a></li>
+                            <li><a class="dropdown-item" alt="Instalación y reparación de sistemas eléctricos." href="#">Servicio de Electricidad</a></li>
+                            <li><a class="dropdown-item" alt="Mantenimiento de jardines y áreas verdes." href="#">Servicio de Jardinería</a></li>
+                            <li><a class="dropdown-item" alt="Limpieza y mantenimiento de espacios residenciales y comerciales." href="#">Servicio de Limpieza</a></li>
+                            <li><a class="dropdown-item" alt="Pintura de interiores y exteriores." href="#">Servicio de Pintura</a></li>
+                            <li><a class="dropdown-item" alt="Fabricación y reparación de muebles y estructuras de madera." href="#">Servicio de Carpintería</a></li>
+                            <li><a class="dropdown-item" alt="Construcción y reparación de estructuras de albañilería." href="#">Servicio de Albañilería</a></li>
+                            <li><a class="dropdown-item" alt="Apertura y reparación de cerraduras y sistemas de seguridad." href="#">Servicio de Cerrajería</a></li>
+                            <li><a class="dropdown-item" alt="Instalación y mantenimiento de sistemas de climatización." href="#">Servicio de Climatización</a></li>
+                            <li><a class="dropdown-item" alt="Reparación de electrodomésticos y equipos electrónicos." href="#">Servicio de Reparación de Electrodomésticos</a></li>
+                            <li><a class="dropdown-item" alt="Instalación de sistemas de seguridad y vigilancia." href="#">Servicio de Instalación de Sistemas de Seguridad</a></li>
+                            <li><a class="dropdown-item" alt="Transporte y logística de mudanzas residenciales y comerciales." href="#">Servicio de Mudanzas</a></li>
+                            <li><a class="dropdown-item" alt="Reparación y mantenimiento de vehículos automotores." href="#">Servicio de Reparación de Automóviles</a></li>
+                            <li><a class="dropdown-item" alt="Diseño de logotipos, folletos, carteles y material gráfico." href="#">Servicio de Diseño Gráfico</a></li>
+                            <li><a class="dropdown-item" alt="Desarrollo y programación de aplicaciones y sistemas informáticos." href="#">Servicio de Desarrollo de Software</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <button id="boton" class="btn btn-outline-success custom-button" type="submit">Login</button>
+                </form>
+                <div class="btn-group">
+                    <button class="btn btn-primary" type="button">Registrate</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/registrar">Usuario</a></li>
+                        <li><a class="dropdown-item" href="#">Proveedor</a></li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!--SLIDER DE IMAGENES-->
+    <div id="carouselExampleIndicators" class="carousel slide">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="3000">
+                <img src="./img/portada 1.png" class="d-block w-100" alt="slide1">
+            </div>                
+            <div class="carousel-item" data-bs-interval="3000">
+
+                <img src="./img/portada 2.png" class="d-block w-100" alt="slide2">
+            </div>
+
+            <div class="carousel-item" data-bs-interval="3000">
+                <img src="./img/portada 3.png" class="d-block w-100" alt="slide3">
+            </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!--INTRO-->
+    <section class="w-50 mx-auto text-center pt-5" id="intro">
+        <h1 class="p-3 fs-2 border-top border-3">Somos la solución<span class style="color: #E57C3A;"> para tu hogar</span></h1>
+        <p class="p-3 fs-4"><span style="color: #E57C3A;">El servicio que buscás</span> al alcance de un click</p>
+    </section>
+
+
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <!-- Equipo de Desarrollo -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="row">
+                            <!-- Frontend -->
+                            <div class="col-md-6">
+                                <h4>Frontend</h4>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="https://github.com/renzobover" target="_blank">Renzo Bover</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://github.com/Gonza-S24" target="_blank">Gonzalo Friedrich</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://github.com/morsucci" target="_blank">Noelia Morsucci</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Backend -->
+                            <div class="col-md-6">
+                                <h4>Backend</h4>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="https://github.com/camiastrada" target="_blank">Camila Astrada</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://github.com/facundodominguez30" target="_blank">Facundo Dominguez</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://github.com/GEORG-TH" target="_blank">Georg Thierry De La Cruz</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://github.com/HugoSotuyo" target="_blank">Hugo Daniel Sotuyo</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://github.com/JoelVillarroel" target="_blank">Joel Villarroel</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="col-md-6 footer-content">
+                    <p>
+                        &copy; 2023 Chacras Service. Todos los derechos reservados.
+                    </p>
+                    <p>
+                        Esta aplicación es solo con fines demostrativos y no representa un producto real. Cualquier similitud con servicios existentes es pura coincidencia.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Incluye jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Incluye Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+</body>
+</html>
