@@ -25,7 +25,7 @@ public class PortalControlador {
     
     @GetMapping("/registrar")
     public String registrar(){
-        return "registro.html";
+        return "registroUsuario.html";
     }
     @PostMapping("/registro")
     public String registro (@RequestParam String nombre,@RequestParam String apellido,@RequestParam String direccion,@RequestParam String email,
@@ -45,6 +45,10 @@ public class PortalControlador {
     @GetMapping("/conocenos")
     public String nosotros(){
         return "nosotros.html";
+    }
+    @GetMapping("/registroProveedor")
+    public String registroProveedor(){
+        return "registroProveedor.html";
     }
     @GetMapping("/login")
     public String login(){
