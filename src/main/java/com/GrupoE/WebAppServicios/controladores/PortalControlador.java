@@ -46,4 +46,8 @@ public class PortalControlador {
     public String nosotros(){
         return "nosotros.html";
     }
+    @GetMapping("/login")
+    public String login(){
+        return "login.html";
+    }
 }
