@@ -66,7 +66,7 @@ public class UsuarioServicio implements UserDetailsService{
             usuario.setNombre(nombre);
             usuario.setEmail(email);
 
-            usuario.setPassword(password);
+            usuario.setPassword(new BCryptPasswordEncoder().encode(password));
 
             usuario.setRol(Rol.USER);
 
