@@ -1,8 +1,12 @@
 package com.GrupoE.WebAppServicios.controladores;
 
+import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.errores.MyException;
+import com.GrupoE.WebAppServicios.servicios.ProveedorServicio;
 import com.GrupoE.WebAppServicios.servicios.UsuarioServicio;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,8 @@ public class PortalControlador {
     
     @Autowired
     private UsuarioServicio usuarioServicio;
+    @Autowired
+    private ProveedorServicio proveedorServicio;
     
     @GetMapping("/")
     public String index() {
@@ -42,6 +48,21 @@ public class PortalControlador {
             return "registro.html";
         }
     }
+    @PostMapping("/registroProveedor")
+    public String registroProveedor (@RequestParam String nombre,@RequestParam String apellido,@RequestParam String direccion,@RequestParam String email,
+            @RequestParam String password,
+            @RequestParam String password2, ModelMap modelo,MultipartFile archivo)throws MyException{
+        try {
+            proveedorServicio.registrar(archivo, nombre,apellido,direccion, email, password, password2);
+            modelo.put("exito", "Proveedor registrado correctamente");
+            return "index.html";
+        } catch (MyException ex) {
+            modelo.put("Error",ex.getMessage());
+            modelo.put("nombre",nombre);
+            modelo.put("email",email);
+            return "registro.html";
+        }
+    }
     @GetMapping("/conocenos")
     public String nosotros(){
         return "nosotros.html";
@@ -51,7 +72,23 @@ public class PortalControlador {
         return "registroProveedor.html";
     }
     @GetMapping("/login")
-    public String login(){
+    public String login(@RequestParam(required=false)String error,ModelMap modelo){
+        if(error!=null){
+            modelo.put("error", "Usuario o contraseña invalidos!!");
+        }
+        
         return "login.html";
+    }
+    
+    @GetMapping("/inicio")
+    public String inicio(HttpSession session){
+        
+        Usuario logueado =(Usuario) session.getAttribute("usuariosession");
+        
+        if(logueado.getRol().toString().equals("ADMIN")){
+            return "redirect:/admin/dashboard";
+        }
+        
+        return "Index.html";
     }
 }
