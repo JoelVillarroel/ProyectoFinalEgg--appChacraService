@@ -25,10 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- *
- * @author hdsot
- */
+
 @Service
 public class ProveedorServicio implements UserDetailsService {
     
@@ -39,7 +36,7 @@ public class ProveedorServicio implements UserDetailsService {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(MultipartFile archivo, String nombre, String apellido, String descripcion, String email, String password, String password2) throws MyException {
+    public void registrar(MultipartFile archivo, String nombre, String apellido, String direccion,String descripcion, String email, String password, String password2) throws MyException {
 
         validar(nombre, apellido, descripcion, email, password, password2);
 
@@ -48,6 +45,7 @@ public class ProveedorServicio implements UserDetailsService {
         proveedor.setNombre(nombre);
 
         proveedor.setApellido(apellido);
+        proveedor.setDireccion(direccion);
 
         proveedor.setDescripcion(descripcion);
 
@@ -103,6 +101,15 @@ public class ProveedorServicio implements UserDetailsService {
         List<Proveedor> proveedores = new ArrayList();
 
        proveedores = proveedorRepositorio.findAll();
+
+        return proveedores;
+    }
+    @Transactional//(readOnly=True)
+    public List<Proveedor> listarProveedoresPorDescripcion(String descripcion) {
+
+        List<Proveedor> proveedores = new ArrayList();
+
+       proveedores = proveedorRepositorio.buscarPorNombreDescripcion(descripcion);
 
         return proveedores;
     }
