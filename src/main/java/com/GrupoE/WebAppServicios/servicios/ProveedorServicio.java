@@ -6,6 +6,7 @@ package com.GrupoE.WebAppServicios.servicios;
 
 import com.GrupoE.WebAppServicios.entidades.Imagen;
 import com.GrupoE.WebAppServicios.entidades.Proveedor;
+import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.enumeraciones.Rol;
 import com.GrupoE.WebAppServicios.errores.MyException;
 import com.GrupoE.WebAppServicios.repositorios.ProveedorRepositorio;
@@ -14,15 +15,19 @@ import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- *
- * @author hdsot
- */
+
 @Service
-public class ProveedorServicio {
+public class ProveedorServicio implements UserDetailsService {
     
     @Autowired
     private ProveedorRepositorio proveedorRepositorio;
@@ -31,7 +36,7 @@ public class ProveedorServicio {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(MultipartFile archivo, String nombre, String apellido, String descripcion, String email, String password, String password2) throws MyException {
+    public void registrar(MultipartFile archivo, String nombre, String apellido, String direccion,String descripcion, String email, String password, String password2) throws MyException {
 
         validar(nombre, apellido, descripcion, email, password, password2);
 
@@ -40,14 +45,15 @@ public class ProveedorServicio {
         proveedor.setNombre(nombre);
 
         proveedor.setApellido(apellido);
+        proveedor.setDireccion(direccion);
 
         proveedor.setDescripcion(descripcion);
 
         proveedor.setEmail(email);
 
-        proveedor.setPassword(password);
+        proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
 
-        proveedor.setRol(Rol.USER);
+        proveedor.setRol(Rol.PROVEEDOR);
 
         Imagen imagen = imagenServicio.guardar(archivo);
         proveedor.setImagen(imagen);
@@ -69,7 +75,7 @@ public class ProveedorServicio {
 
             proveedor.setPassword(password);
 
-            proveedor.setRol(Rol.USER);
+            proveedor.setRol(Rol.PROVEEDOR);
 
             String idImagen = null;
 
@@ -95,6 +101,15 @@ public class ProveedorServicio {
         List<Proveedor> proveedores = new ArrayList();
 
        proveedores = proveedorRepositorio.findAll();
+
+        return proveedores;
+    }
+    @Transactional//(readOnly=True)
+    public List<Proveedor> listarProveedoresPorDescripcion(String descripcion) {
+
+        List<Proveedor> proveedores = new ArrayList();
+
+       proveedores = proveedorRepositorio.buscarPorNombreDescripcion(descripcion);
 
         return proveedores;
     }
@@ -125,5 +140,20 @@ public class ProveedorServicio {
         if (!password.equals(password2)) {
             throw new MyException("Las contraseñas ingresadas deben ser iguales");
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Proveedor proveedor = proveedorRepositorio.buscarProveedorPorEmail(email);
+         if(proveedor!=null){
+             List<GrantedAuthority> permisos= new ArrayList();
+             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_"+proveedor.getRol().toString());//concatenacion ROLE_USER
+             
+             permisos.add(p);
+             
+             return new User(proveedor.getEmail(),proveedor.getPassword(),permisos);
+         }else{
+             return null;
+         }
     }
 }
