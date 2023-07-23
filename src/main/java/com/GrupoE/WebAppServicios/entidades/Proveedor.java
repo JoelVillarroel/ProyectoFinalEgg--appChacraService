@@ -17,6 +17,7 @@ public class Proveedor {
     private String id;
     private String nombre;
     private String apellido;
+    private String direccion;
      private String descripcion;
     private String email;
     private String password;
@@ -26,6 +27,14 @@ public class Proveedor {
     private Imagen imagen;
 
     public Proveedor() {
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     public String getId() {
