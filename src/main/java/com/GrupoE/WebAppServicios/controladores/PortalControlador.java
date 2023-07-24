@@ -18,77 +18,83 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/")
 public class PortalControlador {
-    
+
     @Autowired
     private UsuarioServicio usuarioServicio;
     @Autowired
     private ProveedorServicio proveedorServicio;
-    
+
     @GetMapping("/")
     public String index() {
         return "Index.html";
     }
-    
+
     @GetMapping("/registrar")
-    public String registrar(){
+    public String registrar() {
         return "registroUsuario.html";
     }
+
     @PostMapping("/registro")
-    public String registro (@RequestParam String nombre,@RequestParam String apellido,@RequestParam String barrio,@RequestParam String direccion,@RequestParam String email,
+    public String registro(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String barrio, @RequestParam String direccion, @RequestParam String email,
             @RequestParam String password,
-            @RequestParam String password2, ModelMap modelo,MultipartFile archivo)throws MyException{
+            @RequestParam String password2, ModelMap modelo, MultipartFile archivo) throws MyException {
         try {
-            usuarioServicio.registrar(archivo, nombre,apellido,barrio,direccion, email, password, password2);
+            usuarioServicio.registrar(archivo, nombre, apellido, barrio, direccion, email, password, password2);
             modelo.put("exito", "Usuario registrado correctamente");
             return "index.html";
         } catch (MyException ex) {
-            modelo.put("Error",ex.getMessage());
-            modelo.put("nombre",nombre);
-            modelo.put("email",email);
+            modelo.put("Error", ex.getMessage());
+            modelo.put("nombre", nombre);
+            modelo.put("email", email);
             return "registro.html";
         }
     }
+
     @PostMapping("/registroProveedor")
-    public String registroProveedor (@RequestParam String nombre,@RequestParam String apellido,@RequestParam String descripcion,@RequestParam String direccion,@RequestParam String email,
+    public String registroProveedor(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String descripcion, @RequestParam String direccion, @RequestParam String email,
             @RequestParam String password,
-            @RequestParam String password2, ModelMap modelo,MultipartFile archivo)throws MyException{
+            @RequestParam String password2, ModelMap modelo, MultipartFile archivo) throws MyException {
         try {
-            proveedorServicio.registrar(archivo, nombre,apellido,direccion,descripcion, email, password, password2);
+            proveedorServicio.registrar(archivo, nombre, apellido, direccion, descripcion, email, password, password2);
             modelo.put("exito", "Proveedor registrado correctamente");
             return "index.html";
         } catch (MyException ex) {
-            modelo.put("Error",ex.getMessage());
-            modelo.put("nombre",nombre);
-            modelo.put("email",email);
+            modelo.put("Error", ex.getMessage());
+            modelo.put("nombre", nombre);
+            modelo.put("email", email);
             return "registro.html";
         }
     }
+
     @GetMapping("/conocenos")
-    public String nosotros(){
+    public String nosotros() {
         return "nosotros.html";
     }
+
     @GetMapping("/registroProveedor")
-    public String registroProveedor(){
+    public String registroProveedor() {
         return "registroProveedor.html";
     }
+
     @GetMapping("/login")
-    public String login(@RequestParam(required=false)String error,ModelMap modelo){
-        if(error!=null){
+    public String login(@RequestParam(required = false) String error, ModelMap modelo) {
+        if (error != null) {
             modelo.put("error", "Usuario o contraseña invalidos!!");
         }
-        
+
         return "login.html";
     }
-    
+
     @GetMapping("/inicio")
-    public String inicio(HttpSession session){
-        
-        Usuario logueado =(Usuario) session.getAttribute("usuariosession");
-        
-        if(logueado.getRol().toString().equals("ADMIN")){
-            return "redirect:/admin/dashboard";
+    public String inicio(HttpSession session) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+
+        if (logueado != null) {
+            if (logueado.getRol().toString().equals("ADMIN")) {
+                return "redirect:/admin/dashboard";
+            }
         }
-        
-        return "Index.html";
+
+        return "inicio.html";
     }
 }
