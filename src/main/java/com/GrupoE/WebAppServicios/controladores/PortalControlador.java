@@ -3,6 +3,7 @@ package com.GrupoE.WebAppServicios.controladores;
 import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.errores.MyException;
 import com.GrupoE.WebAppServicios.servicios.ProveedorServicio;
+import com.GrupoE.WebAppServicios.servicios.TrabajoServicio;
 import com.GrupoE.WebAppServicios.servicios.UsuarioServicio;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,15 @@ public class PortalControlador {
     private UsuarioServicio usuarioServicio;
     @Autowired
     private ProveedorServicio proveedorServicio;
+    @Autowired
+    private TrabajoServicio trabajoServicio;
 
     @GetMapping("/")
     public String index() {
         return "Index.html";
     }
 
+    /*-----------------------------------------------------------*/
     @GetMapping("/registrar")
     public String registrar() {
         return "registroUsuario.html";
@@ -50,6 +54,12 @@ public class PortalControlador {
         }
     }
 
+    /*-----------------------------------------------------------*/
+    @GetMapping("/registroProveedor")
+    public String registroProveedor() {
+        return "registroProveedor.html";
+    }
+
     @PostMapping("/registroProveedor")
     public String registroProveedor(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String descripcion, @RequestParam String direccion, @RequestParam String email,
             @RequestParam String password,
@@ -66,14 +76,29 @@ public class PortalControlador {
         }
     }
 
+    /*-----------------------------------------------------------*/
+    @GetMapping("/registrarTrabajo")
+    public String registroTrabajo() {
+        return "registroTrabajo.html";
+    }
+
+    @PostMapping("/registroTrabajo")
+    public String registroTrabajo(@RequestParam String descripcion, ModelMap modelo) throws MyException {
+        try {
+            trabajoServicio.registrar("2", "2", descripcion);
+            modelo.put("exito", "Trabajo registrado correctamente");
+            return "inicio.html";
+        } catch (MyException ex) {
+            modelo.put("Error", ex.getMessage());
+            modelo.put("descripcion", descripcion);
+            return "registroTrabajo.html";
+        }
+    }
+
+    /*-----------------------------------------------------------*/
     @GetMapping("/conocenos")
     public String nosotros() {
         return "nosotros.html";
-    }
-
-    @GetMapping("/registroProveedor")
-    public String registroProveedor() {
-        return "registroProveedor.html";
     }
 
     @GetMapping("/login")
@@ -94,7 +119,6 @@ public class PortalControlador {
                 return "redirect:/admin/dashboard";
             }
         }
-
         return "inicio.html";
     }
 }

@@ -24,9 +24,9 @@ public class TrabajoServicio {
     private ProveedorRepositorio proveedorRepositorio;
 
     @Transactional
-    public void registrar(String idProveedor, String idUsuario, String descripcion) throws MyException {
+    public void registrar(String idUsuario, String idProveedor, String descripcion) throws MyException {
 
-        validar(idProveedor, idUsuario, descripcion);
+        validar(idUsuario, idProveedor, descripcion);
 
         Optional<Usuario> user = usuarioRepositorio.findById(idUsuario);
         Trabajo trabajo = new Trabajo();
@@ -103,14 +103,16 @@ public class TrabajoServicio {
         trabajoRepositorio.delete(trabajo);
     }
 
-    private void validar(String IdProveedor, String IdUsuario, String descripcion) throws MyException {
+    private void validar(String IdUsuario, String IdProveedor, String descripcion) throws MyException {
 
-        if (IdProveedor == null || IdProveedor.isEmpty()) {
-            throw new MyException("Debe ingresar el id del proveedor");
-        }
         if (IdUsuario == null || IdUsuario.isEmpty()) {
             throw new MyException("Debe ingresar el id del usuario");
         }
+        
+        if (IdProveedor == null || IdProveedor.isEmpty()) {
+            throw new MyException("Debe ingresar el id del proveedor");
+        }
+
         if (descripcion == null || descripcion.isEmpty()) {
             throw new MyException("Debe ingresar una descripción");
         }
