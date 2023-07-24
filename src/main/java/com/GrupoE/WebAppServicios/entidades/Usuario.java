@@ -17,6 +17,7 @@ public class Usuario {
     private String id;
     private String nombre;
     private String apellido;
+    private String barrio;
     private String direccion;
     private String email;
     private String password;
@@ -28,15 +29,24 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String id, String nombre, String apellido, String direccion, String email, String password, Rol rol, Imagen imagen) {
+    public Usuario(String id, String nombre, String apellido,String barrio, String direccion, String email, String password, Rol rol, Imagen imagen) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.barrio = barrio;
         this.direccion = direccion;
         this.email = email;
         this.password = password;
         this.rol = rol;
         this.imagen = imagen;
+    }
+
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(String barrio) {
+        this.barrio = barrio;
     }
 
     public String getId() {

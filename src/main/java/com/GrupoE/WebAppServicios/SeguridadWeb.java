@@ -41,6 +41,7 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http)throws Exception{
         http
                 .authorizeRequests()
+                    .antMatchers("/login", "/logincheck").permitAll()
                     .antMatchers("/css/*","/js/*","/img/*","/**")
                     .permitAll()
                 .and().formLogin()

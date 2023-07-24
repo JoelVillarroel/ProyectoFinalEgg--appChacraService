@@ -38,7 +38,7 @@ public class ProveedorServicio implements UserDetailsService {
     @Transactional
     public void registrar(MultipartFile archivo, String nombre, String apellido, String direccion,String descripcion, String email, String password, String password2) throws MyException {
 
-        validar(nombre, apellido, descripcion, email, password, password2);
+        validar(nombre, apellido, direccion, descripcion, email, password, password2);
 
         Proveedor proveedor = new Proveedor();
 
@@ -62,9 +62,9 @@ public class ProveedorServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizar(MultipartFile archivo, String idProveedor, String nombre, String email, String password, String password2) throws MyException {
+    public void actualizar(MultipartFile archivo, String idProveedor, String nombre,String apellido,String direccion,String descripcion, String email, String password, String password2) throws MyException {
 
-        validar(nombre, email, email, email, password, password2);
+        validar(nombre, apellido, direccion, descripcion, email, password, password2);
 
         Optional<Proveedor> respuesta = proveedorRepositorio.findById(idProveedor);
         if (respuesta.isPresent()) {
@@ -72,8 +72,10 @@ public class ProveedorServicio implements UserDetailsService {
             Proveedor proveedor = respuesta.get();
             proveedor.setNombre(nombre);
             proveedor.setEmail(email);
-
-            proveedor.setPassword(password);
+            proveedor.setApellido(apellido);
+            proveedor.setDireccion(direccion);
+            
+            proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
 
             proveedor.setRol(Rol.PROVEEDOR);
 
@@ -120,7 +122,7 @@ public class ProveedorServicio implements UserDetailsService {
         proveedorRepositorio.delete(proveedor);
     }
 
-    private void validar(String nombre, String apellido, String descripcion, String email, String password, String password2) throws MyException {
+    private void validar(String nombre, String apellido,String direccion, String descripcion, String email, String password, String password2) throws MyException {
 
         if (nombre == null || nombre.isEmpty()) {
             throw new MyException("El nombre no pude ser nulo ni estar vacio");
@@ -130,6 +132,9 @@ public class ProveedorServicio implements UserDetailsService {
         }
         if (descripcion == null || descripcion.isEmpty()) {
             throw new MyException("La descripcion no puede ser nula o estar vacío");
+        }
+        if (direccion == null || direccion.isEmpty()) {
+            throw new MyException("La direccion no puede ser nula o estar vacío");
         }
         if (email == null || email.isEmpty()) {
             throw new MyException("El email no puede ser nulo o estar vacío");
