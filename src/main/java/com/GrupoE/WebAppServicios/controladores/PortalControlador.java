@@ -26,8 +26,7 @@ public class PortalControlador {
     private UsuarioServicio usuarioServicio;
     @Autowired
     private ProveedorServicio proveedorServicio;
-    @Autowired
-    private TrabajoServicio trabajoServicio;
+   
 
     @GetMapping("/")
     public String index() {
@@ -79,33 +78,6 @@ public class PortalControlador {
     }
 
     /*-----------------------------------------------------------*/
-    @GetMapping("/registrarTrabajo")
-    public String registroTrabajo() {
-        return "registroTrabajo.html";
-    }
-
-    @PostMapping("/registroTrabajo")
-    public String registroTrabajo(@RequestParam String descripcion, ModelMap modelo) throws MyException {
-        try {
-            trabajoServicio.registrar("2", "2", descripcion);
-            modelo.put("exito", "Trabajo registrado correctamente");
-            return "inicio.html";
-        } catch (MyException ex) {
-            modelo.put("Error", ex.getMessage());
-            modelo.put("descripcion", descripcion);
-            return "registroTrabajo.html";
-        }
-    }
-
-    /*-----------------------------------------------------------*/
-      @GetMapping("/listaTrabajo")
-    public String listarAllTrabajos(ModelMap modelo){
-        
-        List<Trabajo> trabajos= trabajoServicio.listarTrabajos();
-        modelo.addAttribute("trabajos",trabajos);
-        return "trabajo_lista.html";
-    }
-    
     
     @GetMapping("/conocenos")
     public String nosotros() {
