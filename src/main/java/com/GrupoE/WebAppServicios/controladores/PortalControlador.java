@@ -1,10 +1,12 @@
 package com.GrupoE.WebAppServicios.controladores;
 
+import com.GrupoE.WebAppServicios.entidades.Trabajo;
 import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.errores.MyException;
 import com.GrupoE.WebAppServicios.servicios.ProveedorServicio;
 import com.GrupoE.WebAppServicios.servicios.TrabajoServicio;
 import com.GrupoE.WebAppServicios.servicios.UsuarioServicio;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -96,6 +98,15 @@ public class PortalControlador {
     }
 
     /*-----------------------------------------------------------*/
+      @GetMapping("/listaTrabajo")
+    public String listarAllTrabajos(ModelMap modelo){
+        
+        List<Trabajo> trabajos= trabajoServicio.listarTrabajos();
+        modelo.addAttribute("trabajos",trabajos);
+        return "trabajo_lista.html";
+    }
+    
+    
     @GetMapping("/conocenos")
     public String nosotros() {
         return "nosotros.html";
