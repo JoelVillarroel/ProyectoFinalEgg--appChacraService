@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class UsuarioServicio implements UserDetailsService{
+public class UsuarioServicio implements UserDetailsService {
 
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
@@ -30,15 +30,17 @@ public class UsuarioServicio implements UserDetailsService{
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(MultipartFile archivo, String nombre, String apellido, String direccion, String email, String password, String password2) throws MyException {
+    public void registrar(MultipartFile archivo, String nombre, String apellido, String barrio, String direccion, String email, String password, String password2) throws MyException {
 
-        validar(nombre, apellido, direccion, email, password, password2);
+        validar(nombre, apellido, barrio, direccion, email, password, password2);
 
         Usuario usuario = new Usuario();
 
         usuario.setNombre(nombre);
 
         usuario.setApellido(apellido);
+
+        usuario.setBarrio(barrio);
 
         usuario.setDireccion(direccion);
 
@@ -55,15 +57,18 @@ public class UsuarioServicio implements UserDetailsService{
     }
 
     @Transactional
-    public void actualizar(MultipartFile archivo, String idUsuario, String nombre, String email, String password, String password2) throws MyException {
+    public void actualizar(MultipartFile archivo, String idUsuario, String nombre, String apellido, String barrio,String direccion, String email, String password, String password2) throws MyException {
 
-        validar(nombre, email, email, email, password, password2);
+        validar(nombre, apellido, barrio, direccion, email, password, password2);
 
         Optional<Usuario> respuesta = usuarioRepositorio.findById(idUsuario);
         if (respuesta.isPresent()) {
 
             Usuario usuario = respuesta.get();
             usuario.setNombre(nombre);
+            usuario.setApellido(apellido);
+            usuario.setBarrio(barrio);
+            usuario.setDireccion(direccion);
             usuario.setEmail(email);
 
             usuario.setPassword(new BCryptPasswordEncoder().encode(password));
@@ -97,27 +102,30 @@ public class UsuarioServicio implements UserDetailsService{
 
         return usuarios;
     }
-    
+
     @Transactional
-    public void eliminar(String id) throws MyException{
-        Usuario usuario=usuarioRepositorio.getById(id);
+    public void eliminar(String id) throws MyException {
+        Usuario usuario = usuarioRepositorio.getById(id);
         usuarioRepositorio.delete(usuario);
     }
-    
+
     @Transactional
-    public List<Usuario> buscarPorApelido(String apellido) throws MyException{
+    public List<Usuario> buscarPorApelido(String apellido) throws MyException {
         List<Usuario> usuarios = new ArrayList();
         usuarios = usuarioRepositorio.buscarPorApellidoUsuarios(apellido);
         return usuarios;
     }
 
-    private void validar(String nombre, String apellido, String direccion, String email, String password, String password2) throws MyException {
+    private void validar(String nombre, String apellido, String barrio, String direccion, String email, String password, String password2) throws MyException {
 
         if (nombre == null || nombre.isEmpty()) {
             throw new MyException("El nombre no pude ser nulo ni estar vacio");
         }
         if (apellido == null || apellido.isEmpty()) {
             throw new MyException("El apellido no puede ser nulo o estar vacío");
+        }
+        if (barrio == null || barrio.isEmpty()) {
+            throw new MyException("Debe seleccionar un barrio");
         }
         if (direccion == null || direccion.isEmpty()) {
             throw new MyException("La direccion no puede ser nulo o estar vacío");
@@ -132,18 +140,17 @@ public class UsuarioServicio implements UserDetailsService{
             throw new MyException("Las contraseñas ingresadas deben ser iguales");
         }
     }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepositorio.buscarUsuarioPorEmail(email);
-         if(usuario!=null){
-             List<GrantedAuthority> permisos= new ArrayList();
-             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_"+usuario.getRol().toString());//concatenacion ROLE_USER
-             
-             permisos.add(p);
-             
-             return new User(usuario.getEmail(),usuario.getPassword(),permisos);
-         }else{
-             return null;
-         }
+        if (usuario != null) {
+            List<GrantedAuthority> permisos = new ArrayList<>();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().toString());
+            permisos.add(p);
+            return new User(usuario.getEmail(), usuario.getPassword(), permisos);
+        } else {
+            throw new UsernameNotFoundException("Usuario no encontrado con el email: " + email);
+        }
     }
 }
