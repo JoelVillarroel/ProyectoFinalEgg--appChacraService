@@ -14,14 +14,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </head>
     <body>
 
-        <nav class="nav.navbar.bg-body-tertiary" style="background-color:  #f1ffcf ;">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/" style="display: inline-block;">
-                    <img src="./logo/Logo_FINAL.png" width="100" height="100" style="vertical-align: middle;">
-                    <p class="chacras" style="color: #E57C3A; text-align: center; margin-left: 10px; display: inline-block; vertical-align: middle;">Chacras Services</p>
-                </a>
-            </div>
-        </nav>
+        <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
         <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
             <div class="card-body">
                 <h5 class="card-title">Error!</h5>
@@ -34,17 +27,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <p class="card-text" th:text="${exito}"></p>
             </div>
         </div>
+
         <div class="container-fluid m-5 contenedor " >
             <div class="form-group my-3">
                 <h3 class="card-title">Registrate</h3>
             </div>
-            <form class="formulario" th:action="@{/registroTrabajo}" method="POST" enctype="multipart/form-data">
+            <form class="formulario" th:action="@{/trabajo/registroTrabajo}" method="POST" enctype="multipart/form-data">
 
                 <div class="form-group my-3">
                     <input type="text" class="form-control" name="descripcion" placeholder="DESCRIPCION" th:value="${descripcion}">
                 </div>
 
-                <button type="submit" class="btn btn-primary mt-3 botones">Realizar Trabajo</button>
+                <button type="submit" class="btn btn-primary mt-3 botones">Solicitar Trabajo</button>
 
                 <div class="divVolver">
                     <a th:href="@{/inicio}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>

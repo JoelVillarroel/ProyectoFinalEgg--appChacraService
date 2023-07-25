@@ -1,5 +1,7 @@
 package com.GrupoE.WebAppServicios.controladores;
 
+import com.GrupoE.WebAppServicios.entidades.Imagen;
+import com.GrupoE.WebAppServicios.entidades.Proveedor;
 import com.GrupoE.WebAppServicios.entidades.Trabajo;
 import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.errores.MyException;
@@ -26,8 +28,6 @@ public class PortalControlador {
     private UsuarioServicio usuarioServicio;
     @Autowired
     private ProveedorServicio proveedorServicio;
-    @Autowired
-    private TrabajoServicio trabajoServicio;
 
     @GetMapping("/")
     public String index() {
@@ -68,6 +68,7 @@ public class PortalControlador {
             @RequestParam String password2, ModelMap modelo, MultipartFile archivo) throws MyException {
         try {
             proveedorServicio.registrar(archivo, nombre, apellido, direccion, descripcion, email, password, password2);
+            
             modelo.put("exito", "Proveedor registrado correctamente");
             return "index.html";
         } catch (MyException ex) {
@@ -79,34 +80,6 @@ public class PortalControlador {
     }
 
     /*-----------------------------------------------------------*/
-    @GetMapping("/registrarTrabajo")
-    public String registroTrabajo() {
-        return "registroTrabajo.html";
-    }
-
-    @PostMapping("/registroTrabajo")
-    public String registroTrabajo(@RequestParam String descripcion, ModelMap modelo) throws MyException {
-        try {
-            trabajoServicio.registrar("2", "2", descripcion);
-            modelo.put("exito", "Trabajo registrado correctamente");
-            return "inicio.html";
-        } catch (MyException ex) {
-            modelo.put("Error", ex.getMessage());
-            modelo.put("descripcion", descripcion);
-            return "registroTrabajo.html";
-        }
-    }
-
-    /*-----------------------------------------------------------*/
-      @GetMapping("/listaTrabajo")
-    public String listarAllTrabajos(ModelMap modelo){
-        
-        List<Trabajo> trabajos= trabajoServicio.listarTrabajos();
-        modelo.addAttribute("trabajos",trabajos);
-        return "trabajo_lista.html";
-    }
-    
-    
     @GetMapping("/conocenos")
     public String nosotros() {
         return "nosotros.html";
@@ -122,14 +95,37 @@ public class PortalControlador {
     }
 
     @GetMapping("/inicio")
-    public String inicio(HttpSession session) {
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+    public String inicio(HttpSession session, ModelMap modelo) {
+        // Obtener el objeto Usuario de la sesión
+        Usuario logueadoUsuario = (Usuario) session.getAttribute("usuarioSession");
 
-        if (logueado != null) {
-            if (logueado.getRol().toString().equals("ADMIN")) {
+        // Obtener el objeto Proveedor de la sesión
+        Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
+
+        if (logueadoUsuario != null) {
+            if (logueadoUsuario.getRol().toString().equals("ADMIN")) {
                 return "redirect:/admin/dashboard";
             }
+            modelo.addAttribute("nombre", logueadoUsuario.getNombre());
+            modelo.addAttribute("apellido", logueadoUsuario.getApellido());
+            modelo.addAttribute("barrio", logueadoUsuario.getBarrio());
+            modelo.addAttribute("direccion", logueadoUsuario.getDireccion());
+            modelo.addAttribute("email", logueadoUsuario.getEmail());
+            modelo.addAttribute("rol", logueadoUsuario.getRol().toString());
+        } else if (logueadoProveedor != null) {
+            modelo.addAttribute("nombre", logueadoProveedor.getNombre());
+            modelo.addAttribute("apellido", logueadoProveedor.getApellido());
+            modelo.addAttribute("direccion", logueadoProveedor.getDireccion());
+            modelo.addAttribute("descripcion", logueadoProveedor.getDescripcion());
+            modelo.addAttribute("imagen", logueadoProveedor.getImagen());
+            modelo.addAttribute("email", logueadoProveedor.getEmail());
+            modelo.addAttribute("rol", logueadoProveedor.getRol().toString());
+        } else {
+            // Manejar el caso cuando no hay usuario ni proveedor logueado
+            // Puedes redirigir a una página de inicio de sesión o manejarlo de otra manera
+            return "redirect:/login";
         }
+
         return "inicio.html";
     }
 }

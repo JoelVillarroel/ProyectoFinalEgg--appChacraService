@@ -13,6 +13,7 @@ import com.GrupoE.WebAppServicios.repositorios.ProveedorRepositorio;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,6 +24,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -151,10 +154,16 @@ public class ProveedorServicio implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Proveedor proveedor = proveedorRepositorio.buscarProveedorPorEmail(email);
          if(proveedor!=null){
-             List<GrantedAuthority> permisos= new ArrayList();
-             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_"+proveedor.getRol().toString());//concatenacion ROLE_USER
+            List<GrantedAuthority> permisos= new ArrayList();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_"+proveedor.getRol().toString());//concatenacion ROLE_USER
              
-             permisos.add(p);
+            permisos.add(p);
+             
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+            
+            HttpSession session = attr.getRequest().getSession(true);
+            
+            session.setAttribute("proveedorSession", proveedor);
              
              return new User(proveedor.getEmail(),proveedor.getPassword(),permisos);
          }else{
