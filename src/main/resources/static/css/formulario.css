@@ -5,10 +5,8 @@
     padding: 50px;
     border-radius: 10px;
     text-align: center;
-    height: 200px; /* Ajusta la altura según tus necesidades */
-    line-height: 200px; /* Ajusta la altura igual al alto del contenedor */
-  
-  
+    height: 200px;
+    line-height: 200px;
 }
 
 .formulario {
@@ -31,11 +29,13 @@
     outline: none;
     box-shadow: 0 0 5px #E57C3A;
 }
+
 .form-control {
-    font-size: 18px;
-    height: 50px;
-    padding: 12px;
+    font-size: 18px !important;
+    height: 50px !important;
+    padding: 12px !important;
 }
+
 .btn-primary {
     background-color: #E57C3A;
     border: none;
@@ -55,13 +55,6 @@
 .botonVolver {
     margin-right: 10px;
 }
-
-.divVolver {
-    display: flex;
-    justify-content: flex-start;
-
-}
-
 
 .mensajeError,
 .mensajeExito {
