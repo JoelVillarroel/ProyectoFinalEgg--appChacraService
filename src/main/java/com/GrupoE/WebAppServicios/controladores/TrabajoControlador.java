@@ -3,10 +3,13 @@
 package com.GrupoE.WebAppServicios.controladores;
 
 import com.GrupoE.WebAppServicios.entidades.Trabajo;
+import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.errores.MyException;
 import com.GrupoE.WebAppServicios.servicios.TrabajoServicio;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,16 +25,17 @@ public class TrabajoControlador {
 
     
      @Autowired
-    private TrabajoServicio trabajoServicio;
+    private TrabajoServicio trabajoServicio;    
     @GetMapping("/registrarTrabajo")
     public String registroTrabajo() {
         return "registroTrabajo.html";
     }
 
     @PostMapping("/registroTrabajo")
-    public String registroTrabajo(@RequestParam String descripcion, ModelMap modelo) throws MyException {
+    public String registroTrabajo(@RequestParam String descripcion, ModelMap modelo,  HttpSession session) throws MyException {
         try {
-            trabajoServicio.registrar("2", "2", descripcion);
+           Usuario UsuarioLogueado = (Usuario) session.getAttribute("usuariosession");
+            trabajoServicio.registrar(UsuarioLogueado.getId(), "2", descripcion);
             modelo.put("exito", "Trabajo registrado correctamente");
             return "inicio.html";
         } catch (MyException ex) {
@@ -40,8 +44,7 @@ public class TrabajoControlador {
             return "registroTrabajo.html";
         }
     }
-
-    /*-----------------------------------------------------------*/
+    
       @GetMapping("/listaTrabajo")
     public String listarAllTrabajos(ModelMap modelo){
         

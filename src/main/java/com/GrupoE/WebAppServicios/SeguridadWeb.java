@@ -61,5 +61,5 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
                         .disable();
     }
     
-    
+
 }
