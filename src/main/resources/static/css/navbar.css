@@ -1,0 +1,72 @@
+/* Estilos para el encabezado */
+.navbar {
+    background-color: #4287f5;
+    padding: 10px 20px;
+}
+
+.navbar-brand img {
+    width: 80px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.navbar-brand .chacras {
+    color: #fff;
+    font-size: 24px;
+    margin-left: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Estilos para la barra de navegación */
+
+
+.navbar-nav .nav-link {
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #E57C3A;
+}
+
+.navbar-toggler-icon {
+    background-color: #fff;
+}
+/* Estilos para el menú desplegable de perfil */
+.btn-group .dropdown-menu {
+    min-width: 200px; /* Ancho mínimo del menú desplegable */
+    padding: 10px; /* Espaciado interno del menú */
+    background-color: #f9f9f9; /* Color de fondo del menú */
+    border: 1px solid #ccc; /* Borde del menú */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.btn-group .dropdown-menu p {
+    margin: 5px 0; /* Espaciado entre elementos de lista */
+}
+
+/* Estilos para la imagen de perfil */
+.btn-group .dropdown-menu img {
+    max-width: 100px; /* Tamaño máximo de la imagen */
+    height: auto; /* Ajustar altura automáticamente */
+    display: block; /* Evitar espacios innecesarios */
+    margin: 10px auto; /* Centrar la imagen horizontalmente */
+    border-radius: 50%; /* Convertir la imagen en un círculo */
+}
+
+/* Estilos para los enlaces del menú desplegable de perfil */
+.btn-group .dropdown-menu .dropdown-item {
+    color: #333; /* Color del texto del enlace */
+    font-size: 16px; /* Tamaño de fuente del enlace */
+    padding: 5px 15px; /* Espaciado del enlace */
+    transition: background-color 0.2s ease, color 0.2s ease; /* Transición suave al pasar el mouse */
+}
+
+.btn-group .dropdown-menu .dropdown-item:hover {
+    background-color: #f0f0f0; /* Cambiar color de fondo al pasar el mouse */
+    color: #E57C3A; /* Cambiar color del texto al pasar el mouse */
+}

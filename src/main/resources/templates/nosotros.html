@@ -13,72 +13,8 @@
     <body>
         <!-- Contenido del sitio web -->
 
-        <!--ENCABEZADO-->
-
-        <nav class="nav.navbar.bg-body-tertiary" style="background-color:  #f1ffcf ;">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/" style="display: inline-block;">
-                    <img src="./logo/Logo_FINAL.png" alt="Logo" width="100" height="100" style="vertical-align: middle;">
-                    <p class="chacras" style="color: #E57C3A; text-align: center; margin-left: 10px; display: inline-block; vertical-align: middle;">Chacras Services</p>
-                </a>
-            </div>
-        </nav>
-
         <!--------NAVBAR 2------>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/inicio">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/conocenos">Nosotros</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Servicios
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" title="Reparación y mantenimiento de sistemas de fontanería." href="#">Servicio de Fontanería</a></li>
-                                <li><a class="dropdown-item" title="Instalación y reparación de sistemas eléctricos." href="#">Servicio de Electricidad</a></li>
-                                <li><a class="dropdown-item" title="Mantenimiento de jardines y áreas verdes." href="#">Servicio de Jardinería</a></li>
-                                <li><a class="dropdown-item" title="Limpieza y mantenimiento de espacios residenciales y comerciales." href="#">Servicio de Limpieza</a></li>
-                                <li><a class="dropdown-item" title="Pintura de interiores y exteriores." href="#">Servicio de Pintura</a></li>
-                                <li><a class="dropdown-item" title="Fabricación y reparación de muebles y estructuras de madera." href="#">Servicio de Carpintería</a></li>
-                                <li><a class="dropdown-item" title="Construcción y reparación de estructuras de albañilería." href="#">Servicio de Albañilería</a></li>
-                                <li><a class="dropdown-item" title="Apertura y reparación de cerraduras y sistemas de seguridad." href="#">Servicio de Cerrajería</a></li>
-                                <li><a class="dropdown-item" title="Instalación y mantenimiento de sistemas de climatización." href="#">Servicio de Climatización</a></li>
-                                <li><a class="dropdown-item" title="Reparación de electrodomésticos y equipos electrónicos." href="#">Servicio de Reparación de Electrodomésticos</a></li>
-                                <li><a class="dropdown-item" title="Instalación de sistemas de seguridad y vigilancia." href="#">Servicio de Instalación de Sistemas de Seguridad</a></li>
-                                <li><a class="dropdown-item" title="Transporte y logística de mudanzas residenciales y comerciales." href="#">Servicio de Mudanzas</a></li>
-                                <li><a class="dropdown-item" title="Reparación y mantenimiento de vehículos automotores." href="#">Servicio de Reparación de Automóviles</a></li>
-                                <li><a class="dropdown-item" title="Diseño de logotipos, folletos, carteles y material gráfico." href="#">Servicio de Diseño Gráfico</a></li>
-                                <li><a class="dropdown-item" title="Desarrollo y programación de aplicaciones y sistemas informáticos." href="#">Servicio de Desarrollo de Software</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="d-flex" role="search">
-                        <button id="boton" class="btn btn-outline-success custom-button" type="submit">Login</button>
-                    </form>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" type="button">Registrate</button>
-                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/registrar">Usuario</a></li>
-                            <li><a class="dropdown-item" href="#">Proveedor</a></li>
-                        </ul>
-                    </div>
-
-
-                </div>
-            </div>
-        </nav>
+        <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
 
         <!--SLIDER DE IMAGENES-->
         <div id="carouselExampleIndicators" class="carousel slide">
