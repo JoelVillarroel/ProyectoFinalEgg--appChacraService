@@ -31,19 +31,25 @@ public class TrabajoControlador {
         return "registroTrabajo.html";
     }
 
-    @PostMapping("/registroTrabajo")
-    public String registroTrabajo(@RequestParam String descripcion, ModelMap modelo,  HttpSession session) throws MyException {
-        try {
-           Usuario UsuarioLogueado = (Usuario) session.getAttribute("usuariosession");
+   @PostMapping("/registroTrabajo")
+public String registroTrabajo(@RequestParam String descripcion, ModelMap modelo,  HttpSession session) throws MyException {
+    try {
+       Usuario UsuarioLogueado = (Usuario) session.getAttribute("usuarioSession");
+        if (UsuarioLogueado != null) {
             trabajoServicio.registrar(UsuarioLogueado.getId(), "2", descripcion);
             modelo.put("exito", "Trabajo registrado correctamente");
             return "inicio.html";
-        } catch (MyException ex) {
-            modelo.put("Error", ex.getMessage());
-            modelo.put("descripcion", descripcion);
-            return "registroTrabajo.html";
+        } else {
+            modelo.put("Error", "Parece que no has iniciado sesión"); 
+            return "login.html"; 
         }
+    } catch (MyException ex) {
+        modelo.put("Error", ex.getMessage());
+        modelo.put("descripcion", descripcion);
+        return "registroTrabajo.html";
     }
+}
+
     
       @GetMapping("/listaTrabajo")
     public String listarAllTrabajos(ModelMap modelo){
