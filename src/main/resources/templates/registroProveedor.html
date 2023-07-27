@@ -52,8 +52,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <input type="text" class="form-control" name="direccion" placeholder="DIRECCION" th:value="${direccion}">
                 </div>
                 <div class="form-group my-3">
-                    <span>Descripcion</span>
-                    <select id="descripcion" name="descripcion" >
+                    <span>Servicio</span>
+                    <select id="servicio" name="servicio" >
                         <option>fontanero</option>
                         <option>electricista</option>
                         <option>jardinero</option>
@@ -70,9 +70,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <option>grafica</option>
                         <option>software</option>
                     </select>
-                    <!--
+                <div class="form-group my-3">
                     <input type="text" class="form-control" name="descripcion" placeholder="DESCRIPCION" th:value="${descripcion}">
-                    -->
+                </div>
+                <div class="form-group my-3">
+                    <input type="text" class="form-control" name="remuneracion" placeholder="REMUNERACION" th:value="${remuneracion}">
+                </div>       
                 </div>
                 <div class="form-group my-3">
                     <input type="email" class="form-control" name="email" placeholder="EMAIL" th:value="${email}">

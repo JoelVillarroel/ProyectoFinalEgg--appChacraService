@@ -62,11 +62,12 @@ public class PortalControlador {
     }
 
     @PostMapping("/registroProveedor")
-    public String registroProveedor(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String descripcion, @RequestParam String direccion, @RequestParam String email,
+    public String registroProveedor(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String descripcion,
+            @RequestParam String servicio,@RequestParam String remuneracion, @RequestParam String direccion, @RequestParam String email,
             @RequestParam String password,
             @RequestParam String password2, ModelMap modelo, MultipartFile archivo) throws MyException {
         try {
-            proveedorServicio.registrar(archivo, nombre, apellido, direccion, descripcion, email, password, password2);
+            proveedorServicio.registrar(archivo, nombre, apellido, direccion, servicio, remuneracion,  descripcion, email, password, password2);
             modelo.put("exito", "Proveedor registrado correctamente");
             return "index.html";
         } catch (MyException ex) {

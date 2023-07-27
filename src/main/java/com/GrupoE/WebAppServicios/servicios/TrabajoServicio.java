@@ -112,11 +112,11 @@ public class TrabajoServicio {
         if (IdProveedor == null || IdProveedor.isEmpty()) {
             throw new MyException("Debe ingresar el id del proveedor");
         }
-
+/*
         if (descripcion == null || descripcion.isEmpty()) {
             throw new MyException("Debe ingresar una descripción");
         }
-
+*/
     }
 
     private void validarTrabajo(String idTrabajo, String IdProveedor, String IdUsuario, String descripcion, String comentario) throws MyException {

@@ -18,7 +18,11 @@ public class Proveedor {
     private String nombre;
     private String apellido;
     private String direccion;
-     private String descripcion;
+    private String servicio;
+    private Integer calificacion;
+    private String remuneracion;
+    private Integer cantTrabajos;
+    private String descripcion;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
@@ -28,6 +32,57 @@ public class Proveedor {
 
     public Proveedor() {
     }
+
+    public Proveedor(String id, String nombre, String apellido, String direccion, String servicio, Integer calificacion, String remuneracion, Integer cantTrabajos, String descripcion, String email, String password, Rol rol, Imagen imagen) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.direccion = direccion;
+        this.servicio = servicio;
+        this.calificacion = calificacion;
+        this.remuneracion = remuneracion;
+        this.cantTrabajos = cantTrabajos;
+        this.descripcion = descripcion;
+        this.email = email;
+        this.password = password;
+        this.rol = rol;
+        this.imagen = imagen;
+    }
+
+    public String getRemuneracion() {
+        return remuneracion;
+    }
+
+    public void setRemuneracion(String remuneracion) {
+        this.remuneracion = remuneracion;
+    }
+
+    public Integer getCantTrabajos() {
+        return cantTrabajos;
+    }
+
+    public void setCantTrabajos(Integer cantTrabajos) {
+        this.cantTrabajos = cantTrabajos;
+    }
+
+    
+
+    public String getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(String servicio) {
+        this.servicio = servicio;
+    }
+
+    public Integer getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(Integer calificacion) {
+        this.calificacion = calificacion;
+    }
+    
 
     public String getDireccion() {
         return direccion;
