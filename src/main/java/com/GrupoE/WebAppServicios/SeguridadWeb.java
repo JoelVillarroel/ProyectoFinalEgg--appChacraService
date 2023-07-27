@@ -37,7 +37,7 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
     
     
     
-    @Override
+     @Override
     protected void configure(HttpSecurity http)throws Exception{
         http
                 .authorizeRequests()
@@ -60,6 +60,5 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
                 .and().csrf()
                         .disable();
     }
-    
 
 }

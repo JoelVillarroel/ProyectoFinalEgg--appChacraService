@@ -155,10 +155,14 @@ public class UsuarioServicio implements UserDetailsService {
             permisos.add(p);
             
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            
+
             
             HttpSession session = attr.getRequest().getSession(true);
             
             session.setAttribute("usuarioSession", usuario);
+
             return new User(usuario.getEmail(), usuario.getPassword(), permisos);
         } else {
             throw new UsernameNotFoundException("Usuario no encontrado con el email: " + email);
