@@ -48,6 +48,8 @@ public class UsuarioServicio implements UserDetailsService {
         usuario.setDireccion(direccion);
 
         usuario.setEmail(email);
+        
+        usuario.setActivo(true);
 
         usuario.setPassword(new BCryptPasswordEncoder().encode(password));
 
@@ -160,6 +162,23 @@ public class UsuarioServicio implements UserDetailsService {
             return new User(usuario.getEmail(), usuario.getPassword(), permisos);
         } else {
             throw new UsernameNotFoundException("Usuario no encontrado con el email: " + email);
+        }
+    }
+    @Transactional
+    public void cambiarEstado(String id) {
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Usuario usuario = respuesta.get();
+
+            if (usuario.getActivo()==true) {
+
+                usuario.setActivo(false);
+
+            } else if (usuario.getActivo()==false) {
+                usuario.setActivo(true);
+            }
         }
     }
 }
