@@ -14,7 +14,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </head>
     <body>
 
-
+        <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
         <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
             <div class="card-body">
                 <h5 class="card-title">Error!</h5>

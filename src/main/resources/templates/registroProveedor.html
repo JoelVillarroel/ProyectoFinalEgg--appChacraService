@@ -14,15 +14,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </head>
     <body>
         <!--ENCABEZADO-->
-
-        <nav class="nav.navbar.bg-body-tertiary" style="background-color:  #f1ffcf ;">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/" style="display: inline-block;">
-                    <img src="./logo/Logo_FINAL.png" alt="Logo" width="100" height="100" style="vertical-align: middle;">
-                    <p class="chacras" style="color: #E57C3A; text-align: center; margin-left: 10px; display: inline-block; vertical-align: middle;">Chacras Services</p>
-                </a>
-            </div>
-        </nav>
+        <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
         <!-- comment -->
         <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
             <div class="card-body">
@@ -51,7 +43,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="form-group my-3">
                     <input type="text" class="form-control" name="direccion" placeholder="DIRECCION" th:value="${direccion}">
                 </div>
+               
                 <div class="form-group my-3">
+<<<<<<< HEAD
                     <span>Servicio</span>
                     <select id="servicio" name="servicio" >
                         <option>fontanero</option>
@@ -76,7 +70,29 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="form-group my-3">
                     <input type="text" class="form-control" name="remuneracion" placeholder="REMUNERACION" th:value="${remuneracion}">
                 </div>       
+=======
+
+                    <select class="form-control" name="servicio" id="servicio">
+                        <option value="albañileria" th:selected="${direccion == 'albañileria'}">Albañilería</option>
+                        <option value="carpinteria" th:selected="${direccion == 'carpinteria'}">Carpintería</option>
+                        <option value="cerrajeria" th:selected="${direccion == 'cerrajeria'}">Cerrajería</option>
+                        <option value="climatizacion" th:selected="${direccion == 'climatizacion'}">Climatización</option>
+                        <option value="electricista" th:selected="${direccion == 'electricista'}">Electricista</option>
+                        <option value="electronica" th:selected="${direccion == 'electronica'}">Electrónica</option>
+                        <option value="fontanero" th:selected="${direccion == 'fontanero'}">Fontanero</option>
+                        <option value="grafica" th:selected="${direccion == 'grafica'}">Grafica</option>
+                        <option value="jardineria" th:selected="${direccion == 'jardineria'}">Jardineria</option>
+                        <option value="limpieza" th:selected="${direccion == 'limpieza'}">Limpieza</option>
+                        <option value="mecanica" th:selected="${direccion == 'mecanica'}">Mecánica</option>
+                        <option value="mudanzas" th:selected="${direccion == 'mudanzas'}">Mudanzas</option>
+                        <option value="pintura" th:selected="${direccion == 'pintura'}">Pintura</option>
+                        <option value="seguridad" th:selected="${direccion == 'seguridad'}">Seguridad</option>
+                        <option value="software" th:selected="${direccion == 'software'}">Software</option>
+
+                    </select>
+>>>>>>> developer
                 </div>
+
                 <div class="form-group my-3">
                     <input type="email" class="form-control" name="email" placeholder="EMAIL" th:value="${email}">
                 </div>

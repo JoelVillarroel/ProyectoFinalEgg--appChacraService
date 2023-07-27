@@ -11,42 +11,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/formulario.css">
+    <link rel="stylesheet" href="./css/formulario.css"> 
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/navbar.css">
 
 
 
     <body>
 
-        <nav class="navbar navbar-expand-lg navBar">
-            
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse elementosNav" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto elementos">
-                    <li class="nav-item">
-                        <a class="nav-link " href="/registrar" id="navbarDropdown" role="button" aria-expanded="false">
-                            Registrate!
-                        </a>
-
-                    </li>
-
-                </ul>
-            </div>
-        </nav>
+        <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
 
 
 
         <div class="container-fluid m-5 contenedor">
             <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
                 <div class="card-body">
-                    <h5 class="card-title">Error!</h5>
+                    <h5 class="card-title">¡Error!</h5>
                     <p class="card-text" th:text="${error}"></p>
                 </div>
             </div>
             <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
                 <div class="card-body">
-                    <h5 class="card-title">Exito!</h5>
+                    <h5 class="card-title">¡Éxito!</h5>
                     <p class="card-text" th:text="${exito}"></p>
                 </div>
             </div>
@@ -67,7 +53,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
 
 
-                <button type="submit" class="btn btn-primary mt-3 botones">Ingresar!</button>
+                <button type="submit" class="btn btn-primary mt-3 botones">¡Ingresar!</button>
 
 
 
@@ -83,7 +69,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         </div>
 
-        
+
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>

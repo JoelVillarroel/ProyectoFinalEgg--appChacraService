@@ -37,14 +37,14 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
     
     
     
-    @Override
+     @Override
     protected void configure(HttpSecurity http)throws Exception{
         http
                 .authorizeRequests()
-                    .antMatchers("/login", "/logincheck","/registroProveedor","/registrar","/registro","/index").permitAll()
-                    .antMatchers("/css/*","/js/*","/img/*","/","/logo/*","/LogoChacras/*", "/conocenos")
+                    .antMatchers("/login", "/logincheck","/registroProveedor", "/registrar","/registro").permitAll()
+                    .antMatchers("/css/*","/js/*","/img/*","/fragments","/","/logo/*","/LogoChacras/*", "/conocenos")
                     .permitAll()
-                    .antMatchers("/inicio").hasAnyRole("USER", "PROVEEDOR") // Permite el acceso a /inicio solo si el usuario tiene el rol USER o PROVIDER
+                    .antMatchers("/inicio").hasAnyRole("USER","ADMIN", "PROVEEDOR") // Permite el acceso a /inicio solo si el usuario tiene el rol USER, ADMIN o PROVEEDOR
                     .anyRequest().authenticated()
                 .and().formLogin()
                         .loginPage("/login")
@@ -60,6 +60,5 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
                 .and().csrf()
                         .disable();
     }
-    
-    
+
 }

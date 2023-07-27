@@ -11,6 +11,7 @@ import com.GrupoE.WebAppServicios.servicios.TrabajoServicio;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ public class TrabajoControlador {
 
     
      @Autowired
+
     private TrabajoServicio trabajoServicio;
      
      @Autowired
@@ -38,6 +40,9 @@ public class TrabajoControlador {
         Usuario logueado=(Usuario) session.getAttribute("usuariosession");
         modeloUsuario.put("logueado",logueado);
         modelo.put("proveedor",proveedorServicio.getOne(id));
+
+       
+    
         return "registroTrabajo.html";
     }
     /*
@@ -49,6 +54,7 @@ public class TrabajoControlador {
     */
     
     @PostMapping("/registroTrabajo")
+
     
     public String registroTrabajo(@RequestParam String idLogueado, @RequestParam String idProveedor, @RequestParam String descripcion,
             ModelMap modelo) throws MyException {
@@ -65,8 +71,12 @@ public class TrabajoControlador {
     
     /*
     public String registroTrabajo(@RequestParam String descripcion, ModelMap modelo) throws MyException {
+=======
+    public String registroTrabajo(@RequestParam String descripcion, ModelMap modelo,  HttpSession session) throws MyException {
+>>>>>>> developer
         try {
-            trabajoServicio.registrar("2", "2", descripcion);
+           Usuario UsuarioLogueado = (Usuario) session.getAttribute("usuariosession");
+            trabajoServicio.registrar(UsuarioLogueado.getId(), "2", descripcion);
             modelo.put("exito", "Trabajo registrado correctamente");
             return "inicio.html";
         } catch (MyException ex) {
@@ -74,9 +84,13 @@ public class TrabajoControlador {
             modelo.put("descripcion", descripcion);
             return "registroTrabajo.html";
         }
+<<<<<<< HEAD
     }*/
 
     /*-----------------------------------------------------------*/
+
+   
+
       @GetMapping("/listaTrabajo")
     public String listarAllTrabajos(ModelMap modelo){
         

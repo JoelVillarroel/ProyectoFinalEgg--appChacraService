@@ -171,10 +171,16 @@ public class ProveedorServicio implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Proveedor proveedor = proveedorRepositorio.buscarProveedorPorEmail(email);
          if(proveedor!=null){
-             List<GrantedAuthority> permisos= new ArrayList();
-             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_"+proveedor.getRol().toString());//concatenacion ROLE_USER
+            List<GrantedAuthority> permisos= new ArrayList();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_"+proveedor.getRol().toString());//concatenacion ROLE_USER
              
-             permisos.add(p);
+            permisos.add(p);
+             
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+            
+            HttpSession sessionP = attr.getRequest().getSession(true);
+            
+            sessionP.setAttribute("proveedorSession", proveedor);
              
              ServletRequestAttributes attrP = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 

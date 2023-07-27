@@ -14,14 +14,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </head>
     <body>
 
-        <nav class="nav.navbar.bg-body-tertiary" style="background-color:  #f1ffcf ;">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/" style="display: inline-block;">
-                    <img src="./logo/Logo_FINAL.png" width="100" height="100" style="vertical-align: middle;">
-                    <p class="chacras" style="color: #E57C3A; text-align: center; margin-left: 10px; display: inline-block; vertical-align: middle;">Chacras Services</p>
-                </a>
-            </div>
-        </nav>
+        <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
 
         <div class="container-fluid m-5 contenedor " >
             <div class="form-group my-3">
@@ -40,9 +33,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="form-group my-3">
 
                     <select class="form-control" name="barrio" id="barrio">
-                        <option value="" disabled selected>SELECCIONE UN BARRIO</option>
+                   
                         <option value="darragueira" th:selected="${direccion == 'darragueira'}">Darragueira Park</option>
-                        <option value="recoleta" th:selected="${direccion == 'recoleta'}">Barrio Recoleta</option>
+                        <option value="recoleta" th:selected="${direccion == 'recoleta'}">Barrio Recoleta</option>  
                         <option value="alsaga" th:selected="${direccion == 'alsaga'}">Villa Álsaga</option>
 
                     </select>

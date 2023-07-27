@@ -1,0 +1,77 @@
+.navbar {
+    background-color: #fff;
+    padding: 10px 20px;
+}
+
+.navbar-brand img {
+    width: 80px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.navbar-brand .chacras {
+    color: #fff;
+    font-size: 24px;
+    margin-left: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.navbar-expand-lg {
+    background-color: #fff;
+}
+
+.navbar-nav .nav-link {
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #E57C3A;
+}
+
+.navbar-toggler-icon {
+    background-color: #fff;
+}
+
+.btn-group .dropdown-menu {
+    min-width: 200px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn-group .dropdown-menu p {
+    margin: 5px 0;
+}
+
+.btn-group .dropdown-menu img {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+    border-radius: 50%;
+}
+
+.btn-group .dropdown-menu .dropdown-item {
+    color: #333;
+    font-size: 16px;
+    padding: 5px 15px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-group .dropdown-menu .dropdown-item:hover {
+    background-color: #f0f0f0;
+    color: #E57C3A;
+}
+.navbar-brand .chacras {
+    color: #fff;
+    font-size: 24px;
+    margin-left: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}

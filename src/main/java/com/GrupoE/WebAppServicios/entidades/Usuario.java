@@ -25,11 +25,12 @@ public class Usuario {
     private Rol rol;
     @OneToOne
     private Imagen imagen;
+    private Boolean activo;
 
     public Usuario() {
     }
 
-    public Usuario(String id, String nombre, String apellido,String barrio, String direccion, String email, String password, Rol rol, Imagen imagen) {
+    public Usuario(String id, String nombre, String apellido, String barrio, String direccion, String email, String password, Rol rol, Imagen imagen, Boolean activo) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -39,14 +40,7 @@ public class Usuario {
         this.password = password;
         this.rol = rol;
         this.imagen = imagen;
-    }
-
-    public String getBarrio() {
-        return barrio;
-    }
-
-    public void setBarrio(String barrio) {
-        this.barrio = barrio;
+        this.activo = activo;
     }
 
     public String getId() {
@@ -71,6 +65,14 @@ public class Usuario {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(String barrio) {
+        this.barrio = barrio;
     }
 
     public String getDireccion() {
@@ -112,6 +114,16 @@ public class Usuario {
     public void setImagen(Imagen imagen) {
         this.imagen = imagen;
     }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+    
+    
     
     
 }
