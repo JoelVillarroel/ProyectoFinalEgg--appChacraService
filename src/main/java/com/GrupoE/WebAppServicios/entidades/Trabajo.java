@@ -32,7 +32,8 @@ public class Trabajo {
     public Trabajo() {
     }
 
-    public Trabajo(Usuario usuario, Proveedor proveedor, boolean realizado, int calificacion, String comentario, String descripcion) {
+    public Trabajo(String id, Usuario usuario, Proveedor proveedor, boolean realizado, int calificacion, String comentario, String descripcion) {
+        this.id = id;
         this.usuario = usuario;
         this.proveedor = proveedor;
         this.realizado = realizado;
@@ -40,6 +41,8 @@ public class Trabajo {
         this.comentario = comentario;
         this.descripcion = descripcion;
     }
+
+    
 
     public String getId() {
         return id;

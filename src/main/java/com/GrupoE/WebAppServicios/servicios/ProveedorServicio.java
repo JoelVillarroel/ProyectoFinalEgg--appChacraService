@@ -6,10 +6,12 @@ package com.GrupoE.WebAppServicios.servicios;
 
 import com.GrupoE.WebAppServicios.entidades.Imagen;
 import com.GrupoE.WebAppServicios.entidades.Proveedor;
+import com.GrupoE.WebAppServicios.entidades.Trabajo;
 import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.enumeraciones.Rol;
 import com.GrupoE.WebAppServicios.errores.MyException;
 import com.GrupoE.WebAppServicios.repositorios.ProveedorRepositorio;
+import com.GrupoE.WebAppServicios.repositorios.TrabajoRepositorio;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,23 +36,31 @@ public class ProveedorServicio implements UserDetailsService {
     
     @Autowired
     private ProveedorRepositorio proveedorRepositorio;
+    
+    @Autowired
+    private TrabajoRepositorio trabajoRepositorio;
+
 
     @Autowired
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(MultipartFile archivo, String nombre, String apellido, String direccion,String descripcion, String email, String password, String password2) throws MyException {
+    public void registrar(MultipartFile archivo, String nombre, String apellido, String direccion,String servicio,String remuneracion,String descripcion, String email, String password, String password2) throws MyException {
 
         validar(nombre, apellido, direccion, descripcion, email, password, password2);
 
         Proveedor proveedor = new Proveedor();
-
+        proveedor.setCantTrabajos(0);
+        proveedor.setCalificacion(0);
         proveedor.setNombre(nombre);
 
         proveedor.setApellido(apellido);
         proveedor.setDireccion(direccion);
+        proveedor.setServicio(servicio);
 
         proveedor.setDescripcion(descripcion);
+        proveedor.setRemuneracion(remuneracion);
+       
 
         proveedor.setEmail(email);
 
@@ -65,14 +75,21 @@ public class ProveedorServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizar(MultipartFile archivo, String idProveedor, String nombre,String apellido,String direccion,String descripcion, String email, String password, String password2) throws MyException {
-
+    public void actualizar(MultipartFile archivo, String idProveedor,String idTrabajo,Integer cantTrabajos, String nombre,String apellido,String direccion,String descripcion, String email, String password, String password2) throws MyException {
+        Integer calificacion = 0;
         validar(nombre, apellido, direccion, descripcion, email, password, password2);
 
         Optional<Proveedor> respuesta = proveedorRepositorio.findById(idProveedor);
+        Optional<Trabajo> respuestaTrabajo = trabajoRepositorio.findById(idTrabajo);
+        if (respuestaTrabajo.isPresent()){
+            Trabajo trabajo = respuestaTrabajo.get();
+            calificacion = trabajo.getCalificacion();
+            cantTrabajos = cantTrabajos +1;
+        }
         if (respuesta.isPresent()) {
 
             Proveedor proveedor = respuesta.get();
+            proveedor.setCalificacion((calificacion+proveedor.getCalificacion())/cantTrabajos);
             proveedor.setNombre(nombre);
             proveedor.setEmail(email);
             proveedor.setApellido(apellido);
@@ -110,11 +127,11 @@ public class ProveedorServicio implements UserDetailsService {
         return proveedores;
     }
     @Transactional//(readOnly=True)
-    public List<Proveedor> listarProveedoresPorDescripcion(String descripcion) {
+    public List<Proveedor> listarProveedoresPorDescripcion(String servicio) {
 
         List<Proveedor> proveedores = new ArrayList();
 
-       proveedores = proveedorRepositorio.buscarPorNombreDescripcion(descripcion);
+       proveedores = proveedorRepositorio.buscarPorNombreDescripcion(servicio);
 
         return proveedores;
     }
@@ -161,9 +178,15 @@ public class ProveedorServicio implements UserDetailsService {
              
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
             
-            HttpSession session = attr.getRequest().getSession(true);
+            HttpSession sessionP = attr.getRequest().getSession(true);
             
-            session.setAttribute("proveedorSession", proveedor);
+            sessionP.setAttribute("proveedorSession", proveedor);
+             
+             ServletRequestAttributes attrP = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attrP.getRequest().getSession(true);
+            session.setAttribute("proveedorsession", proveedor);
+            
              
              return new User(proveedor.getEmail(),proveedor.getPassword(),permisos);
          }else{
