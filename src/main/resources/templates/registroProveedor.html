@@ -11,10 +11,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" 
               integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
         <link rel="stylesheet" href="/css/formulario.css">
+        <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+        <link rel="stylesheet" th:href="@{/css/main.css}" />
+        <link rel="icon" th:href="@{/logo/Logo_FINAL.png}" type="image/png" />
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     </head>
     <body>
         <!--ENCABEZADO-->
-        <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
+        <nav class="nav.navbar.bg-body-tertiary" style="background-color:  #f1ffcf ;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/" style="display: inline-block;">
+                    <img th:src="@{/logo/Logo_FINAL.png}" alt="Logo" width="100" height="100" style="vertical-align: middle;">
+                    <p class="chacras" style="color: #E57C3A; text-align: center; margin-left: 10px; display: inline-block; vertical-align: middle;">Chacras Services</p>
+                </a>
+            </div>
+        </nav>
+        <!--NAVBAR-->
+        <div class="d-flex">
+            <a class="btn btn-outline-success custom-button" href="/login" id="boton" role="button" aria-expanded="false">
+                Login
+            </a>
+        </div>
         <!-- comment -->
         <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
             <div class="card-body">
@@ -28,68 +46,91 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <p class="card-text" th:text="${exito}"></p>
             </div>
         </div>
-        <div class="container-fluid m-5 contenedor " >
+        <div class="container-fluid m-5 " >
             <div class="form-group my-3">
                 <h3 class="card-title">Registrate</h3>
             </div>
             <form class="formulario" th:action="@{/registroProveedor}" method="POST" enctype="multipart/form-data">
 
+                <!--Nombre-->
                 <div class="form-group my-3">
                     <input type="text" class="form-control" name="nombre" placeholder="NOMBRE" th:value="${nombre}">
                 </div>
+
+                <!--Apellido-->
                 <div class="form-group my-3">
                     <input type="text" class="form-control" name="apellido" placeholder="APELLIDO" th:value="${apellido}">
                 </div>
+
+                <!--Direccion-->
                 <div class="form-group my-3">
                     <input type="text" class="form-control" name="direccion" placeholder="DIRECCION" th:value="${direccion}">
                 </div>
-               
+
+                <!--Descripcion-->
                 <div class="form-group my-3">
+                    <input type="text" class="form-control" name="descripcion" placeholder="DESCRIPCION" th:value="${descripcion}">
+                </div>
 
+                <!--Remuneracion-->
+                <div class="form-group my-3">
+                    <input type="text" class="form-control" name="remuneracion" placeholder="REMUNERACION" th:value="${remuneracion}">
+                </div>  
+                
+                <!--Servicio-->
+                <div class="form-group my-3">
                     <select class="form-control" name="servicio" id="servicio">
-                        <option value="" disabled selected>SELECCIONE UN SERVICIO</option>
-                        <option value="fontanero" th:selected="${direccion == 'fontanero'}">Fontanero</option>
-                        <option value="electricista" th:selected="${direccion == 'electricista'}">Electricista</option>
-                        <option value="jardineria" th:selected="${direccion == 'jardineria'}">Jardineria</option>
-                        <option value="limpieza" th:selected="${direccion == 'limpieza'}">Limpieza</option>
-                        <option value="pintura" th:selected="${direccion == 'pintura'}">Pintura</option>
-                        <option value="carpinteria" th:selected="${direccion == 'carpinteria'}">Carpintería</option>
-                        <option value="albañileria" th:selected="${direccion == 'albañileria'}">Albañilería</option>
-                        <option value="albañileria" th:selected="${direccion == 'albañileria'}">Albañilería</option>
-                        <option value="cerrajeria" th:selected="${direccion == 'cerrajeria'}">Cerrajería</option>
-                        <option value="climatizacion" th:selected="${direccion == 'climatizacion'}">Climatización</option>
-                        <option value="electronica" th:selected="${direccion == 'electronica'}">Electrónica</option>
-                        <option value="seguridad" th:selected="${direccion == 'seguridad'}">Seguridad</option>
-                        <option value="mudanzas" th:selected="${direccion == 'mudanzas'}">Mudanzas</option>
-                        <option value="mecanica" th:selected="${direccion == 'mecanica'}">Mecánica</option>
-                        <option value="grafica" th:selected="${direccion == 'grafica'}">Grafica</option>
-                        <option value="software" th:selected="${direccion == 'software'}">Software</option>
-
+                        <option value="albañileria" th:selected="${servicio == 'albañileria'}">Albañilería</option>
+                        <option value="carpinteria" th:selected="${servicio == 'carpinteria'}">Carpintería</option>
+                        <option value="cerrajeria" th:selected="${servicio == 'cerrajeria'}">Cerrajería</option>
+                        <option value="climatizacion" th:selected="${servicio == 'climatizacion'}">Climatización</option>
+                        <option value="electricista" th:selected="${servicio == 'electricista'}">Electricista</option>
+                        <option value="electronica" th:selected="${servicio == 'electronica'}">Electrónica</option>
+                        <option value="fontanero" th:selected="${servicio == 'fontanero'}">Fontanero</option>
+                        <option value="grafica" th:selected="${servicio == 'grafica'}">Grafica</option>
+                        <option value="jardineria" th:selected="${servicio == 'jardineria'}">Jardineria</option>
+                        <option value="limpieza" th:selected="${servicio == 'limpieza'}">Limpieza</option>
+                        <option value="mecanica" th:selected="${servicio == 'mecanica'}">Mecánica</option>
+                        <option value="mudanzas" th:selected="${servicio == 'mudanzas'}">Mudanzas</option>
+                        <option value="pintura" th:selected="${servicio == 'pintura'}">Pintura</option>
+                        <option value="seguridad" th:selected="${servicio == 'seguridad'}">Seguridad</option>
+                        <option value="software" th:selected="${servicio == 'software'}">Software</option>
                     </select>
                 </div>
 
+                <!--Email-->
                 <div class="form-group my-3">
                     <input type="email" class="form-control" name="email" placeholder="EMAIL" th:value="${email}">
                 </div>
 
+                <!--Archivo-->
                 <div class="form-group my-3">
                     <input type="file" class="form-control" name="archivo">
                 </div>
 
+                <!--Password-->
                 <div class="form-group my-3">
                     <input type="password" class="form-control" name="password" placeholder="CONTRASEÑA" th:value="${password}">
                 </div>
+                
+                <!--Password 2-->
                 <div class="form-group my-3">
                     <input type="password" class="form-control" name="password2" placeholder="REPETIR CONTRASEÑA" th:value="${password2}">
                 </div>
+                
+                <!--Boton registrar-->
                 <button type="submit" class="btn btn-primary mt-3 botones">Registrame</button>
+                
+                <!--Boton volver-->
                 <div class="divVolver">
                     <a th:href="@{/}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>
                 </div>
             </form>
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+        <footer th:replace="~{/fragments/footer :: footer}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></footer>
+
+
 
     </body>
 </html>

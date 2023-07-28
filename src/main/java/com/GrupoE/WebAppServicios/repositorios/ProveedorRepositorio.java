@@ -1,5 +1,6 @@
 package com.GrupoE.WebAppServicios.repositorios;
 
+import com.GrupoE.WebAppServicios.entidades.Imagen;
 import com.GrupoE.WebAppServicios.entidades.Proveedor;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,8 +16,8 @@ public interface ProveedorRepositorio extends JpaRepository<Proveedor,String>{
     public Proveedor buscarPorNombreProveedor(@Param("nombre")String nombre);
     @Query("SELECT p FROM Proveedor p WHERE p.apellido = :apellido")
     public Proveedor buscarPorApellidoProveedor(@Param("apellido")String apellido);
-    @Query("SELECT p FROM Proveedor p WHERE p.descripcion = :descripcion")
-    public List<Proveedor> buscarPorNombreDescripcion(@Param("descripcion")String descripcion);
+    @Query("SELECT p FROM Proveedor p WHERE p.servicio = :servicio")
+    public List<Proveedor> buscarPorNombreDescripcion(@Param("servicio")String servicio);
     /*@Query("SELECT p FROM Proveedor p WHERE p.apellido = :apellido")
     public List<Proveedor> buscarPorApellidoProveedor(@Param("apellido")String apellido);*/
 }

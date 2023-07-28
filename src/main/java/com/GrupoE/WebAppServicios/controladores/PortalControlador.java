@@ -36,14 +36,24 @@ public class PortalControlador {
 
     /*-----------------------------------------------------------*/
     @GetMapping("/registrar")
-    public String registrar() {
+    public String registrar(ModelMap modelo, HttpSession session) {
+        String redireccion = logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
         return "registroUsuario.html";
     }
 
     @PostMapping("/registro")
     public String registro(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String barrio, @RequestParam String direccion, @RequestParam String email,
             @RequestParam String password,
-            @RequestParam String password2, ModelMap modelo, MultipartFile archivo) throws MyException {
+            @RequestParam String password2, ModelMap modelo, MultipartFile archivo,HttpSession session) throws MyException {
+        String redireccion = logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
         try {
             usuarioServicio.registrar(archivo, nombre, apellido, barrio, direccion, email, password, password2);
             modelo.put("exito", "Usuario registrado correctamente");
@@ -52,7 +62,7 @@ public class PortalControlador {
             modelo.put("Error", ex.getMessage());
             modelo.put("nombre", nombre);
             modelo.put("email", email);
-            return "registro.html";
+            return "registroUsuario.html";
         }
     }
 
@@ -63,30 +73,47 @@ public class PortalControlador {
     }
 
     @PostMapping("/registroProveedor")
-    public String registroProveedor(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String descripcion, @RequestParam String direccion, @RequestParam String email,
+    public String registroProveedor(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String descripcion,
+            @RequestParam String servicio, @RequestParam String remuneracion, @RequestParam String direccion, @RequestParam String email,
             @RequestParam String password,
-            @RequestParam String password2, ModelMap modelo, MultipartFile archivo) throws MyException {
+            @RequestParam String password2, ModelMap modelo, MultipartFile archivo, HttpSession session) throws MyException {
+        String redireccion = logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
         try {
-            proveedorServicio.registrar(archivo, nombre, apellido, direccion, descripcion, email, password, password2);
-            
+
+            proveedorServicio.registrar(archivo, nombre, apellido, direccion, servicio, remuneracion, descripcion, email, password, password2);
+
             modelo.put("exito", "Proveedor registrado correctamente");
             return "index.html";
         } catch (MyException ex) {
             modelo.put("Error", ex.getMessage());
             modelo.put("nombre", nombre);
             modelo.put("email", email);
-            return "registro.html";
+            return "registroProveedor.html";
         }
     }
 
     /*-----------------------------------------------------------*/
     @GetMapping("/conocenos")
-    public String nosotros() {
+    public String nosotros(ModelMap modelo, HttpSession session) {
+        String redireccion = logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
         return "nosotros.html";
     }
 
     @GetMapping("/login")
-    public String login(@RequestParam(required = false) String error, ModelMap modelo) {
+    public String login(@RequestParam(required = false) String error, ModelMap modelo,HttpSession session) {
+        String redireccion = logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
         if (error != null) {
             modelo.put("error", "Usuario o contraseña invalidos!!");
         }
@@ -96,15 +123,23 @@ public class PortalControlador {
 
     @GetMapping("/inicio")
     public String inicio(HttpSession session, ModelMap modelo) {
-        // Obtener el objeto Usuario de la sesión
+        // Llamamos al método logueado del controlador base para cargar los datos del usuario o proveedor logueado
+        String redireccion = logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
+
+        return "inicio.html";
+    }
+
+    protected String logueado(ModelMap modelo, HttpSession session) {
+        // Tu código para cargar los datos del usuario o proveedor logueado
+        // Si es un usuario logueado
         Usuario logueadoUsuario = (Usuario) session.getAttribute("usuarioSession");
-
-        // Obtener el objeto Proveedor de la sesión
-        Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
-
         if (logueadoUsuario != null) {
             if (logueadoUsuario.getRol().toString().equals("ADMIN")) {
-                return "redirect:/admin/dashboard";
+                return "redirect:/administrador/usuarios";
             }
             modelo.addAttribute("nombre", logueadoUsuario.getNombre());
             modelo.addAttribute("apellido", logueadoUsuario.getApellido());
@@ -112,20 +147,20 @@ public class PortalControlador {
             modelo.addAttribute("direccion", logueadoUsuario.getDireccion());
             modelo.addAttribute("email", logueadoUsuario.getEmail());
             modelo.addAttribute("rol", logueadoUsuario.getRol().toString());
-        } else if (logueadoProveedor != null) {
-            modelo.addAttribute("nombre", logueadoProveedor.getNombre());
-            modelo.addAttribute("apellido", logueadoProveedor.getApellido());
-            modelo.addAttribute("direccion", logueadoProveedor.getDireccion());
-            modelo.addAttribute("descripcion", logueadoProveedor.getDescripcion());
-            modelo.addAttribute("imagen", logueadoProveedor.getImagen());
-            modelo.addAttribute("email", logueadoProveedor.getEmail());
-            modelo.addAttribute("rol", logueadoProveedor.getRol().toString());
-        } else {
-            // Manejar el caso cuando no hay usuario ni proveedor logueado
-            // Puedes redirigir a una página de inicio de sesión o manejarlo de otra manera
-            return "redirect:/login";
+        } // Si es un proveedor logueado
+        else {
+            Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
+            if (logueadoProveedor != null) {
+                modelo.addAttribute("nombre", logueadoProveedor.getNombre());
+                modelo.addAttribute("apellido", logueadoProveedor.getApellido());
+                modelo.addAttribute("direccion", logueadoProveedor.getDireccion());
+                modelo.addAttribute("descripcion", logueadoProveedor.getDescripcion());
+                modelo.addAttribute("imagen", logueadoProveedor.getImagen().getId());
+                modelo.addAttribute("email", logueadoProveedor.getEmail());
+                modelo.addAttribute("rol", logueadoProveedor.getRol().toString());
+            } // Si no hay usuario ni proveedor logueado
         }
 
-        return "inicio.html";
+        return null; // Retornamos null si todo va bien (sin redirecciones)
     }
 }

@@ -75,3 +75,17 @@
     display: inline-block;
     vertical-align: middle;
 }
+
+input[type="checkbox"] {
+    display: none;
+}
+
+
+ul.dropdown-menu {
+    display: none;
+}
+
+
+input[type="checkbox"]:checked ~ ul.dropdown-menu {
+    display: block;
+}

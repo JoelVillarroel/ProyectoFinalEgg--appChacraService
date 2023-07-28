@@ -10,7 +10,7 @@ body {
 
 /* Estilos para el encabezado */
 .navbar {
-    background-color: #4287f5;
+    background-color: #fff;
     padding: 10px 20px;
 }
 
@@ -30,7 +30,7 @@ body {
 
 /* Estilos para la barra de navegación */
 .navbar-expand-lg {
-    background-color: #34495e;
+    background-color: #fff;
 }
 
 .navbar-nav .nav-link {
@@ -89,7 +89,7 @@ body {
 
 /* Estilos para la sección de introducción */
 #intro {
-    background-color: #f9f9f9;
+    /*background-color: #f9f9f9;*/
     padding: 50px 0;
 }
 
