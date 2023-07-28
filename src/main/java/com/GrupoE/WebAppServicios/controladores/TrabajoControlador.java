@@ -67,6 +67,7 @@ public class TrabajoControlador {
     }
 
     @GetMapping("/listaTrabajo/allTrabajos")
+<<<<<<< Updated upstream
     public String listarAllTrabajos(ModelMap modelo, String idProveedor, HttpSession session) {
         String redireccion = portalControlador.logueado(modelo, session);
         if (redireccion != null) {
@@ -77,14 +78,26 @@ public class TrabajoControlador {
         modelo.addAttribute("trabajos", trabajos);
 
         //lista los trabajos no realizados de un proveedor en particular
+=======
+    public String listarAllTrabajos(ModelMap modelo) {
+
+        List<Trabajo> trabajos = trabajoServicio.listarTrabajos();  //lista todos los trabajos
+        modelo.addAttribute("trabajos", trabajos);
+
+        return "trabajo_lista.html";
+
+    }
+    
+    @GetMapping("/listaTrabajo/proveedor")
+    public String listarTrabajosProveedor(ModelMap modelo, String idProveedor,  HttpSession session) {
+        
+        idProveedor = "05f79207-7383-4799-ad68-c3f92a424d0c";
+       //esto ven los proveedores
+       //lista los trabajos no realizados de un proveedor en particular
+>>>>>>> Stashed changes
         List<Trabajo> NoRealizados = trabajoServicio.listarTrabajosNoRealizados(idProveedor);
         modelo.addAttribute("NoRealizados", NoRealizados);
-
-        //lista los trabajos que le faltan calificar al ususario logueado.
-        Usuario UsuarioLogueado = (Usuario) session.getAttribute("usuarioSession");
-        List<Trabajo> RealizadosNoCalificados = trabajoServicio.trabajosRealizadosNoCalificados(UsuarioLogueado.getId());
-        modelo.addAttribute("RealizadosNoCalificados", RealizadosNoCalificados);
-
+        
         //lista todos los trabajos de un proveedor en particular
         List<Trabajo> trabajosProov = trabajoServicio.TodosProveedor(idProveedor);
         modelo.addAttribute("trabajosProov", trabajosProov);
@@ -92,16 +105,68 @@ public class TrabajoControlador {
         //lista los trabajos que no ha aceptado ni rechazado de un proveedor en particular
         List<Trabajo> solicitudes = trabajoServicio.Solicitudes(idProveedor);
         modelo.addAttribute("solicitudes", solicitudes);
+        
+        
+        //ESto ven los usuarios
+         //lista los trabajos que le faltan calificar al ususario logueado.
+        Usuario UsuarioLogueado = (Usuario) session.getAttribute("usuarioSession");
+        List<Trabajo> RealizadosNoCalificados = trabajoServicio.trabajosRealizadosNoCalificados(UsuarioLogueado.getId());
+        modelo.addAttribute("RealizadosNoCalificados", RealizadosNoCalificados);
+
 
         //lista los trabajos realizados de un proveedor en particular para mostrarle al usuario
         List<Trabajo> RealizadosProveedor = trabajoServicio.RealizadosProveedor(idProveedor);
         modelo.addAttribute("RealizadosProveedor", RealizadosProveedor);
-
-        return "trabajo_lista.html";
+        
+        return "trabajoproveedor_lista.html";
+    }
+    
+    
+    
+//FUNCIONALIDADES
+// RestringirComentario
+    @GetMapping("/borrarComentario/{id}")
+    public String ComentarioInapropiado(@PathVariable String id){
+        trabajoServicio.ComentarioInapropiado(id);
+        
+         return "redirect:/trabajo/listaTrabajo/allTrabajos?cache=false";
 
     }
+    
+    @GetMapping("/aceptarSolicitud/{id}")
+    public String Aceptar(@PathVariable String id) {
+        trabajoServicio.AceptarSolicitud(id);
+        
+         return "redirect:/trabajo/listaTrabajo/proveedor?cache=false";
 
+
+    }
+    
+     @GetMapping("/rechazarSolicitud/{id}")
+    public String Rechazar(@PathVariable String id) {
+        trabajoServicio.RechazarSolicitud(id);
+        
+         return "redirect:/trabajo/listaTrabajo/proveedor?cache=false";
+
+
+    }
+    
+    @GetMapping("/marcarRealizado/{id}")
+    public String MarcarRealizado(@PathVariable String id) throws MyException {
+        trabajoServicio.MarcarComoRealizado(id);
+        
+         return "redirect:/trabajo/listaTrabajo/proveedor?cache=false";
+
+
+    }
+    
     /*  
+    
+    
+
+      
+
+    --------------
         @GetMapping("/listaTrabajo/trabajoDeUnProveedor")
     public String listarTrabajosDeUnProveedor(ModelMap modelo,String idProveedor, HttpSession session){
         String redireccion = portalControlador.logueado(modelo, session);

@@ -136,7 +136,13 @@ public class TrabajoServicio {
     public Trabajo getOne(String id) {
         return trabajoRepositorio.getOne(id);
     }
+     @Transactional
+    public void Eliminar(String id) throws MyException {
+        Trabajo trabajo = trabajoRepositorio.getById(id);
+        trabajoRepositorio.delete(trabajo);
+    }
 
+//LISTAS 
     @Transactional//(readOnly=True)
     public List<Trabajo> listarTrabajos() {
 
@@ -178,12 +184,44 @@ public class TrabajoServicio {
     }
 
 
+   //FUNCIONALIDADES
     @Transactional
-    public void eliminar(String id) throws MyException {
-        Trabajo trabajo = trabajoRepositorio.getById(id);
-        trabajoRepositorio.delete(trabajo);
+    public void ComentarioInapropiado(String id) {
+        Optional<Trabajo> respuesta = trabajoRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Trabajo trabajo = respuesta.get();
+            trabajo.setComentario("Sin comentario");
+       
+        }
+    }
+    
+      @Transactional
+    public void AceptarSolicitud(String id) {
+        Optional<Trabajo> respuesta = trabajoRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Trabajo trabajo = respuesta.get();
+            trabajo.setSolicitud("ACEPTADA");
+       
+        }
+    }
+    
+      @Transactional
+    public void RechazarSolicitud(String id) {
+        Optional<Trabajo> respuesta = trabajoRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Trabajo trabajo = respuesta.get();
+            trabajo.setSolicitud("RECHAZADA");
+       
+        }
     }
 
+    //VALIDACIONES
     private void validar(String IdUsuario, String IdProveedor, String descripcion) throws MyException {
 
         if (IdUsuario == null || IdUsuario.isEmpty()) {
