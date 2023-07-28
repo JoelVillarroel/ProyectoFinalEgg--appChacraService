@@ -28,10 +28,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @Service
 public class ProveedorServicio implements UserDetailsService {
-    
+
     @Autowired
     private ProveedorRepositorio proveedorRepositorio;
 
@@ -39,7 +38,7 @@ public class ProveedorServicio implements UserDetailsService {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(MultipartFile archivo, String nombre, String apellido, String direccion,String descripcion, String email, String password, String password2) throws MyException {
+    public void registrar(MultipartFile archivo, String nombre, String apellido, String direccion, String descripcion, String email, String password, String password2) throws MyException {
 
         validar(nombre, apellido, direccion, descripcion, email, password, password2);
 
@@ -65,7 +64,7 @@ public class ProveedorServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizar(MultipartFile archivo, String idProveedor, String nombre,String apellido,String direccion,String descripcion, String email, String password, String password2) throws MyException {
+    public void actualizar(MultipartFile archivo, String idProveedor, String nombre, String apellido, String direccion, String descripcion, String email, String password, String password2) throws MyException {
 
         validar(nombre, apellido, direccion, descripcion, email, password, password2);
 
@@ -77,7 +76,7 @@ public class ProveedorServicio implements UserDetailsService {
             proveedor.setEmail(email);
             proveedor.setApellido(apellido);
             proveedor.setDireccion(direccion);
-            
+
             proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
 
             proveedor.setRol(Rol.PROVEEDOR);
@@ -92,40 +91,41 @@ public class ProveedorServicio implements UserDetailsService {
 
             proveedor.setImagen(imagen);
 
-           proveedorRepositorio.save(proveedor);
+            proveedorRepositorio.save(proveedor);
         }
     }
 
     public Proveedor getOne(String id) {
         return proveedorRepositorio.getOne(id);
     }
-
+    
     @Transactional//(readOnly=True)
     public List<Proveedor> listarProveedores() {
 
         List<Proveedor> proveedores = new ArrayList();
 
-       proveedores = proveedorRepositorio.findAll();
+        proveedores = proveedorRepositorio.findAll();
 
         return proveedores;
     }
+
     @Transactional//(readOnly=True)
     public List<Proveedor> listarProveedoresPorDescripcion(String descripcion) {
 
         List<Proveedor> proveedores = new ArrayList();
 
-       proveedores = proveedorRepositorio.buscarPorNombreDescripcion(descripcion);
+        proveedores = proveedorRepositorio.buscarPorNombreDescripcion(descripcion);
 
         return proveedores;
     }
-    
+
     @Transactional
-    public void eliminar(String id) throws MyException{
-        Proveedor proveedor=proveedorRepositorio.getById(id);
+    public void eliminar(String id) throws MyException {
+        Proveedor proveedor = proveedorRepositorio.getById(id);
         proveedorRepositorio.delete(proveedor);
     }
 
-    private void validar(String nombre, String apellido,String direccion, String descripcion, String email, String password, String password2) throws MyException {
+    private void validar(String nombre, String apellido, String direccion, String descripcion, String email, String password, String password2) throws MyException {
 
         if (nombre == null || nombre.isEmpty()) {
             throw new MyException("El nombre no pude ser nulo ni estar vacio");
@@ -153,21 +153,22 @@ public class ProveedorServicio implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Proveedor proveedor = proveedorRepositorio.buscarProveedorPorEmail(email);
-         if(proveedor!=null){
-            List<GrantedAuthority> permisos= new ArrayList();
-            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_"+proveedor.getRol().toString());//concatenacion ROLE_USER
-             
+        if (proveedor != null) {
+            List<GrantedAuthority> permisos = new ArrayList();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + proveedor.getRol().toString());//concatenacion ROLE_USER
+
             permisos.add(p);
-             
+
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-            
+
             HttpSession session = attr.getRequest().getSession(true);
-            
+
             session.setAttribute("proveedorSession", proveedor);
-             
-             return new User(proveedor.getEmail(),proveedor.getPassword(),permisos);
-         }else{
-             return null;
-         }
+
+            return new User(proveedor.getEmail(), proveedor.getPassword(), permisos);
+        } else {
+            return null;
+        }
     }
+
 }

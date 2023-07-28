@@ -5,12 +5,17 @@ import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.enumeraciones.Rol;
 import com.GrupoE.WebAppServicios.errores.MyException;
 import com.GrupoE.WebAppServicios.repositorios.UsuarioRepositorio;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -60,7 +65,7 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizar(MultipartFile archivo, String idUsuario, String nombre, String apellido, String barrio,String direccion, String email, String password, String password2) throws MyException {
+    public void actualizar(MultipartFile archivo, String idUsuario, String nombre, String apellido, String barrio, String direccion, String email, String password, String password2) throws MyException {
 
         validar(nombre, apellido, barrio, direccion, email, password, password2);
 
@@ -136,11 +141,56 @@ public class UsuarioServicio implements UserDetailsService {
         if (email == null || email.isEmpty()) {
             throw new MyException("El email no puede ser nulo o estar vacío");
         }
+        if (usuarioRepositorio.buscarUsuarioPorEmail(email) != null) {
+            throw new MyException("El email existe!!!");
+        }
         if (password == null || password.isEmpty() || password.length() <= 5) {
             throw new MyException("La contraseña no puede estar vacía, y debe tener más de 5 dígitos");
         }
         if (!password.equals(password2)) {
             throw new MyException("Las contraseñas ingresadas deben ser iguales");
+        }
+    }
+
+    @Transactional
+    public void crearPrimerUsuarioAdmin() throws MyException {
+        Usuario adminUsuario = usuarioRepositorio.buscarUsuarioPorEmail("admin@example.com");
+        if (adminUsuario == null) {
+            // El usuario no existe, crea el primer usuario admin
+            adminUsuario = new Usuario();
+            adminUsuario.setNombre("Nombre del Admin");
+            adminUsuario.setApellido("Apellido del Admin");
+            adminUsuario.setBarrio("Barrio del Admin");
+            adminUsuario.setDireccion("Dirección del Admin");
+            adminUsuario.setEmail("admin@example.com");
+            adminUsuario.setPassword(new BCryptPasswordEncoder().encode("contraseña"));
+            adminUsuario.setRol(Rol.ADMIN);
+
+
+            /*try {
+                // Cargar el archivo del logo desde la ubicación
+                File file = new File("src/main/resources/static/logo/Logo_FINAL.png");
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+
+                // Crear un recurso a partir del contenido del archivo de imagen
+                ByteArrayResource resource = new ByteArrayResource(fileContent);
+
+                // Crear un objeto MultipartFile utilizando el recurso creado
+                MultipartFile archivoLogo = new org.springframework.mock.web.MockMultipartFile(
+                        "Logo_FINAL.png",
+                        "Logo_FINAL.png",
+                        "image/png",
+                        resource.getInputStream()
+                );
+
+                // Guardar el logo como una entidad Imagen
+                Imagen imagenLogo = imagenServicio.guardar(archivoLogo);
+                adminUsuario.setImagen(imagenLogo);
+            } catch (IOException e) {
+                // Manejar cualquier error que pueda ocurrir al cargar el logo
+                System.err.println("Error al cargar el logo: " + e.getMessage());
+            }*/
+            usuarioRepositorio.save(adminUsuario);
         }
     }
 
@@ -151,15 +201,16 @@ public class UsuarioServicio implements UserDetailsService {
             List<GrantedAuthority> permisos = new ArrayList<>();
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().toString());
             permisos.add(p);
-            
+
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-            
+
             HttpSession session = attr.getRequest().getSession(true);
-            
+
             session.setAttribute("usuarioSession", usuario);
             return new User(usuario.getEmail(), usuario.getPassword(), permisos);
         } else {
             throw new UsernameNotFoundException("Usuario no encontrado con el email: " + email);
         }
     }
+
 }
