@@ -1,12 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.GrupoE.WebAppServicios.controladores;
 
 import com.GrupoE.WebAppServicios.entidades.Imagen;
-import com.GrupoE.WebAppServicios.entidades.Proveedor;
-import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.repositorios.ImagenRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

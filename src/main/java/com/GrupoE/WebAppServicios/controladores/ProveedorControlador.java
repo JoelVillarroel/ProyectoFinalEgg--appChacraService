@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.GrupoE.WebAppServicios.controladores;
 
 import com.GrupoE.WebAppServicios.entidades.Proveedor;
-import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.servicios.ProveedorServicio;
 import java.util.List;
 import javax.servlet.http.HttpSession;
