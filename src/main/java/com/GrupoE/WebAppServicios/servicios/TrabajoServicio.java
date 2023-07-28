@@ -79,12 +79,60 @@ public class TrabajoServicio {
             trabajo.setComentario(comentario);
             trabajo.setRealizado(realizado);
             trabajo.setDescripcion(descripcion);
+            trabajo.setSolicitud("0");
 
             trabajoRepositorio.save(trabajo);
         }
 
     }
 
+    @Transactional
+    public void Calificar(String id, String comentario, int calificacion) throws MyException {
+        if (id == null || id.isEmpty()) {
+            throw new MyException("El id del trabajo esta vacío");
+        }
+        if (calificacion == 0) {
+            throw new MyException("Debe ingresar una calificación antes de enviar");
+        }
+        Optional<Trabajo> t = trabajoRepositorio.findById(id);
+        if (t.isPresent()) {
+            Trabajo trabajo = t.get();
+            trabajo.setCalificacion(calificacion);
+
+            if (comentario != null && !(comentario.isEmpty())) {
+                trabajo.setComentario(comentario);
+            }
+
+        }
+    }
+
+    @Transactional
+    public void MarcarComoRealizado(String id) throws MyException {
+        Optional<Trabajo> t = trabajoRepositorio.findById(id);
+        if (id == null || id.isEmpty()) {
+            throw new MyException("Falta el id del trabajo");
+        }
+        if (t.isPresent()) {
+            Trabajo trabajo = t.get();
+            trabajo.setRealizado(true);
+        }
+    }
+
+    @Transactional
+    public void ResponderSolicitud(String id, String accion) throws MyException {
+        Optional<Trabajo> t = trabajoRepositorio.findById(id);
+        if (id == null || id.isEmpty()) {
+            throw new MyException("Falta el id del trabajo");
+        }
+
+        //accion Aceptada o Rechazada
+        if (t.isPresent()) {
+            Trabajo trabajo = t.get();
+            trabajo.setSolicitud(accion);
+        }
+    }
+
+    @Transactional
     public Trabajo getOne(String id) {
         return trabajoRepositorio.getOne(id);
     }
@@ -97,6 +145,39 @@ public class TrabajoServicio {
         return trabajos;
     }
 
+    @Transactional//(readOnly=True)
+    public List<Trabajo> trabajosRealizadosNoCalificados(String idUsuario) {
+
+        return trabajoRepositorio.trabajoRealizadoNoCalificado(idUsuario);
+    }
+    
+    @Transactional//(readOnly=True)
+    public List<Trabajo> Solicitudes (String idProveedor) {
+
+        return trabajoRepositorio.Solicitudes(idProveedor);
+    }
+
+    @Transactional//(readOnly=True)
+    public List<Trabajo> listarTrabajosNoRealizados(String idProveedor) {
+
+        List<Trabajo> trabajosNoRealizados = trabajoRepositorio.TrabajoNoRealizado(idProveedor);
+
+        return trabajosNoRealizados;
+    }
+    
+    @Transactional//(readOnly=True)
+    public List<Trabajo> RealizadosProveedor (String idProveedor) {
+
+        return trabajoRepositorio.RealizadosProveedor(idProveedor);
+    }
+    @Transactional//(readOnly=True)
+    
+    public List<Trabajo> TodosProveedor (String idProveedor) {
+
+        return trabajoRepositorio.TodosProveedor(idProveedor);
+    }
+
+
     @Transactional
     public void eliminar(String id) throws MyException {
         Trabajo trabajo = trabajoRepositorio.getById(id);
@@ -108,15 +189,15 @@ public class TrabajoServicio {
         if (IdUsuario == null || IdUsuario.isEmpty()) {
             throw new MyException("Debe ingresar el id del usuario");
         }
-        
+
         if (IdProveedor == null || IdProveedor.isEmpty()) {
             throw new MyException("Debe ingresar el id del proveedor");
         }
-/*
+
         if (descripcion == null || descripcion.isEmpty()) {
             throw new MyException("Debe ingresar una descripción");
         }
-*/
+
     }
 
     private void validarTrabajo(String idTrabajo, String IdProveedor, String IdUsuario, String descripcion, String comentario) throws MyException {
@@ -139,3 +220,4 @@ public class TrabajoServicio {
     }
 
 }
+
