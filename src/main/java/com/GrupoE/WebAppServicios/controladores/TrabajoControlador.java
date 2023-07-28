@@ -27,22 +27,21 @@ public class TrabajoControlador {
     private PortalControlador portalControlador;
     @Autowired
     private ProveedorServicio proveedorServicio;
-    
-    
-    @GetMapping("/registrarTrabajo")
-public String registroTrabajo(@RequestParam(name = "id", required = false, defaultValue = "0") String id,
-                              ModelMap modelo, HttpSession session, ModelMap modeloUsuario) {
-    Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-    modeloUsuario.put("logueado", logueado);
-    modelo.put("proveedor", proveedorServicio.getOne(id));
-    String redireccion = portalControlador.logueado(modelo, session);
-    if (redireccion != null) {
-        // Si el método logueado devuelve una redirección, la retornamos
-        return redireccion;
-    }
 
-    return "registroTrabajo.html";
-}
+    @GetMapping("/registrarTrabajo")
+    public String registroTrabajo(@RequestParam(name = "id", required = false, defaultValue = "0") String id,
+            ModelMap modelo, HttpSession session, ModelMap modeloUsuario) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        modeloUsuario.put("logueado", logueado);
+        modelo.put("proveedor", proveedorServicio.getOne(id));
+        String redireccion = portalControlador.logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
+
+        return "registroTrabajo.html";
+    }
 
     /*
     @GetMapping("vista/{id}")
@@ -52,7 +51,6 @@ public String registroTrabajo(@RequestParam(name = "id", required = false, defau
     }
      */
     @PostMapping("/registroTrabajo")
-
 
     public String registroTrabajo(@RequestParam String idLogueado, @RequestParam String idProveedor, @RequestParam String descripcion,
             ModelMap modelo) throws MyException {
@@ -70,11 +68,15 @@ public String registroTrabajo(@RequestParam(name = "id", required = false, defau
 
     @GetMapping("/listaTrabajo/allTrabajos")
     public String listarAllTrabajos(ModelMap modelo, String idProveedor, HttpSession session) {
-
+        String redireccion = portalControlador.logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
         List<Trabajo> trabajos = trabajoServicio.listarTrabajos();  //lista todos los trabajos
         modelo.addAttribute("trabajos", trabajos);
 
-       //lista los trabajos no realizados de un proveedor en particular
+        //lista los trabajos no realizados de un proveedor en particular
         List<Trabajo> NoRealizados = trabajoServicio.listarTrabajosNoRealizados(idProveedor);
         modelo.addAttribute("NoRealizados", NoRealizados);
 
@@ -147,5 +149,4 @@ String redireccion = portalControlador.logueado(modelo, session);
         modelo.addAttribute("RealizadosNoCalificados",RealizadosNoCalificados);
         return "trabajo_lista.html";
     }*/
-
 }
