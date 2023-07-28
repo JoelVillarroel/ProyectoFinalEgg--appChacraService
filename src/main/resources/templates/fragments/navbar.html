@@ -53,14 +53,14 @@
                         
                     </ul>
 
-                    <div class="d-flex">
+                    <div class="d-flex"  th:unless="${rol == 'USER' || rol == 'PROVEEDOR' || rol == 'ADMIN'}">
                         <a class="btn btn-outline-success custom-button" href="/login" id="boton" role="button" aria-expanded="false">
                             Login
 
                         </a>
                     </div>
 
-                    <div class="btn-group">
+                    <div class="btn-group"  th:unless="${rol == 'USER' || rol == 'PROVEEDOR' || rol == 'ADMIN'}">
                         <button class="btn btn-primary" type="button">Registrate</button>
                         <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
@@ -113,7 +113,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/trabajo/listaTrabajo/allTrabajos}">Lista trabajo</a>
+                            <a class="nav-link" th:if="${rol == 'PROVEEDOR' || rol == 'ADMIN'} th:href="@{/trabajo/listaTrabajo/allTrabajos}">Lista trabajo</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/trabajo/registrarTrabajo}">Registrar trabajo</a>
