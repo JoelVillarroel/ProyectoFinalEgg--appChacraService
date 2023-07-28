@@ -27,12 +27,12 @@ public class Trabajo {
     private int calificacion; // 0 siel usuario no ingreso aún una calificación. Del 1 al 5 una vez clasificado.
     private String comentario; //comentario de la calificación
     private String descripcion; //descripción del trabajo. Ej: Poda de arboles, Reparación de cañeria.
- 
+    private String solicitud; // 0 si no se ha aceptado y denegado. Aceptada y Rechazada.
 
     public Trabajo() {
     }
 
-    public Trabajo(String id, Usuario usuario, Proveedor proveedor, boolean realizado, int calificacion, String comentario, String descripcion) {
+    public Trabajo(String id, Usuario usuario, Proveedor proveedor, boolean realizado, int calificacion, String comentario, String descripcion, String solicitud) {
         this.id = id;
         this.usuario = usuario;
         this.proveedor = proveedor;
@@ -40,9 +40,8 @@ public class Trabajo {
         this.calificacion = calificacion;
         this.comentario = comentario;
         this.descripcion = descripcion;
+        this.solicitud = solicitud;
     }
-
-    
 
     public String getId() {
         return id;
@@ -99,6 +98,14 @@ public class Trabajo {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
+    public String getSolicitud() {
+        return solicitud;
+    }
+
+    public void setSolicitud(String solicitud) {
+        this.solicitud = solicitud;
+    }
+
     
 }
