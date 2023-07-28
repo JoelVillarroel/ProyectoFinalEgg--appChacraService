@@ -54,6 +54,8 @@ public class UsuarioServicio implements UserDetailsService {
 
         usuario.setEmail(email);
 
+        usuario.setActivo(true);
+
         usuario.setPassword(new BCryptPasswordEncoder().encode(password));
 
         usuario.setRol(Rol.USER);
@@ -126,24 +128,53 @@ public class UsuarioServicio implements UserDetailsService {
 
     private void validar(String nombre, String apellido, String barrio, String direccion, String email, String password, String password2) throws MyException {
 
+        /*Validar Nombre*/
         if (nombre == null || nombre.isEmpty()) {
             throw new MyException("El nombre no pude ser nulo ni estar vacio");
         }
+        String nombrevalidar = nombre.toUpperCase();
+        for (int i = 0; i < nombrevalidar.length(); i++) {
+            char letra = nombrevalidar.charAt(i);
+            if (letra == 32) {
+                continue;
+            }
+            if ((letra < 65 || letra > 90) && (letra != 209)) {
+                throw new MyException("El nombre contiene algo que no sea una letra");
+            }
+        }
+        /*Validar Apellido*/
         if (apellido == null || apellido.isEmpty()) {
             throw new MyException("El apellido no puede ser nulo o estar vacío");
         }
+        String apellidovalidar = apellido.toUpperCase();
+        for (int i = 0; i < apellidovalidar.length(); i++) {
+            char letra = apellidovalidar.charAt(i);
+            if (letra == 32) {
+                continue;
+            }
+            if ((letra < 65 || letra > 90) && (letra != 209)) {
+                throw new MyException("El apellido contiene algo que no sea una letra");
+            }
+        }
+        /*Validar Barrio*/
         if (barrio == null || barrio.isEmpty()) {
             throw new MyException("Debe seleccionar un barrio");
         }
+        /*Validar Direccion*/
         if (direccion == null || direccion.isEmpty()) {
             throw new MyException("La direccion no puede ser nulo o estar vacío");
         }
+        /*Validar email*/
         if (email == null || email.isEmpty()) {
             throw new MyException("El email no puede ser nulo o estar vacío");
         }
+
+        /*Validar contraseña*/
+
         if (usuarioRepositorio.buscarUsuarioPorEmail(email) != null) {
-            throw new MyException("El email existe!!!");
+            throw new MyException("El email ya se encuentra registrado");
         }
+
         if (password == null || password.isEmpty() || password.length() <= 5) {
             throw new MyException("La contraseña no puede estar vacía, y debe tener más de 5 dígitos");
         }
@@ -199,7 +230,9 @@ public class UsuarioServicio implements UserDetailsService {
         Usuario usuario = usuarioRepositorio.buscarUsuarioPorEmail(email);
         if (usuario != null) {
             List<GrantedAuthority> permisos = new ArrayList<>();
+
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().toString());
+
             permisos.add(p);
 
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -207,9 +240,29 @@ public class UsuarioServicio implements UserDetailsService {
             HttpSession session = attr.getRequest().getSession(true);
 
             session.setAttribute("usuarioSession", usuario);
+
             return new User(usuario.getEmail(), usuario.getPassword(), permisos);
         } else {
             throw new UsernameNotFoundException("Usuario no encontrado con el email: " + email);
+        }
+    }
+
+
+    @Transactional
+    public void cambiarEstado(String id) {
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Usuario usuario = respuesta.get();
+
+            if (usuario.getActivo() == true) {
+
+                usuario.setActivo(false);
+
+            } else if (usuario.getActivo() == false) {
+                usuario.setActivo(true);
+            }
         }
     }
 

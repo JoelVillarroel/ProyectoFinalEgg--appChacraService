@@ -52,53 +52,76 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
             <form class="formulario" th:action="@{/registroProveedor}" method="POST" enctype="multipart/form-data">
 
+                <!--Nombre-->
                 <div class="form-group my-3">
                     <input type="text" class="form-control" name="nombre" placeholder="NOMBRE" th:value="${nombre}">
                 </div>
+
+                <!--Apellido-->
                 <div class="form-group my-3">
                     <input type="text" class="form-control" name="apellido" placeholder="APELLIDO" th:value="${apellido}">
                 </div>
+
+                <!--Direccion-->
                 <div class="form-group my-3">
                     <input type="text" class="form-control" name="direccion" placeholder="DIRECCION" th:value="${direccion}">
                 </div>
+
+                <!--Descripcion-->
                 <div class="form-group my-3">
-                    <span>Descripcion</span>
-                    <select id="descripcion" name="descripcion" >
-                        <option>fontanero</option>
-                        <option>electricista</option>
-                        <option>jardinero</option>
-                        <option>limpieza</option>
-                        <option>pintura</option>
-                        <option>carpinteria</option>
-                        <option>albañileria</option>
-                        <option>cerrajeria</option>
-                        <option>climatizacion</option>
-                        <option>electronica</option>
-                        <option>seguridad</option>
-                        <option>mudanzas</option>
-                        <option>mecanica</option>
-                        <option>grafica</option>
-                        <option>software</option>
-                    </select>
-                    <!--
                     <input type="text" class="form-control" name="descripcion" placeholder="DESCRIPCION" th:value="${descripcion}">
-                    -->
                 </div>
+
+                <!--Remuneracion-->
+                <div class="form-group my-3">
+                    <input type="text" class="form-control" name="remuneracion" placeholder="REMUNERACION" th:value="${remuneracion}">
+                </div>  
+                
+                <!--Servicio-->
+                <div class="form-group my-3">
+                    <select class="form-control" name="servicio" id="servicio">
+                        <option value="albañileria" th:selected="${servicio == 'albañileria'}">Albañilería</option>
+                        <option value="carpinteria" th:selected="${servicio == 'carpinteria'}">Carpintería</option>
+                        <option value="cerrajeria" th:selected="${servicio == 'cerrajeria'}">Cerrajería</option>
+                        <option value="climatizacion" th:selected="${servicio == 'climatizacion'}">Climatización</option>
+                        <option value="electricista" th:selected="${servicio == 'electricista'}">Electricista</option>
+                        <option value="electronica" th:selected="${servicio == 'electronica'}">Electrónica</option>
+                        <option value="fontanero" th:selected="${servicio == 'fontanero'}">Fontanero</option>
+                        <option value="grafica" th:selected="${servicio == 'grafica'}">Grafica</option>
+                        <option value="jardineria" th:selected="${servicio == 'jardineria'}">Jardineria</option>
+                        <option value="limpieza" th:selected="${servicio == 'limpieza'}">Limpieza</option>
+                        <option value="mecanica" th:selected="${servicio == 'mecanica'}">Mecánica</option>
+                        <option value="mudanzas" th:selected="${servicio == 'mudanzas'}">Mudanzas</option>
+                        <option value="pintura" th:selected="${servicio == 'pintura'}">Pintura</option>
+                        <option value="seguridad" th:selected="${servicio == 'seguridad'}">Seguridad</option>
+                        <option value="software" th:selected="${servicio == 'software'}">Software</option>
+                    </select>
+                </div>
+
+                <!--Email-->
                 <div class="form-group my-3">
                     <input type="email" class="form-control" name="email" placeholder="EMAIL" th:value="${email}">
                 </div>
 
+                <!--Archivo-->
                 <div class="form-group my-3">
                     <input type="file" class="form-control" name="archivo">
                 </div>
 
+                <!--Password-->
                 <div class="form-group my-3">
                     <input type="password" class="form-control" name="password" placeholder="CONTRASEÑA" th:value="${password}">
                 </div>
+                
+                <!--Password 2-->
                 <div class="form-group my-3">
                     <input type="password" class="form-control" name="password2" placeholder="REPETIR CONTRASEÑA" th:value="${password2}">
                 </div>
+                
+                <!--Boton registrar-->
                 <button type="submit" class="btn btn-primary mt-3 botones">Registrame</button>
+                
+                <!--Boton volver-->
                 <div class="divVolver">
                     <a th:href="@{/}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>
                 </div>

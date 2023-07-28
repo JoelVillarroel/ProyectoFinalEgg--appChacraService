@@ -30,10 +30,14 @@
                         <th scope="col">Direccion</th>
                         <th scope="col">email</th>
                         <th scope="col">Foto de Perfil</th>
-                        <th scope="col">Descripcion</th>
-                        <th scope="col">Cambiar Rol</th>
+                        <th scope="col">Servicio</th>
+                        <th scope="col">Calificacion</th>
+                        <th scope="col">Remuneracion x hora</th>
+                        <th scope="col">Cantidad de Trabajos</th>
+                        <th scope="col">Contactar Proveedor</th>
+                        <!--
                         <th scope="col">Modificar</th>
-
+                        -->
                     </tr>
                 </thead>
                 <tbody th:each="proveedor : ${proveedores}"> 
@@ -46,17 +50,23 @@
 
                             <p>Imagen: <img th:if="${imagen}" th:src="@{/imagen/perfilProveedor/{id}(id=${imagen})}" alt="Imagen de perfil" style="max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #E57C3A; margin-top: 10px;"/></span></p>
                         </td>
-
-                        <td th:text="${proveedor.descripcion}"></td>
-
+                        <td th:text="${proveedor.servicio}"></td>
+                        <td th:text="${proveedor.calificacion}"></td>
+                        <td th:text="${proveedor.remuneracion}"></td>
+                        <td th:text="${proveedor.cantTrabajos}"></td>
+                        <!--
                         <td>
                             <a th:href= "@{/admin/modificarRol/__${proveedor.id}__}"><i class="fas fa-feather-alt"></i>Cambiar</a>
                         </td>
-
+                        -->
+                        <td>
+                            <a th:href= "@{/trabajo/registrarTrabajo/__${proveedor.id}__}"><i class="fas fa-feather-alt"></i> Contactar</a>
+                        </td>
+                        <!--
                         <td>
                             <a th:href= "@{/proveedor/modificar/__${proveedor.id}__}"><i class="fas fa-feather-alt"></i> Modificar</a>
                         </td>
-
+                        -->
                     </tr>
 
                 </tbody>

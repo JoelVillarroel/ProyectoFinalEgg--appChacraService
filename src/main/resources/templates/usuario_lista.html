@@ -35,8 +35,8 @@
                         <th scope="col">Direccion</th>
                         <th scope="col">email</th>
                         <th scope="col">Foto de Perfil</th>
+                        <th scope="col">Estado</th>
                         <th scope="col">Rol</th>
-                        <th scope="col">Cambiar Rol</th>
                         <th scope="col">Modificar</th>
 
                     </tr>
@@ -47,15 +47,20 @@
                         <td th:text="${usuario.nombre}"></td>
                         <td th:text="${usuario.direccion}"></td>
                         <td th:text="${usuario.email}"></td>
+                        
                         <td> 
                             <a><img th:src="@{/imagen/perfil/__${usuario.id}__}" th:if="${usuario.imagen != null}" class="logo" width="50"></a>
                         </td>
-
+                        <td>
+                            <a th:if="${usuario.activo == true}" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}"><i class="fas fa-feather-alt"></i>Activo</a>
+                            <a th:if="${usuario.activo == false}" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}"><i class="fas fa-feather-alt"></i>Inactivo</a>
+                        </td>
                         <td th:text="${usuario.rol}"></td>
 
                         <td>
                             <a th:href= "@{/admin/modificarRol/__${usuario.id}__}"><i class="fas fa-feather-alt"></i>Cambiar</a>
                         </td>
+
 
                         <td>
                             <a th:href= "@{/usuario/modificar/__${usuario.id}__}"><i class="fas fa-feather-alt"></i> Modificar</a>
