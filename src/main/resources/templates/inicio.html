@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,9 +13,9 @@
         <!-- Incluye Popper.js -->
         <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js}"></script>
         <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js}" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
-        
-
+ 
     </head>
+    
     <body>
         <!--------NAVBAR 2------>
         <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
@@ -31,6 +32,7 @@
                 <p class="card-text" th:text="${exito}"></p>
             </div>
         </div>
+        
         <!--SLIDER DE IMAGENES-->
         <div id="carouselExampleIndicators" class="carousel slide">
             <div class="carousel-indicators">
@@ -66,7 +68,6 @@
             <h1 class="p-3 fs-2 border-top border-3">Somos la solución<span class style="color: #E57C3A;"> para tu hogar</span></h1>
             <p class="p-3 fs-4"><span style="color: #E57C3A;">El servicio que buscás</span> al alcance de un click</p>
         </section>
-
 
         <!-------FOOTER------>
         <footer th:replace="~{/fragments/footer :: footer}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></footer>
