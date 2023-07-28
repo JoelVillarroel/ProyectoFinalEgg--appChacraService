@@ -1,17 +1,12 @@
 package com.GrupoE.WebAppServicios.controladores;
 
-import com.GrupoE.WebAppServicios.entidades.Imagen;
 import com.GrupoE.WebAppServicios.entidades.Proveedor;
-import com.GrupoE.WebAppServicios.entidades.Trabajo;
 import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.errores.MyException;
 import com.GrupoE.WebAppServicios.servicios.ProveedorServicio;
-import com.GrupoE.WebAppServicios.servicios.TrabajoServicio;
 import com.GrupoE.WebAppServicios.servicios.UsuarioServicio;
-import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -139,7 +134,14 @@ public class PortalControlador {
         Usuario logueadoUsuario = (Usuario) session.getAttribute("usuarioSession");
         if (logueadoUsuario != null) {
             if (logueadoUsuario.getRol().toString().equals("ADMIN")) {
-                return "redirect:/administrador/usuarios";
+                // No redirigimos aquí, simplemente retornamos null
+                modelo.addAttribute("nombre", logueadoUsuario.getNombre());
+                modelo.addAttribute("apellido", logueadoUsuario.getApellido());
+                modelo.addAttribute("barrio", logueadoUsuario.getBarrio());
+                modelo.addAttribute("direccion", logueadoUsuario.getDireccion());
+                modelo.addAttribute("email", logueadoUsuario.getEmail());
+                modelo.addAttribute("rol", logueadoUsuario.getRol().toString());
+                return null;
             }
             modelo.addAttribute("nombre", logueadoUsuario.getNombre());
             modelo.addAttribute("apellido", logueadoUsuario.getApellido());

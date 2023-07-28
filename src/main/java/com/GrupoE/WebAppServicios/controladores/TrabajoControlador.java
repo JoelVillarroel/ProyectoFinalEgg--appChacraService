@@ -1,6 +1,5 @@
 package com.GrupoE.WebAppServicios.controladores;
 
-import com.GrupoE.WebAppServicios.entidades.Proveedor;
 import com.GrupoE.WebAppServicios.entidades.Trabajo;
 import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.errores.MyException;
@@ -9,7 +8,6 @@ import com.GrupoE.WebAppServicios.servicios.TrabajoServicio;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 // @author Camila Astrada 
 @Controller
@@ -28,22 +25,24 @@ public class TrabajoControlador {
     private TrabajoServicio trabajoServicio;
     @Autowired
     private PortalControlador portalControlador;
-@Autowired
+    @Autowired
     private ProveedorServicio proveedorServicio;
+    
+    
     @GetMapping("/registrarTrabajo")
-    public String registroTrabajo(@PathVariable String id, ModelMap modelo, HttpSession session, ModelMap modeloUsuario) {
-Usuario logueado = (Usuario) session.getAttribute("usuariosession")
- modeloUsuario.put("logueado", logueado);
-modelo.put("proveedor", proveedorServicio.getOne(id));
-        String redireccion = portalControlador.logueado(modelo, session);
-        if (redireccion != null) {
-            // Si el método logueado devuelve una redirección, la retornamos
-            return redireccion;
-        }
-
-
-        return "registroTrabajo.html";
+public String registroTrabajo(@RequestParam(name = "id", required = false, defaultValue = "0") String id,
+                              ModelMap modelo, HttpSession session, ModelMap modeloUsuario) {
+    Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+    modeloUsuario.put("logueado", logueado);
+    modelo.put("proveedor", proveedorServicio.getOne(id));
+    String redireccion = portalControlador.logueado(modelo, session);
+    if (redireccion != null) {
+        // Si el método logueado devuelve una redirección, la retornamos
+        return redireccion;
     }
+
+    return "registroTrabajo.html";
+}
 
     /*
     @GetMapping("vista/{id}")
@@ -148,16 +147,5 @@ String redireccion = portalControlador.logueado(modelo, session);
         modelo.addAttribute("RealizadosNoCalificados",RealizadosNoCalificados);
         return "trabajo_lista.html";
     }*/
-   @GetMapping("/listaTrabajo/allTrabajos")
-    public String listarAllTrabajos(ModelMap modelo,HttpSession session) {
-        String redireccion = portalControlador.logueado(modelo, session);
-        if (redireccion != null) {
-            // Si el método logueado devuelve una redirección, la retornamos
-            return redireccion;
-        }
-        List<Trabajo> trabajos = trabajoServicio.listarTrabajos();
-        modelo.addAttribute("trabajos", trabajos);
-        return "trabajo_lista.html";
-    }
 
 }
