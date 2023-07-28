@@ -25,17 +25,22 @@ import org.springframework.web.multipart.MultipartFile;
 public class TrabajoControlador {
 
     @Autowired
-
     private TrabajoServicio trabajoServicio;
-
     @Autowired
+    private PortalControlador portalControlador;
+@Autowired
     private ProveedorServicio proveedorServicio;
+    @GetMapping("/registrarTrabajo")
+    public String registroTrabajo(@PathVariable String id, ModelMap modelo, HttpSession session, ModelMap modeloUsuario) {
+Usuario logueado = (Usuario) session.getAttribute("usuariosession")
+ modeloUsuario.put("logueado", logueado);
+modelo.put("proveedor", proveedorServicio.getOne(id));
+        String redireccion = portalControlador.logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
 
-    @GetMapping("/registrarTrabajo/{id}")
-    public String registrarTrabajo(@PathVariable String id, HttpSession session, ModelMap modelo, ModelMap modeloUsuario) {
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        modeloUsuario.put("logueado", logueado);
-        modelo.put("proveedor", proveedorServicio.getOne(id));
 
         return "registroTrabajo.html";
     }
@@ -49,12 +54,14 @@ public class TrabajoControlador {
      */
     @PostMapping("/registroTrabajo")
 
+
     public String registroTrabajo(@RequestParam String idLogueado, @RequestParam String idProveedor, @RequestParam String descripcion,
             ModelMap modelo) throws MyException {
         try {
             trabajoServicio.registrar(idLogueado, idProveedor, descripcion);
             modelo.put("exito", "Proveedor registrado correctamente");
             return "index.html";
+
         } catch (MyException ex) {
             modelo.put("Error", ex.getMessage());
 
@@ -62,7 +69,7 @@ public class TrabajoControlador {
         }
     }
 
-    @GetMapping("/listaTrabajo")
+    @GetMapping("/listaTrabajo/allTrabajos")
     public String listarAllTrabajos(ModelMap modelo, String idProveedor, HttpSession session) {
 
         List<Trabajo> trabajos = trabajoServicio.listarTrabajos();  //lista todos los trabajos
@@ -94,34 +101,63 @@ public class TrabajoControlador {
     }
 
     /*  
-        @GetMapping("/listaTrabajo")
-    public String listarTrabajosDeUnProveedor(ModelMap modelo,String idProveedor){
-        
+        @GetMapping("/listaTrabajo/trabajoDeUnProveedor")
+    public String listarTrabajosDeUnProveedor(ModelMap modelo,String idProveedor, HttpSession session){
+        String redireccion = portalControlador.logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
         List<Trabajo> trabajosProov= trabajoServicio.listarTrabajosPorIdProveedor(idProveedor)
         modelo.addAttribute("trabajosProov",trabajosProov);
         return "trabajo_lista.html";
     }
    
-@GetMapping("/listaTrabajo")
-    public String listarAllTrabajos(ModelMap modelo){
-        
+@GetMapping("/listaTrabajo/todosLosTrabajos")
+    public String listarAllTrabajos(ModelMap modelo, HttpSession session){
+        String redireccion = portalControlador.logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
         List<Trabajo> trabajos= trabajoServicio.listarTrabajos();
         return "trabajo_lista.html";
     }
     
-   @GetMapping("/listaTrabajo")
-    public String listarTrabajosNoRealizados(ModelMap modelo,String idProveedor){
-        
+   @GetMapping("/listaTrabajo/trabajosNoRealizados")
+    public String listarTrabajosNoRealizados(ModelMap modelo,String idProveedor,HttpSession session){
+        String redireccion = portalControlador.logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
         List<Trabajo> NoRealizados= trabajoServicio.listarTrabajosNoRealizados(idProveedor);
         modelo.addAttribute("NoRealizados",NoRealizados);
         return "trabajo_lista.html";
     }
     
-        @GetMapping("/listaTrabajo")
+        @GetMapping("/listaTrabajo/trabajosRealizadosNoCalificados")
     public String trabajosRealizadosNoCalificados(ModelMap modelo,String idProveedor, HttpSession session){
+String redireccion = portalControlador.logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
          Usuario UsuarioLogueado = (Usuario) session.getAttribute("usuarioSession");
         List<Trabajo> NoRealizados= trabajoServicio.trabajosRealizadosNoCalificados(idProveedor, UsuarioLogueado.getId());
         modelo.addAttribute("RealizadosNoCalificados",RealizadosNoCalificados);
         return "trabajo_lista.html";
     }*/
+   @GetMapping("/listaTrabajo/allTrabajos")
+    public String listarAllTrabajos(ModelMap modelo,HttpSession session) {
+        String redireccion = portalControlador.logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
+        List<Trabajo> trabajos = trabajoServicio.listarTrabajos();
+        modelo.addAttribute("trabajos", trabajos);
+        return "trabajo_lista.html";
+    }
+
 }

@@ -43,7 +43,9 @@ public class ProveedorServicio implements UserDetailsService {
     private ImagenServicio imagenServicio;
 
     @Transactional
+
     public void registrar(MultipartFile archivo, String nombre, String apellido, String direccion, String servicio, String remuneracion, String descripcion, String email, String password, String password2) throws MyException {
+
 
         validar(nombre, apellido, direccion, descripcion,remuneracion, email, password, password2);
 
@@ -113,7 +115,7 @@ public class ProveedorServicio implements UserDetailsService {
     public Proveedor getOne(String id) {
         return proveedorRepositorio.getOne(id);
     }
-
+    
     @Transactional//(readOnly=True)
     public List<Proveedor> listarProveedores() {
 
@@ -224,9 +226,11 @@ public class ProveedorServicio implements UserDetailsService {
             HttpSession session = attrP.getRequest().getSession(true);
             session.setAttribute("proveedorsession", proveedor);
 
+
             return new User(proveedor.getEmail(), proveedor.getPassword(), permisos);
         } else {
             return null;
         }
     }
+
 }

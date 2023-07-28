@@ -1,5 +1,6 @@
 package com.GrupoE.WebAppServicios.repositorios;
 
+import com.GrupoE.WebAppServicios.entidades.Imagen;
 import com.GrupoE.WebAppServicios.entidades.Proveedor;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

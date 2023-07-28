@@ -8,6 +8,12 @@
         <link rel="icon" type="image/png" sizes="16x16" href="./logo/Logo_FINAL.png"/>
         <title>Chacra Service</title>
 
+        <!-- Incluye jQuery -->
+        <script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+
+        <!-- Incluye Popper.js -->
+        <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js}"></script>
+        <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js}" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
     </head>
     <body>
         <div th:if="${exito}!=null" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
@@ -57,75 +63,9 @@
             <h1 class="p-3 fs-2 border-top border-3">Somos la solución<span class style="color: #E57C3A;"> para tu hogar</span></h1>
             <p class="p-3 fs-4"><span style="color: #E57C3A;">El servicio que buscás</span> al alcance de un click</p>
         </section>
-
-        <!-------FOOTER------>
-        <footer class="text-light py-4" style="background-color: #dfe3d4 ;">
-            <div class="container">
-                <div class="row">
-                    <!-- Equipo de Desarrollo -->
-                    <section class="py-5">
-                        <div class="container">
-                            <div class="row">
-                                <!-- Frontend -->
-                                <div class="col-md-6">
-                                    <h4><span style="color: #E57C3A;">Frontend</span></h4>
-
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <a href="https://github.com/renzobover" target="_blank">Renzo Bover</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://github.com/Gonza-S24" target="_blank">Gonzalo Friedrich</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://github.com/morsucci" target="_blank">Noelia Morsucci</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- Backend -->
-                                <div class="col-md-6">
-                                    <h4><span style="color: #E57C3A;">Backend</span></h4>
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <a href="https://github.com/camiastrada" target="_blank">Camila Astrada</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://github.com/facundodominguez30" target="_blank">Facundo Dominguez</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://github.com/GEORG-TH" target="_blank">Georg Thierry De La Cruz</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://github.com/HugoSotuyo" target="_blank">Hugo Daniel Sotuyo</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://github.com/JoelVillarroel" target="_blank">Joel Villarroel</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-
-                    <div class="col-md-6 footer-content" style="color: black ; text-align: left">
-                        <p>
-                            &copy; 2023 Chacras Services. Todos los derechos reservados.
-                        </p>
-                        <p>
-                            Esta aplicación es solo con fines demostrativos y no representa un producto real. Cualquier similitud con servicios existentes es pura coincidencia.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-        <!-- Incluye jQuery -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-        <!-- Incluye Popper.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+        <!-- FOOTER -->
+        <footer th:replace="~{/fragments/footer :: footer}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></footer>
+        
+        <script th:src="@{/js/dropdown.js}" type="text/javascript"></script>
     </body>
 </html>
