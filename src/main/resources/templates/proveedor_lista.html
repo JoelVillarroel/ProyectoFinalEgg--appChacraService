@@ -60,7 +60,7 @@
                         </td>
                         -->
                         <td>
-                            <a th:href= "@{/trabajo/registrarTrabajo/__${proveedor.id}__}"><i class="fas fa-feather-alt"></i> Contactar</a>
+                            <a th:if="${rol == 'USER' || rol == 'ADMIN'}" th:href= "@{/trabajo/registrarTrabajo/__${proveedor.id}__}"><i class="fas fa-feather-alt"></i> Contactar</a>
                         </td>
                         <!--
                         <td>
