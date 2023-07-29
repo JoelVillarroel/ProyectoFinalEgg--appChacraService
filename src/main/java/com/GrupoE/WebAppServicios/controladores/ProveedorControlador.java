@@ -216,7 +216,7 @@ public class ProveedorControlador {
         modelo.addAttribute("proveedores", proveedores);
         return "proveedor_lista.html";
     }
-
+    
     @GetMapping("/listaCompleta")
     public String listar(ModelMap modelo, HttpSession session) {
         String redireccion = portalControlador.logueado(modelo, session);

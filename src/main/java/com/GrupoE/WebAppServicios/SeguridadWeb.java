@@ -35,12 +35,11 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http)throws Exception{
         http
                 .authorizeRequests()
-                    .antMatchers("/login", "/logincheck","/registroProveedor", "/registrar","/registro").permitAll()
-                    .antMatchers("/css/*","/js/*","/img/*","/fragments","/","/logo/*","/LogoChacras/*", "/conocenos")
+                    .antMatchers("/login", "/logincheck","/registroProveedor", "/registrar","/registro","/css/*","/js/*","/img/*","/fragments","/","/logo/*","/LogoChacras/*", "/conocenos")
                     .permitAll()
-                    .antMatchers("/inicio").hasAnyRole("USER","ADMIN", "PROVEEDOR") // Permite el acceso a /inicio solo si el usuario tiene el rol USER, ADMIN o PROVEEDOR
+                    .antMatchers("/inicio","/proveedor/**","/trabajo/**").hasAnyRole("USER","ADMIN", "PROVEEDOR") // Permite el acceso a /inicio solo si el usuario tiene el rol USER, ADMIN o PROVEEDOR
                     .antMatchers("/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
+                    .anyRequest().authenticated()                  
                 .and().formLogin()
                         .loginPage("/login")
                         .loginProcessingUrl("/logincheck")

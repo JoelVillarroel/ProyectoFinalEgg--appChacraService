@@ -71,8 +71,6 @@
                         </ul>
                     </div>
 
-
-
                 </div>
             </div>
         </nav>
@@ -116,19 +114,12 @@
                             <a class="nav-link" th:if="${rol == 'PROVEEDOR' || rol == 'ADMIN'}" th:href="@{/trabajo/listaTrabajo/allTrabajos}">Lista trabajo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/trabajo/registrarTrabajo}">Registrar trabajo</a>
+                            <a class="nav-link" th:if="${rol == 'ADMIN'}" th:href="@{/trabajo/registrarTrabajo}">Registrar trabajo</a>
                         </li>
                          <li class="nav-item">
                             <a class="nav-link" th:if="${rol == 'ADMIN'}" th:href="@{/administrador/usuarios}">Lista de usuarios</a>
                         </li>
                     </ul>
-
-
-                    <div class="d-flex" th:if="${rol == 'USER'}">
-                        <a class="btn btn-outline-success custom-button " href="/registrarTrabajo" id="boton"  role="button" aria-expanded="false">
-                            Registrar un trabajo
-                        </a>
-                    </div>
 
                     <div class="btn-group">
                         <a class="nav-link dropdown-toggle" style="" href="#" id="navbarDropdown" role="button"  aria-expanded="false">
