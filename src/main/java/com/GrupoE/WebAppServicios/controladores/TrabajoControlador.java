@@ -31,6 +31,12 @@ public class TrabajoControlador {
     @GetMapping("/registrarTrabajo/{id}")
     public String registrarTrabajo(@PathVariable String id, HttpSession session, ModelMap modelo, ModelMap modeloUsuario) {
         Usuario logueado = (Usuario) session.getAttribute("usuarioSession");
+        // Cargamos los datos del usuario o proveedor logueado directamente aquí
+        String redireccion = portalControlador.logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
         modeloUsuario.put("logueado", logueado);
         modelo.put("proveedor", proveedorServicio.getOne(id));
         return "proveedor.html";
