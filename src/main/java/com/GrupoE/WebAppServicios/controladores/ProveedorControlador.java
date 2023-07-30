@@ -54,7 +54,7 @@ public class ProveedorControlador {
             // Si el método logueado devuelve una redirección, la retornamos
             return redireccion;
         }
-        String descripcion = "jardinero";
+        String descripcion = "jardineria";
         List<Proveedor> proveedores = proveedorServicio.listarProveedoresPorDescripcion(descripcion);
         modelo.addAttribute("proveedores", proveedores);
         return "proveedor_lista.html";
