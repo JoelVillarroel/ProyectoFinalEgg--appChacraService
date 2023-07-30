@@ -27,10 +27,11 @@
 
         <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
 
-
+        
 
         <div class="container align-items-center px-3 py-4">
-            <h2 class="pb-2 border-bottom align-items-center text-center">Federico Marcheto</h2>
+           
+            <h2 class="pb-2 border-bottom align-items-center text-center"><span th:text="${proveedor.nombre}"></span> <span th:text="${proveedor.apellido}"></h2>
             <img src="https://thumbs.dreamstime.com/z/masajista-profesional-que-realiza-masajes-corporales-terap%C3%A9uticos-para-mujeres-j%C3%B3venes-sobre-una-mesa-de-masaje-en-el-centro-204150458.jpg"
                  alt="Imagen de prueba"
                  class="rounded mx-auto d-block"
