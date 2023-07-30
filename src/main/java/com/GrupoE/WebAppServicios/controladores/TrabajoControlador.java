@@ -27,7 +27,16 @@ public class TrabajoControlador {
     private PortalControlador portalControlador;
     @Autowired
     private ProveedorServicio proveedorServicio;
-
+    
+    @GetMapping("/registrarTrabajo/{id}")
+    public String registrarTrabajo(@PathVariable String id, HttpSession session, ModelMap modelo, ModelMap modeloUsuario) {
+        Usuario logueado = (Usuario) session.getAttribute("usuarioSession");
+        modeloUsuario.put("logueado", logueado);
+        modelo.put("proveedor", proveedorServicio.getOne(id));
+        return "proveedor.html";
+    }
+    
+/*
     @GetMapping("/registrarTrabajo")
     public String registroTrabajo(@RequestParam(name = "id", required = false, defaultValue = "0") String id,
             ModelMap modelo, HttpSession session, ModelMap modeloUsuario) {
@@ -42,7 +51,7 @@ public class TrabajoControlador {
 
         return "registroTrabajo.html";
     }
-
+*/
     /*
     @GetMapping("vista/{id}")
     public String vista(@PathVariable String id, ModelMap modelo){
@@ -51,23 +60,20 @@ public class TrabajoControlador {
     }
      */
     @PostMapping("/registroTrabajo")
-
     public String registroTrabajo(@RequestParam String idLogueado, @RequestParam String idProveedor, @RequestParam String descripcion,
             ModelMap modelo) throws MyException {
         try {
             trabajoServicio.registrar(idLogueado, idProveedor, descripcion);
-            modelo.put("exito", "Proveedor registrado correctamente");
+            modelo.put("exito", "Trabajo registrado correctamente");
             return "index.html";
-
         } catch (MyException ex) {
             modelo.put("Error", ex.getMessage());
-
             return "registroTrabajo.html";
         }
     }
 
     @GetMapping("/listaTrabajo/allTrabajos")
-<<<<<<< Updated upstream
+
     public String listarAllTrabajos(ModelMap modelo, String idProveedor, HttpSession session) {
         String redireccion = portalControlador.logueado(modelo, session);
         if (redireccion != null) {
@@ -78,11 +84,7 @@ public class TrabajoControlador {
         modelo.addAttribute("trabajos", trabajos);
 
         //lista los trabajos no realizados de un proveedor en particular
-=======
-    public String listarAllTrabajos(ModelMap modelo) {
 
-        List<Trabajo> trabajos = trabajoServicio.listarTrabajos();  //lista todos los trabajos
-        modelo.addAttribute("trabajos", trabajos);
 
         return "trabajo_lista.html";
 
@@ -94,7 +96,7 @@ public class TrabajoControlador {
         idProveedor = "05f79207-7383-4799-ad68-c3f92a424d0c";
        //esto ven los proveedores
        //lista los trabajos no realizados de un proveedor en particular
->>>>>>> Stashed changes
+
         List<Trabajo> NoRealizados = trabajoServicio.listarTrabajosNoRealizados(idProveedor);
         modelo.addAttribute("NoRealizados", NoRealizados);
         
