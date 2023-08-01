@@ -1,7 +1,10 @@
 package com.GrupoE.WebAppServicios.controladores;
 
+
 import com.GrupoE.WebAppServicios.entidades.Imagen;
-import com.GrupoE.WebAppServicios.repositorios.ImagenRepositorio;
+import com.GrupoE.WebAppServicios.entidades.Usuario;
+import com.GrupoE.WebAppServicios.servicios.ImagenServicio;
+import com.GrupoE.WebAppServicios.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/imagen")
 public class ImagenControlador {
     @Autowired
-    ImagenRepositorio imagenServicio;
+    UsuarioServicio usuarioServicio;
+    @Autowired
+    ImagenServicio imagenServicio;
     
     @GetMapping("/perfil/{id}")
     public ResponseEntity<byte[]>imagenUsuario(@PathVariable String id){
-        Imagen imagenn = imagenServicio.getOne(id);
-        byte[] imagen=imagenn.getContenido();
+        Usuario usuario = usuarioServicio.getOne(id);
+        byte[] imagen = usuario.getImagen().getContenido();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
         return new ResponseEntity<>(imagen, headers,HttpStatus.OK);
@@ -30,8 +35,17 @@ public class ImagenControlador {
     @GetMapping("/perfilProveedor/{id}")
     public ResponseEntity<byte[]> imagenProveedor(@PathVariable String id) {
         // Lógica para cargar la imagen del proveedor por su nombre de imagen
-
-        Imagen imagenn = imagenServicio.getOne(id);
+        Usuario usuario = usuarioServicio.getOne(id);
+        byte[] imagen = usuario.getImagen().getContenido();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        return new ResponseEntity<>(imagen, headers, HttpStatus.OK);
+    }
+    
+    @GetMapping("/fotoPerfil/{idImagen}")
+    public ResponseEntity<byte[]> imagenPerfil(@PathVariable String id) {
+        // Lógica para cargar la imagen del proveedor por su nombre de imagen
+        Imagen imagenn = imagenServicio.buscarImagenPorId(id);
         byte[] imagen = imagenn.getContenido();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);

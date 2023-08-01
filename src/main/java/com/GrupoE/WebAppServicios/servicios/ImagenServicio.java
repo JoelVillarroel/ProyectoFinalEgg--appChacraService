@@ -52,6 +52,10 @@ public class ImagenServicio {
         }
         return null;
         }
+    
+    public Imagen buscarImagenPorId(String id){
+    return imagenRepositorio.buscarImagenPorId(id);
+    }
     }
      
 
