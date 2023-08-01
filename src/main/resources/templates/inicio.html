@@ -18,7 +18,7 @@
     
     <body>
         <!--------NAVBAR 2------>
-        <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
+        <nav th:replace="~{/fragments/navbar :: nav}" th:with="idImagen=${idImagen}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, rol=${rol}"></nav>
 
         <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
             <div class="card-body">
@@ -32,7 +32,6 @@
                 <p class="card-text" th:text="${exito}"></p>
             </div>
         </div>
-        
         <!--SLIDER DE IMAGENES-->
         <div id="carouselExampleIndicators" class="carousel slide">
             <div class="carousel-indicators">

@@ -25,8 +25,20 @@ public class PortalControlador {
     private ProveedorServicio proveedorServicio;
 
     @GetMapping("/")
-    public String index() {
-        return "Index.html";
+    public String index(HttpSession session, ModelMap modelo) {
+        String redireccion = logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
+        Usuario logueadoUsuario = (Usuario) session.getAttribute("usuarioSession");
+        if (logueadoUsuario != null) {
+            // El usuario está logueado, redirigimos a la página de inicio
+            return "inicio.html";
+        } else {
+            // El usuario no está logueado, redirigimos a la página de inicio de sesión (index.html)
+            return "index.html";
+        }
     }
 
     /*-----------------------------------------------------------*/
@@ -43,7 +55,7 @@ public class PortalControlador {
     @PostMapping("/registro")
     public String registro(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String barrio, @RequestParam String direccion, @RequestParam String email,
             @RequestParam String password,
-            @RequestParam String password2, ModelMap modelo, MultipartFile archivo,HttpSession session) throws MyException {
+            @RequestParam String password2, ModelMap modelo, MultipartFile archivo, HttpSession session) throws MyException {
         String redireccion = logueado(modelo, session);
         if (redireccion != null) {
             // Si el método logueado devuelve una redirección, la retornamos
@@ -103,7 +115,7 @@ public class PortalControlador {
     }
 
     @GetMapping("/login")
-    public String login(@RequestParam(required = false) String error, ModelMap modelo,HttpSession session) {
+    public String login(@RequestParam(required = false) String error, ModelMap modelo, HttpSession session) {
         String redireccion = logueado(modelo, session);
         if (redireccion != null) {
             // Si el método logueado devuelve una redirección, la retornamos
@@ -139,6 +151,7 @@ public class PortalControlador {
                 modelo.addAttribute("apellido", logueadoUsuario.getApellido());
                 modelo.addAttribute("barrio", logueadoUsuario.getBarrio());
                 modelo.addAttribute("direccion", logueadoUsuario.getDireccion());
+                modelo.addAttribute("idImagen", logueadoUsuario.getImagen().getId());
                 modelo.addAttribute("email", logueadoUsuario.getEmail());
                 modelo.addAttribute("rol", logueadoUsuario.getRol().toString());
                 return null;
@@ -147,6 +160,7 @@ public class PortalControlador {
             modelo.addAttribute("apellido", logueadoUsuario.getApellido());
             modelo.addAttribute("barrio", logueadoUsuario.getBarrio());
             modelo.addAttribute("direccion", logueadoUsuario.getDireccion());
+            modelo.addAttribute("idImagen", logueadoUsuario.getImagen().getId());
             modelo.addAttribute("email", logueadoUsuario.getEmail());
             modelo.addAttribute("rol", logueadoUsuario.getRol().toString());
         } // Si es un proveedor logueado
@@ -157,7 +171,7 @@ public class PortalControlador {
                 modelo.addAttribute("apellido", logueadoProveedor.getApellido());
                 modelo.addAttribute("direccion", logueadoProveedor.getDireccion());
                 modelo.addAttribute("descripcion", logueadoProveedor.getDescripcion());
-                modelo.addAttribute("imagen", logueadoProveedor.getImagen().getId());
+                modelo.addAttribute("idImagen", logueadoUsuario.getImagen().getId());
                 modelo.addAttribute("email", logueadoProveedor.getEmail());
                 modelo.addAttribute("rol", logueadoProveedor.getRol().toString());
             } // Si no hay usuario ni proveedor logueado
