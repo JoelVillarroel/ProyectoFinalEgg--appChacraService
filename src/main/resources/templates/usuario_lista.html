@@ -51,7 +51,7 @@
                         <td th:text="${usuario.email}"></td>
                         
                         <td> 
-                            <a><img th:src="@{/imagen/perfil/__${usuario.imagen.getContenido()}__}" th:if="${usuario.imagen != null}" class="logo" width="50"></a>
+                            <a><img th:src="@{/imagen/perfil/__${usuario.id}__}" th:if="${usuario.imagen != null}" class="logo" alt="Imagen de perfil" style="max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #E57C3A; margin-top: 10px;"></a>
                         </td>
                         <td>
                             <a th:if="${usuario.activo == true}" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}"><i class="fas fa-feather-alt"></i>Activo</a>
