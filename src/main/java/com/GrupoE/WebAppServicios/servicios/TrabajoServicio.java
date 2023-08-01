@@ -48,7 +48,7 @@ public class TrabajoServicio {
         trabajo.setComentario("Sin comentario");
         trabajo.setRealizado(false);
         trabajo.setDescripcion(descripcion);
-
+        trabajo.setSolicitud("0");
         trabajoRepositorio.save(trabajo);
 
     }
@@ -136,7 +136,8 @@ public class TrabajoServicio {
     public Trabajo getOne(String id) {
         return trabajoRepositorio.getOne(id);
     }
-     @Transactional
+
+    @Transactional
     public void Eliminar(String id) throws MyException {
         Trabajo trabajo = trabajoRepositorio.getById(id);
         trabajoRepositorio.delete(trabajo);
@@ -156,9 +157,9 @@ public class TrabajoServicio {
 
         return trabajoRepositorio.trabajoRealizadoNoCalificado(idUsuario);
     }
-    
+
     @Transactional//(readOnly=True)
-    public List<Trabajo> Solicitudes (String idProveedor) {
+    public List<Trabajo> Solicitudes(String idProveedor) {
 
         return trabajoRepositorio.Solicitudes(idProveedor);
     }
@@ -170,21 +171,21 @@ public class TrabajoServicio {
 
         return trabajosNoRealizados;
     }
-    
+
     @Transactional//(readOnly=True)
-    public List<Trabajo> RealizadosProveedor (String idProveedor) {
+    public List<Trabajo> RealizadosProveedor(String idProveedor) {
 
         return trabajoRepositorio.RealizadosProveedor(idProveedor);
     }
+
     @Transactional//(readOnly=True)
-    
-    public List<Trabajo> TodosProveedor (String idProveedor) {
+
+    public List<Trabajo> TodosProveedor(String idProveedor) {
 
         return trabajoRepositorio.TodosProveedor(idProveedor);
     }
 
-
-   //FUNCIONALIDADES
+    //FUNCIONALIDADES
     @Transactional
     public void ComentarioInapropiado(String id) {
         Optional<Trabajo> respuesta = trabajoRepositorio.findById(id);
@@ -193,11 +194,11 @@ public class TrabajoServicio {
 
             Trabajo trabajo = respuesta.get();
             trabajo.setComentario("Sin comentario");
-       
+
         }
     }
-    
-      @Transactional
+
+    @Transactional
     public void AceptarSolicitud(String id) {
         Optional<Trabajo> respuesta = trabajoRepositorio.findById(id);
 
@@ -205,11 +206,11 @@ public class TrabajoServicio {
 
             Trabajo trabajo = respuesta.get();
             trabajo.setSolicitud("ACEPTADA");
-       
+
         }
     }
-    
-      @Transactional
+
+    @Transactional
     public void RechazarSolicitud(String id) {
         Optional<Trabajo> respuesta = trabajoRepositorio.findById(id);
 
@@ -217,7 +218,7 @@ public class TrabajoServicio {
 
             Trabajo trabajo = respuesta.get();
             trabajo.setSolicitud("RECHAZADA");
-       
+
         }
     }
 
@@ -258,4 +259,3 @@ public class TrabajoServicio {
     }
 
 }
-
