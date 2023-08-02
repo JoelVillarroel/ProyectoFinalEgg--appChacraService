@@ -2,7 +2,7 @@
 
 /* CSS personalizado */
 body {
-    font-family: 'Roboto', Arial, sans-serif;
+    /*font-family: 'Roboto', Arial, sans-serif;*/
     line-height: 1.6;
     margin: 0;
     padding: 0;
@@ -74,7 +74,7 @@ body {
 .carousel-inner img {
     max-height: 400px;
     width: 100%;
-    object-fit: cover;
+    
 }
 
 .carousel-control-prev-icon,
@@ -155,7 +155,7 @@ footer ul li a {
 }
 
 footer ul li a:hover {
-    color: #fff;
+    color: #2F2E2D;
     border-bottom: 1px solid #E57C3A;
 }
 
