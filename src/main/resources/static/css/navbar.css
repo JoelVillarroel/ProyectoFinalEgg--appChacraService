@@ -119,3 +119,23 @@ ul.dropdown-menu .dropdown-item:hover {
     background-color: #f0f0f0;
     color: #E57C3A;
 }
+.perfil-container {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 100;
+}
+.perfil-container p {
+    margin: 5px 0;
+}
+.perfil-container img {
+    max-width: 200px;
+    height: auto;
+    border-radius: 50%;
+    border: 2px solid #E57C3A;
+    margin-top: 10px;
+}
