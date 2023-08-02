@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ImagenRepositorio extends JpaRepository<Imagen, String>{
     @Query("SELECT i FROM Imagen i WHERE i.id = :idImagen")
-    public Imagen buscarImagenPorId(@Param("idImagen")String id);
+    public Imagen buscarImagenPorId(@Param("idImagen")String idImagen);
 }

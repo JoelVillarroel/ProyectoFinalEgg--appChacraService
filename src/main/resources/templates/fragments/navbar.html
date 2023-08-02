@@ -6,7 +6,7 @@
     </head>
     <body>
         <!--ENCABEZADO-->
-        <nav class="nav.navbar.bg-body-tertiary" style="background-color:  #f1ffcf ;">
+        <nav class="nav.navbar.bg-body-tertiary" style="background-color: #f8df8210 ;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/" th:unless="${rol == 'USER' || rol == 'PROVEEDOR' || rol == 'ADMIN'}" style="display: inline-block;">
                     <img th:src="@{/logo/Logo_FINAL.png}" alt="Logo" width="100" height="100" style="vertical-align: middle;">
@@ -87,11 +87,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" th:if="${rol == 'USER' || rol == 'PROVEEDOR' || rol == 'ADMIN'}"aria-current="page" href="/inicio">Home</a>
+                            <a class="nav-link active" th:if="${rol == 'USER' || rol == 'PROVEEDOR' || rol == 'ADMIN'}" aria-current="page" href="/inicio">Home</a>
                             <a class="nav-link active" th:unless="${rol == 'USER' || rol == 'PROVEEDOR'|| rol == 'ADMIN'}" aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button"  aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Buscar proveedores de servicios
                             </a>
                             <ul class="dropdown-menu">
@@ -121,7 +121,7 @@
                     </ul>
 
                     <div class="btn-group">
-                        <a class="nav-link dropdown-toggle" style="" href="#" id="navbarDropdown" role="button"  aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" style="" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <!-- Agregar atributo "data-bs-toggle" -->
                             Perfil
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -132,10 +132,7 @@
                                 <p>Barrio: <span th:text="${barrio}"></span></p>
                                 <p>Dirección: <span th:text="${direccion}"></span></p>
                                 <p>Email: <span th:text="${email}"></span></p>
-
-                                <!-- Comprobación para mostrar la imagen si está disponible -->
                                 <p>Imagen: <img th:if="${idImagen}" th:src="@{/imagen/fotoPerfil/__${idImagen}__}" alt="Imagen de perfil" style="max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #E57C3A; margin-top: 10px;"/></p>
-                                <p>Rol: <span th:text="${idImagen}"></span></p>
                                 <p>Rol: <span th:text="${rol}"></span></p>
                             </li>
 
@@ -146,18 +143,15 @@
                                 <p>Barrio: <span th:text="${barrio}"></span></p>
                                 <p>Dirección: <span th:text="${direccion}"></span></p>
                                 <p>Email: <span th:text="${email}"></span></p>
-                                <!-- Comprobación para mostrar la imagen si está disponible -->
                                 <p>Imagen: <img th:if="${idImagen}" th:src="@{/imagen/fotoPerfil/__${idImagen}__}" alt="Imagen de perfil" style="max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #E57C3A; margin-top: 10px;"/></p>
-                                <p>Rol: <span th:text="${idImagen}"></span></p>
                                 <p>Rol: <span th:text="${rol}"></span></p>
                             </li>
-
+                            <!-- Elemento común que redirecciona a editar  perfil -->
+                            <li><a class="dropdown-item" href="/perfil">Editar Perfil</a></li>
                             <!-- Elemento común para todos los roles (Cerrar Sesión) -->
                             <li><a class="dropdown-item" href="/logout">Cerrar Sesión</a></li>
                         </ul>
                     </div>
-
-
                 </div>
             </div>
         </nav>

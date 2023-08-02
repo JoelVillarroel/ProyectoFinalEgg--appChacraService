@@ -43,9 +43,9 @@ public class ImagenControlador {
     }
     
     @GetMapping("/fotoPerfil/{idImagen}")
-    public ResponseEntity<byte[]> imagenPerfil(@PathVariable String id) {
+    public ResponseEntity<byte[]> imagenPerfil(@PathVariable String idImagen) {
         // Lógica para cargar la imagen del proveedor por su nombre de imagen
-        Imagen imagenn = imagenServicio.buscarImagenPorId(id);
+        Imagen imagenn = imagenServicio.buscarImagenPorId(idImagen);
         byte[] imagen = imagenn.getContenido();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
