@@ -46,7 +46,7 @@ public class AdministradorControlador {
 
     @GetMapping("/modificarEstado/{id}")
     public String modificarEstado(@PathVariable String id) {
-        usuarioServicio.cambiarRol(id);
+        usuarioServicio.cambiarEstado(id);
         // Agregamos un parámetro para evitar el caché y asegurarnos de obtener la lista actualizada
         return "redirect:/administrador/usuarios?cache=false";
 
