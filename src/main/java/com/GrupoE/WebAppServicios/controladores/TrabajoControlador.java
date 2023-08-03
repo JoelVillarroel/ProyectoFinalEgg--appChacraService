@@ -1,5 +1,6 @@
 package com.GrupoE.WebAppServicios.controladores;
 
+import com.GrupoE.WebAppServicios.entidades.Proveedor;
 import com.GrupoE.WebAppServicios.entidades.Trabajo;
 import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.errores.MyException;
@@ -100,25 +101,10 @@ public class TrabajoControlador {
 
     }
     
-    @GetMapping("/listaTrabajo/proveedor")
-    public String listarTrabajosProveedor(ModelMap modelo, String idProveedor,  HttpSession session) {
+    @GetMapping("/listaTrabajo/usuario")
+    public String listarTrabajosUsuario(ModelMap modelo, String idProveedor,  HttpSession session) {
         
-        idProveedor = "05f79207-7383-4799-ad68-c3f92a424d0c";
-       //esto ven los proveedores
-       //lista los trabajos no realizados de un proveedor en particular
-
-        List<Trabajo> NoRealizados = trabajoServicio.listarTrabajosNoRealizados(idProveedor);
-        modelo.addAttribute("NoRealizados", NoRealizados);
-        
-        //lista todos los trabajos de un proveedor en particular
-        List<Trabajo> trabajosProov = trabajoServicio.TodosProveedor(idProveedor);
-        modelo.addAttribute("trabajosProov", trabajosProov);
-
-        //lista los trabajos que no ha aceptado ni rechazado de un proveedor en particular
-        List<Trabajo> solicitudes = trabajoServicio.Solicitudes(idProveedor);
-        modelo.addAttribute("solicitudes", solicitudes);
-        
-        
+          idProveedor = "05f79207-7383-4799-ad68-c3f92a424d0c";
         //ESto ven los usuarios
          //lista los trabajos que le faltan calificar al ususario logueado.
         Usuario UsuarioLogueado = (Usuario) session.getAttribute("usuarioSession");
@@ -133,7 +119,24 @@ public class TrabajoControlador {
         return "trabajoproveedor_lista.html";
     }
     
-    
+    @GetMapping("/listaTrabajo/proveedor")
+    public String listarTrabajosProveedor(ModelMap modelo, String idProveedor,  HttpSession session) {
+        
+        Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
+        List<Trabajo> NoRealizados = trabajoServicio.listarTrabajosNoRealizados(logueadoProveedor.getId());
+        modelo.addAttribute("NoRealizados", NoRealizados);
+        
+        //lista todos los trabajos de un proveedor en particular
+        List<Trabajo> trabajosProov = trabajoServicio.TodosProveedor(logueadoProveedor.getId());
+        modelo.addAttribute("trabajosProov", trabajosProov);
+
+        //lista los trabajos que no ha aceptado ni rechazado de un proveedor en particular
+        List<Trabajo> solicitudes = trabajoServicio.Solicitudes(logueadoProveedor.getId());
+        modelo.addAttribute("solicitudes", solicitudes);
+          
+        return "trabajoproveedor_lista.html";
+    }
+  
     
 //FUNCIONALIDADES
 // RestringirComentario
@@ -145,7 +148,7 @@ public class TrabajoControlador {
 
     }
     
-    @GetMapping("/aceptarSolicitud/{id}")
+    @PostMapping("/aceptarSolicitud/{id}")
     public String Aceptar(@PathVariable String id) {
         trabajoServicio.AceptarSolicitud(id);
         
@@ -154,7 +157,7 @@ public class TrabajoControlador {
 
     }
     
-     @GetMapping("/rechazarSolicitud/{id}")
+     @PostMapping("/rechazarSolicitud/{id}")
     public String Rechazar(@PathVariable String id) {
         trabajoServicio.RechazarSolicitud(id);
         
@@ -163,7 +166,7 @@ public class TrabajoControlador {
 
     }
     
-    @GetMapping("/marcarRealizado/{id}")
+    @PostMapping("/marcarRealizado/{id}")
     public String MarcarRealizado(@PathVariable String id) throws MyException {
         trabajoServicio.MarcarComoRealizado(id);
         
@@ -172,6 +175,15 @@ public class TrabajoControlador {
 
     }
     
+     @PostMapping("/calificar/{id}")
+    public String Calificar(@PathVariable String id, @PathVariable String comentario, 
+            @PathVariable int calificacion) throws MyException {
+        trabajoServicio.Calificar(id, comentario, calificacion);
+        
+         return "redirect:/trabajo/listaTrabajo/proveedor?cache=false";
+
+
+    }
     /*  
     
     
