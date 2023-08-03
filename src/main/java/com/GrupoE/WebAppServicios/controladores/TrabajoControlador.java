@@ -40,6 +40,8 @@ public class TrabajoControlador {
         }
         modeloUsuario.put("logueado", logueado);
         modelo.put("proveedor", proveedorServicio.getOne(id));
+        List<Trabajo> trabajosTodos=trabajoServicio.TodosProveedor(id);
+        modelo.addAttribute("trabajosTodos", trabajosTodos);
         return "proveedor.html";
     }
     
@@ -67,12 +69,14 @@ public class TrabajoControlador {
     }
      */
     @PostMapping("/registroTrabajo")
-    public String registroTrabajo(@RequestParam String idLogueado, @RequestParam String idProveedor, @RequestParam String descripcion,
-            ModelMap modelo) throws MyException {
+    public String registroTrabajo(@RequestParam String idLogueado, @RequestParam String idProveedor, @RequestParam(required = false, defaultValue = " Sin descripcion") String descripcion,
+             ModelMap modelo) throws MyException {
+        
         try {
             trabajoServicio.registrar(idLogueado, idProveedor, descripcion);
             modelo.put("exito", "Trabajo registrado correctamente");
-            return "index.html";
+
+            return "inicio.html";
         } catch (MyException ex) {
             modelo.put("Error", ex.getMessage());
             return "registroTrabajo.html";
