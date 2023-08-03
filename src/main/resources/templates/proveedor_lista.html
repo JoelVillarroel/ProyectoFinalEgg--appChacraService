@@ -21,8 +21,8 @@
 
         <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
         <div class="container m-5" >
-
-            <table class="table table-dark">
+            <h1 class="text-center"> Lista de todos los proveedores</h1>
+            <table class="table table-success table-hover table-striped">
                 <thead class="align-items-center">
                     <tr >
                         <th scope="col">Apellido</th>
@@ -40,7 +40,7 @@
                         -->
                     </tr>
                 </thead>
-                <tbody th:each="proveedor : ${proveedores}"> 
+                <tbody class="table-group-divider" th:each="proveedor : ${proveedores}"> 
                     <tr>
                         <th scope="row" th:text="${proveedor.apellido}"></th>
                         <td th:text="${proveedor.nombre}"></td>

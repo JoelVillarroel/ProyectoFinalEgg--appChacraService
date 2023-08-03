@@ -158,6 +158,12 @@ public class TrabajoServicio {
         return trabajoRepositorio.trabajoRealizadoNoCalificado(idUsuario);
     }
 
+       @Transactional//(readOnly=True)
+    public List<Trabajo> TodosUsuario(String idUsuario) {
+   //todos los trabajos a nombre de un ususario. Sirve para ver el estado de los trabajos solicitados ACEPTADO / RECHAZADO
+        return trabajoRepositorio.TodosUsuario(idUsuario);
+    }
+    
     @Transactional//(readOnly=True)
     public List<Trabajo> Solicitudes(String idProveedor) {
 
@@ -218,6 +224,17 @@ public class TrabajoServicio {
 
             Trabajo trabajo = respuesta.get();
             trabajo.setSolicitud("RECHAZADA");
+
+        }
+    }
+      @Transactional
+    public void CancelarSolicitud(String id) {
+        Optional<Trabajo> respuesta = trabajoRepositorio.findById(id);
+    //un usuario puede cancelar la solicitud si se arrepiente
+        if (respuesta.isPresent()) {
+
+            Trabajo trabajo = respuesta.get();
+            trabajo.setSolicitud("RECHAZADA POR USUARIO");
 
         }
     }

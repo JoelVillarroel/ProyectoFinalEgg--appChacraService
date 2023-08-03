@@ -28,8 +28,8 @@
         <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
 
         <div class="container m-5" >
-
-            <table class="table table-dark">
+            <h1 class="text-center"> Lista de usuarios</h1>
+            <table class="table table-success table-hover table-striped">
                 <thead class="align-items-center">
                     <tr >
                         <th scope="col">Apellido</th>
@@ -43,7 +43,7 @@
 
                     </tr>
                 </thead>
-                <tbody th:each="usuario : ${usuarios}"> 
+                <tbody class="table-group-divider" th:each="usuario : ${usuarios}"> 
                     <tr>
                         <th scope="row" th:text="${usuario.apellido}"></th>
                         <td th:text="${usuario.nombre}"></td>
@@ -90,7 +90,6 @@
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-8 mx-auto">
                         <a th:href="@{/inicio}" class="btn btn-primary my-2">Volver</a>
-                        </p>
                     </div>
                 </div>
             </section>
