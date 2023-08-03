@@ -69,7 +69,7 @@ public class TrabajoControlador {
     }
      */
     @PostMapping("/registroTrabajo")
-    public String registroTrabajo(@RequestParam String idLogueado, @RequestParam String idProveedor, @RequestParam String descripcion,
+    public String registroTrabajo(@RequestParam String idLogueado, @RequestParam String idProveedor, @RequestParam(required = false, defaultValue = " Sin descripcion") String descripcion,
              ModelMap modelo) throws MyException {
         
         try {
