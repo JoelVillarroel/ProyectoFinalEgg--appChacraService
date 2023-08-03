@@ -171,7 +171,7 @@ public class PortalControlador {
                 modelo.addAttribute("apellido", logueadoProveedor.getApellido());
                 modelo.addAttribute("direccion", logueadoProveedor.getDireccion());
                 modelo.addAttribute("descripcion", logueadoProveedor.getDescripcion());
-                modelo.addAttribute("idImagen", logueadoUsuario.getImagen().getId());
+                modelo.addAttribute("idImagen", logueadoProveedor.getImagen().getId());
                 modelo.addAttribute("email", logueadoProveedor.getEmail());
                 modelo.addAttribute("rol", logueadoProveedor.getRol().toString());
             } // Si no hay usuario ni proveedor logueado
