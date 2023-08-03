@@ -125,29 +125,9 @@
                             Perfil
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <!-- Bloque para usuarios con rol 'USER' o 'ADMIN' -->
-                            <li th:if="${rol == 'USER' || rol == 'ADMIN'}">
-                                <p>Nombre: <span th:text="${nombre}"></span></p>
-                                <p>Apellido: <span th:text="${apellido}"></span></p>
-                                <p>Barrio: <span th:text="${barrio}"></span></p>
-                                <p>Dirección: <span th:text="${direccion}"></span></p>
-                                <p>Email: <span th:text="${email}"></span></p>
-                                <p>Imagen: <img th:if="${idImagen}" th:src="@{/imagen/fotoPerfil/__${idImagen}__}" alt="Imagen de perfil" style="max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #E57C3A; margin-top: 10px;"/></p>
-                                <p>Rol: <span th:text="${rol}"></span></p>
-                            </li>
-
-                            <!-- Bloque para usuarios con rol 'PROVEEDOR' -->
-                            <li th:if="${rol == 'PROVEEDOR'}">
-                                <p>Nombre: <span th:text="${nombre}"></span></p>
-                                <p>Apellido: <span th:text="${apellido}"></span></p>
-                                <p>Barrio: <span th:text="${barrio}"></span></p>
-                                <p>Dirección: <span th:text="${direccion}"></span></p>
-                                <p>Email: <span th:text="${email}"></span></p>
-                                <p>Imagen: <img th:if="${idImagen}" th:src="@{/imagen/fotoPerfil/__${idImagen}__}" alt="Imagen de perfil" style="max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #E57C3A; margin-top: 10px;"/></p>
-                                <p>Rol: <span th:text="${rol}"></span></p>
-                            </li>
-                            <!-- Elemento común que redirecciona a editar  perfil -->
-                            <li><a class="dropdown-item" href="/perfil">Editar Perfil</a></li>
+                            
+                            <!-- Elemento común que redirecciona a ver  perfil -->
+                            <li><a class="dropdown-item" th:href="@{/perfil/__${id}__}">Ver Perfil</a></li>
                             <!-- Elemento común para todos los roles (Cerrar Sesión) -->
                             <li><a class="dropdown-item" href="/logout">Cerrar Sesión</a></li>
                         </ul>

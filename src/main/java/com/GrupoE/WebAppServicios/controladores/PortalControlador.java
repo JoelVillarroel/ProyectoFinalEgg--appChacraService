@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -113,6 +114,17 @@ public class PortalControlador {
         }
         return "nosotros.html";
     }
+    /*-----------------------------------------------------------*/
+    @GetMapping("/perfil/{id}")
+    public String perfil(@PathVariable String id,ModelMap modelo, HttpSession session) {
+        String redireccion = logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
+       modelo.put("usuario", usuarioServicio.getOne(id));
+        return "Perfil.html";
+    }
 
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, ModelMap modelo, HttpSession session) {
@@ -145,8 +157,11 @@ public class PortalControlador {
         // Si es un usuario logueado
         Usuario logueadoUsuario = (Usuario) session.getAttribute("usuarioSession");
         if (logueadoUsuario != null) {
+            
+            
             if (logueadoUsuario.getRol().toString().equals("ADMIN")) {
                 // No redirigimos aquí, simplemente retornamos null
+                modelo.addAttribute("id", logueadoUsuario.getId());
                 modelo.addAttribute("nombre", logueadoUsuario.getNombre());
                 modelo.addAttribute("apellido", logueadoUsuario.getApellido());
                 modelo.addAttribute("barrio", logueadoUsuario.getBarrio());
@@ -159,6 +174,8 @@ public class PortalControlador {
                 modelo.addAttribute("rol", logueadoUsuario.getRol().toString());
                 return null;
             }
+            
+            modelo.addAttribute("id", logueadoUsuario.getId());
             modelo.addAttribute("nombre", logueadoUsuario.getNombre());
             modelo.addAttribute("apellido", logueadoUsuario.getApellido());
             modelo.addAttribute("barrio", logueadoUsuario.getBarrio());
@@ -170,6 +187,7 @@ public class PortalControlador {
         else {
             Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
             if (logueadoProveedor != null) {
+                modelo.addAttribute("id", logueadoUsuario.getId());
                 modelo.addAttribute("nombre", logueadoProveedor.getNombre());
                 modelo.addAttribute("apellido", logueadoProveedor.getApellido());
                 modelo.addAttribute("direccion", logueadoProveedor.getDireccion());
