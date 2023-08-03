@@ -107,6 +107,9 @@ public class TrabajoControlador {
         List<Trabajo> RealizadosNoCalificados = trabajoServicio.trabajosRealizadosNoCalificados(UsuarioLogueado.getId());
         modelo.addAttribute("RealizadosNoCalificados", RealizadosNoCalificados);
 
+         List<Trabajo> TodosUsuario = trabajoServicio.TodosUsuario(UsuarioLogueado.getId());
+        modelo.addAttribute("TodosUsuario", TodosUsuario);
+        
 
         //lista los trabajos realizados de un proveedor en particular para mostrarle al usuario
         List<Trabajo> RealizadosProveedor = trabajoServicio.RealizadosProveedor(idProveedor);
@@ -171,12 +174,22 @@ public class TrabajoControlador {
 
     }
     
+    @PostMapping("/cancelarSolicitud/{id}")
+    public String CancelarSolicitud(@PathVariable String id) {
+        trabajoServicio.CancelarSolicitud(id);
+        
+         return "redirect:/trabajo/listaTrabajo/usuario?cache=false";
+
+
+    }
+    
+    
      @PostMapping("/calificar/{id}")
     public String Calificar(@PathVariable String id, @PathVariable String comentario, 
             @PathVariable int calificacion) throws MyException {
         trabajoServicio.Calificar(id, comentario, calificacion);
         
-         return "redirect:/trabajo/listaTrabajo/proveedor?cache=false";
+         return "redirect:/trabajo/listaTrabajo/usuario?cache=false";
 
 
     }
