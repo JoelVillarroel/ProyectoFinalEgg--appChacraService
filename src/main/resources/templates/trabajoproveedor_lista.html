@@ -21,7 +21,7 @@
     </head>
     <nav th:replace="~{/fragments/navbar :: nav}" th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}"></nav>
 
-<!-- SOLICITUDES PROVEEDOR-->
+<!-- SOLICITUDES PROVEEDOR
     <div class="container m-5" >
         <h3> Mis solicitudes de empleo: </h3>
         <div th:if="${solicitudes == null || solicitudes.isEmpty()}">
@@ -53,9 +53,9 @@
             </li>
  
         </ul> 
-    </div> 
+    </div> -->
 
-<!-- Pendientes VISTA PROVEEDOR --->
+<!-- Pendientes VISTA PROVEEDOR 
     <div class="container m-5"  >
         <h3> Trabajos Pendientes </h3>
         <div th:if="${NoRealizados == null || NoRealizados.isEmpty()}">
@@ -92,8 +92,8 @@
 
             </tbody>
         </table>
-    </div> 
-<!-- TODOS LOS TRABAJOS/ VISTA PROVEEDOR -->
+    </div> --->
+<!-- TODOS LOS TRABAJOS/ VISTA PROVEEDOR 
 <div class="container m-5"  >
        <tr >
             <h3> Aquí estan todos sus trabajos </h3>
@@ -127,7 +127,9 @@
         </table>
     </div>
 </div>
-<!-- TRABAJOS DEL RPOVEEDOR// VISTA USUARIO
+
+-->
+<!-- TRABAJOS DEL RPOVEEDOR// VISTA USUARIO //VISTA HUGO-RENZO
     <div class="container m-5" >
         <h1> Lista de todos los trabajos Realizados</h1>
                 <table class="table table-dark">
@@ -156,6 +158,55 @@
                     </tbody>
                 </table>
             </div>-->
+
+            <!-- TODOS USUSARIOS- VER EL ESTADO DE SOLICITUD DE trabajos// VISTA USUARIO -->
+    <div class="container m-5" >
+        <h1> Aquí puede ver todos los trabajos Solicitados </h1>
+                <table>
+                    <thead class="align-items-center">
+                        <tr >
+                            <th scope="col">Proveedor</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Estado de la Solicitud</th>
+                            <th scope="col">Realizado</th>
+                            <th scope="col">Calificación</th>
+                            <th scope="col">Comentario de la calificación</th>
+                            <th scope="col">Cancelar solicitud</th>
+                        </tr>
+                    </thead>
+                    <tbody th:each="trabajo : ${TodosUsuario}"> 
+                        <tr>
+                            <th th:text="${trabajo.proveedor != null ? trabajo.proveedor.nombre + ' ' + trabajo.proveedor.apellido : 'Proveedor no disponible'}"></th>
+                            <td th:text="${trabajo.descripcion}"></td>
+                            <td>
+                                <span th:if="${trabajo.solicitud == 'ACEPTADA'}">Aceptada</span>
+                                <span th:if="${trabajo.solicitud == 'RECHAZADA'}">Rechazada</span>
+                                <span th:if="${trabajo.solicitud == '0'}"> Aún no hay respuesta del proveedor </span>
+                                <span th:if="${trabajo.solicitud == 'RECHAZADA POR USUARIO'}"> Has cancelado esta solicitud</span>
+                            </td>
+                            <td>
+                                <span th:if="${trabajo.realizado}">Finalizado</span>
+                                <span th:unless="${trabajo.realizado}">Aún no se ha marcado como finalizado</span>
+                            </td>
+                            <td th:text="${trabajo.calificacion > 0 ? trabajo.calificacion : 'Ya puede calificar este trabajo en el apartado calificaciones pendientes'}"></td>
+
+                            <td th:text="${trabajo.comentario}"></td>
+
+                            <td style="align-items: center;">
+                                <span th:if="${trabajo.realizado == false or (trabajo.solicitud == 'RECHAZADA' or trabajo.solicitud == 'RECHAZADA POR USUARIO')}">
+                                    <form th:action="@{/trabajo/cancelarSolicitud/__${trabajo.id}__}" method="post">
+                                        <input type="hidden" id="trabajoId" th:value="${trabajo.id}" />
+                                        <button type="submit">Cancelar</button>
+                                    </form>
+                                </span>
+                                <span th:if="${trabajo.realizado == true}">No se permite cancelar</span>
+                            </td>
+                            
+                        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
 
 <!-- Trabajos para calificar VISTA USUARIO
 
