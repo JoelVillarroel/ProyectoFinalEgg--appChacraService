@@ -101,9 +101,8 @@ public class UsuarioServicio implements UserDetailsService {
     @Transactional//(readOnly=True)
     public List<Usuario> listarUsuarios() {
 
-        List<Usuario> usuarios = new ArrayList();
+        List<Usuario> usuarios =  usuarioRepositorio.findAll();
 
-        usuarios = usuarioRepositorio.findAll();
 
         return usuarios;
     }
@@ -260,5 +259,24 @@ public class UsuarioServicio implements UserDetailsService {
             }
         }
     }
+    
+    @Transactional
+    public void cambiarRol(String id) {
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Usuario usuario = respuesta.get();
+
+            if(usuario.getRol()== Rol.ADMIN){
+
+                usuario.setRol(Rol.USER);
+
+            } else if (usuario.getRol() == Rol.USER) {
+                usuario.setRol(Rol.ADMIN);
+            }
+        }
+    }
+
 
 }

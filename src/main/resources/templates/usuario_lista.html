@@ -32,21 +32,23 @@
             <table class="table table-success table-hover table-striped">
                 <thead class="align-items-center">
                     <tr >
-                        <th scope="col">Apellido</th>
                         <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
                         <th scope="col">Direccion</th>
                         <th scope="col">email</th>
                         <th scope="col">Foto de Perfil</th>
                         <th scope="col">Estado</th>
+                        <th scope="col">Cambiar estado</th>
                         <th scope="col">Rol</th>
+                        <th scope="col">Cambiar Rol</th>
                         <th scope="col">Modificar</th>
 
                     </tr>
                 </thead>
                 <tbody class="table-group-divider" th:each="usuario : ${usuarios}"> 
                     <tr>
-                        <th scope="row" th:text="${usuario.apellido}"></th>
                         <td th:text="${usuario.nombre}"></td>
+                        <th scope="row" th:text="${usuario.apellido}"></th>
                         <td th:text="${usuario.direccion}"></td>
                         <td th:text="${usuario.email}"></td>
                         
@@ -54,18 +56,30 @@
                             <a><img th:src="@{/imagen/perfil/__${usuario.id}__}" th:if="${usuario.imagen != null}" class="logo" alt="Imagen de perfil" style="max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #E57C3A; margin-top: 10px;"></a>
                         </td>
                         <td>
-                            <a th:if="${usuario.activo == true}" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}"><i class="fas fa-feather-alt"></i>Activo</a>
-                            <a th:if="${usuario.activo == false}" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}"><i class="fas fa-feather-alt"></i>Inactivo</a>
-                        </td>
-                        <td th:text="${usuario.rol}"></td>
-
-                        <td>
-                            <a th:href= "@{/admin/modificarRol/__${usuario.id}__}"><i class="fas fa-feather-alt"></i>Cambiar</a>
+                            <span th:href="@{/administrador/modificarEstado/__${usuario.id}__}">
+                                <span th:text="${usuario.activo == true ? 'Alta' : 'Baja'}"></span>
+                            </span>
                         </td>
 
 
                         <td>
-                            <a th:href= "@{/usuario/modificar/__${usuario.id}__}"><i class="fas fa-feather-alt"></i> Modificar</a>
+                            <a th:if="${usuario.activo == true}" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}">Inhabilitar</a>
+                            <a th:if="${usuario.activo == false}" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}">Activar</a>
+                        </td>
+
+                        <td th:text="${usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).ADMIN ? 'Administrador' : 'Usuario'}"></td>
+                        <td>
+                            <a th:if="${usuario.rol.toString() == 'USER'}" th:href="@{/administrador/modificarRol/__${usuario.id}__}">
+                                <i class="fas fa-feather-alt"></i>Cambiar a admin
+                            </a>
+                            <a th:if="${usuario.rol.toString() == 'ADMIN'}" th:href="@{/administrador/modificarRol/__${usuario.id}__}">
+                                <i class="fas fa-feather-alt"></i>Cambiar a User
+                            </a>
+                        </td>
+
+
+                        <td>
+                            <a th:href= "@{/administrador/modificarUsuario/__${usuario.id}__}"> 🛠Modificar</a>
                         </td>
 
                     </tr>
