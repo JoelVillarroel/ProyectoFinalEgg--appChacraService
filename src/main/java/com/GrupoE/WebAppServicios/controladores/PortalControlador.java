@@ -151,7 +151,10 @@ public class PortalControlador {
                 modelo.addAttribute("apellido", logueadoUsuario.getApellido());
                 modelo.addAttribute("barrio", logueadoUsuario.getBarrio());
                 modelo.addAttribute("direccion", logueadoUsuario.getDireccion());
-                modelo.addAttribute("idImagen", logueadoUsuario.getImagen().getId());
+                
+                if (logueadoUsuario.getImagen() != null) {
+                    modelo.addAttribute("idImagen", logueadoUsuario.getImagen().getId());
+                }
                 modelo.addAttribute("email", logueadoUsuario.getEmail());
                 modelo.addAttribute("rol", logueadoUsuario.getRol().toString());
                 return null;
@@ -171,7 +174,11 @@ public class PortalControlador {
                 modelo.addAttribute("apellido", logueadoProveedor.getApellido());
                 modelo.addAttribute("direccion", logueadoProveedor.getDireccion());
                 modelo.addAttribute("descripcion", logueadoProveedor.getDescripcion());
-                modelo.addAttribute("idImagen", logueadoProveedor.getImagen().getId());
+                 
+                if (logueadoProveedor.getImagen() != null) {
+                    modelo.addAttribute("idImagen", logueadoUsuario.getImagen().getId());
+                } 
+                
                 modelo.addAttribute("email", logueadoProveedor.getEmail());
                 modelo.addAttribute("rol", logueadoProveedor.getRol().toString());
             } // Si no hay usuario ni proveedor logueado
@@ -179,4 +186,6 @@ public class PortalControlador {
 
         return null; // Retornamos null si todo va bien (sin redirecciones)
     }
+    
+    
 }

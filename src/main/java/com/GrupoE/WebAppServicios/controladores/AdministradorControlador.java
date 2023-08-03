@@ -2,6 +2,7 @@ package com.GrupoE.WebAppServicios.controladores;
 
 import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.enumeraciones.Rol;
+import com.GrupoE.WebAppServicios.errores.MyException;
 import com.GrupoE.WebAppServicios.servicios.UsuarioServicio;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -10,7 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/administrador")
@@ -42,10 +46,43 @@ public class AdministradorControlador {
 
     @GetMapping("/modificarEstado/{id}")
     public String modificarEstado(@PathVariable String id) {
-        usuarioServicio.cambiarEstado(id);
+        usuarioServicio.cambiarRol(id);
         // Agregamos un parámetro para evitar el caché y asegurarnos de obtener la lista actualizada
         return "redirect:/administrador/usuarios?cache=false";
 
     }
 
+    @GetMapping("/modificarRol/{id}")
+    public String modificarRol(@PathVariable String id) {
+        usuarioServicio.cambiarRol(id);
+        // Agregamos un parámetro para evitar el caché y asegurarnos de obtener la lista actualizada
+        return "redirect:/administrador/usuarios?cache=false";
+
+    }
+
+    @GetMapping("/modificarUsuario/{id}")
+    public String modificarUsuario(@PathVariable String id, ModelMap modelo) {
+       
+       Usuario usuario = usuarioServicio.getOne(id);
+        modelo.addAttribute("usuario",usuario );
+
+        return "modificarUsuario.html";
+
+    }
+
+    @PostMapping("/modificacionUsuario/{id}")
+    public String modificarUsuario(@PathVariable String id, @RequestParam String nombre, @RequestParam String apellido, @RequestParam String barrio, @RequestParam String direccion, @RequestParam String email,
+            @RequestParam String password, @RequestParam String password2, ModelMap modelo,
+            MultipartFile archivo, HttpSession session) throws MyException {
+        try {
+            usuarioServicio.actualizar(archivo,id, nombre, apellido, barrio, direccion, email, password, password2); 
+
+            return "redirect:/administrador/usuarios?cache=false";
+            
+        } catch (MyException ex) {
+            modelo.put("error", ex.getMessage());
+            return "modificarUsuario.html";
+        }
+
+    }
 }
