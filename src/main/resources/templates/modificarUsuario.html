@@ -66,7 +66,7 @@
                 <!-- Nombre -->
                 <div class="form-group my-3">
                     <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" th:value="${usuario.nombre}" required>
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" th:value="${nombre}" required>
             
                 </div>
 
@@ -120,14 +120,9 @@
                     <input type="password" class="form-control" id="password2" name="password2" placeholder="Repetir Contraseña" required>
                 </div>-->
 
-                <!-- Términos y Condiciones -->
-                <div class="form-group my-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="terminos" name="terminos" required>
-                    <label class="form-check-label" for="terminos">Acepto los términos y condiciones</label>
-                </div>
-
-                <!-- Botón "Registrarme" -->
-                <button type="submit" class="btn btn-primary mt-3 botones" id="registrarme" disabled>Actualizar</button>
+              
+                <!-- Botón "actualizar" -->
+                <button type="submit" class="btn btn-primary mt-3 botones" id="registrarme">Actualizar</button>
 
                 <!-- Botón "Volver" -->
                 <div class="divVolver">

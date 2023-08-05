@@ -180,7 +180,6 @@ public class PortalControlador {
             modelo.addAttribute("apellido", logueadoUsuario.getApellido());
             modelo.addAttribute("barrio", logueadoUsuario.getBarrio());
             modelo.addAttribute("direccion", logueadoUsuario.getDireccion());
-            modelo.addAttribute("idImagen", logueadoUsuario.getImagen().getId());
             modelo.addAttribute("email", logueadoUsuario.getEmail());
             modelo.addAttribute("rol", logueadoUsuario.getRol().toString());
         } // Si es un proveedor logueado
