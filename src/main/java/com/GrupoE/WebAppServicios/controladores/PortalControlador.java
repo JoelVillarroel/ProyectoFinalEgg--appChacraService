@@ -193,7 +193,7 @@ public class PortalControlador {
                 modelo.addAttribute("descripcion", logueadoProveedor.getDescripcion());
                  
                 if (logueadoProveedor.getImagen() != null) {
-                    modelo.addAttribute("idImagen", logueadoUsuario.getImagen().getId());
+                    modelo.addAttribute("idImagen", logueadoProveedor.getImagen().getId());
                 } 
                 
                 modelo.addAttribute("email", logueadoProveedor.getEmail());
