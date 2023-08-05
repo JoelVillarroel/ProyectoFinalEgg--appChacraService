@@ -180,14 +180,13 @@ public class PortalControlador {
             modelo.addAttribute("apellido", logueadoUsuario.getApellido());
             modelo.addAttribute("barrio", logueadoUsuario.getBarrio());
             modelo.addAttribute("direccion", logueadoUsuario.getDireccion());
-            modelo.addAttribute("idImagen", logueadoUsuario.getImagen().getId());
             modelo.addAttribute("email", logueadoUsuario.getEmail());
             modelo.addAttribute("rol", logueadoUsuario.getRol().toString());
         } // Si es un proveedor logueado
         else {
             Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
             if (logueadoProveedor != null) {
-                modelo.addAttribute("id", logueadoUsuario.getId());
+                modelo.addAttribute("id", logueadoProveedor.getId());
                 modelo.addAttribute("nombre", logueadoProveedor.getNombre());
                 modelo.addAttribute("apellido", logueadoProveedor.getApellido());
                 modelo.addAttribute("direccion", logueadoProveedor.getDireccion());
