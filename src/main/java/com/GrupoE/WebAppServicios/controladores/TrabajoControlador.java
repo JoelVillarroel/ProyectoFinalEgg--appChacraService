@@ -44,6 +44,21 @@ public class TrabajoControlador {
         modelo.addAttribute("trabajosTodos", trabajosTodos);
         return "proveedor.html";
     }
+    @GetMapping("/listarTrabajos/{id}")
+    public String listarTrabajos(@PathVariable String id, HttpSession session, ModelMap modelo, ModelMap modeloUsuario) {
+        Usuario logueado = (Usuario) session.getAttribute("usuarioSession");
+        // Cargamos los datos del usuario o proveedor logueado directamente aquí
+        String redireccion = portalControlador.logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
+        modeloUsuario.put("logueado", logueado);
+        modelo.put("proveedor", proveedorServicio.getOne(id));
+        List<Trabajo> trabajos=trabajoServicio.TodosProveedor(id);
+        modelo.addAttribute("trabajos", trabajos);
+        return "ListaTrabajosRealizados.html";
+    }
     
 /*
     @GetMapping("/registrarTrabajo")
@@ -70,7 +85,8 @@ public class TrabajoControlador {
      */
     @PostMapping("/registroTrabajo")
     public String registroTrabajo(@RequestParam String idLogueado, @RequestParam String idProveedor, @RequestParam(required = false, defaultValue = " Sin descripcion") String descripcion,
-             ModelMap modelo) throws MyException {
+             ModelMap modelo,HttpSession session) throws MyException {
+        
         
         try {
             trabajoServicio.registrar(idLogueado, idProveedor, descripcion);
@@ -197,15 +213,15 @@ public class TrabajoControlador {
 
 
     }
-    /*  
+      
     
     
 
       
-
-    --------------
-        @GetMapping("/listaTrabajo/trabajoDeUnProveedor")
-    public String listarTrabajosDeUnProveedor(ModelMap modelo,String idProveedor, HttpSession session){
+/*
+   
+        @GetMapping("/listaTrabajo/trabajoDeUnProveedor/{id}")
+    public String listarTrabajosDeUnProveedor(ModelMap modelo,@PathVariable String idProveedor, HttpSession session){
         String redireccion = portalControlador.logueado(modelo, session);
         if (redireccion != null) {
             // Si el método logueado devuelve una redirección, la retornamos
@@ -250,5 +266,7 @@ String redireccion = portalControlador.logueado(modelo, session);
         List<Trabajo> NoRealizados= trabajoServicio.trabajosRealizadosNoCalificados(idProveedor, UsuarioLogueado.getId());
         modelo.addAttribute("RealizadosNoCalificados",RealizadosNoCalificados);
         return "trabajo_lista.html";
-    }*/
+    }
+    */
+    
 }

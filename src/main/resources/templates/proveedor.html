@@ -83,7 +83,6 @@
                                 <div class="row py-lg-5">
                                     <div class="col-lg-6 col-md-8 mx-auto">
                                         <a th:href="@{/inicio}" class="btn btn-primary my-2">Volver</a>
-                                        </p>
                                     </div>
                                 </div>
                             </section>
@@ -101,6 +100,17 @@
                                 </svg>
                             </div>
                             <h4 class="fw-semibold mb-0 text-body-emphasis">Trabajos realizados</h4>
+                            
+                            
+                            <div >
+                                
+                            <a th:if="${rol == 'USER' || rol == 'ADMIN'}" th:href= "@{/trabajo/listarTrabajos/__${proveedor.id}__}"><i class="fas fa-feather-alt"></i> Ver Listado </a>
+                            <!--   
+                            <a th:href="@{/trabajo/listarTrabajos}" class="btn btn-primary my-2">Lista de Trabajos realizados</a>
+                            
+                             </div>
+                            
+                            
                             <div class=" text-body-emphasis" th:href="@{/trabajo/registrarTrabajo}">
                                 <table class="fw-semibold mb-0 text-body-emphasis">
                                     <tbody class="text-body-secondary" th:each="trabajo : ${trabajosTodos}"> 
@@ -114,7 +124,7 @@
                                     </tbody>
                                 </table>
                             </div>        
-                        
+                        -->
                             <div class="col d-flex flex-column gap-2">
                                 <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
@@ -146,7 +156,9 @@
                                 ¿Contrataste el servicio y te gustó? 
                             </h4>
                             <p class="text-body-secondary">
-                                Puedes dejar una valoracion para la persona que ofrece este servicio.
+                                Puedes dejar una valoracion una vez que se haya terminado el trabajo. De esta manera ayudaras
+                                a que otros vecinos puedan seleccionar un buen proveedor valorando mi reputacion.
+                                Muchas gracias !!!!
                             </p>
                         </div>
                         

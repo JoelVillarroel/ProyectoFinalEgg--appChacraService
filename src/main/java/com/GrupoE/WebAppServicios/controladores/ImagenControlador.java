@@ -2,8 +2,10 @@ package com.GrupoE.WebAppServicios.controladores;
 
 
 import com.GrupoE.WebAppServicios.entidades.Imagen;
+import com.GrupoE.WebAppServicios.entidades.Proveedor;
 import com.GrupoE.WebAppServicios.entidades.Usuario;
 import com.GrupoE.WebAppServicios.servicios.ImagenServicio;
+import com.GrupoE.WebAppServicios.servicios.ProveedorServicio;
 import com.GrupoE.WebAppServicios.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +24,8 @@ public class ImagenControlador {
     UsuarioServicio usuarioServicio;
     @Autowired
     ImagenServicio imagenServicio;
+    @Autowired
+    ProveedorServicio proveedorServicio;
     
     @GetMapping("/perfil/{id}")
     public ResponseEntity<byte[]>imagenUsuario(@PathVariable String id){
@@ -35,8 +39,8 @@ public class ImagenControlador {
     @GetMapping("/perfilProveedor/{id}")
     public ResponseEntity<byte[]> imagenProveedor(@PathVariable String id) {
         // Lógica para cargar la imagen del proveedor por su nombre de imagen
-        Usuario usuario = usuarioServicio.getOne(id);
-        byte[] imagen = usuario.getImagen().getContenido();
+        Proveedor proveedor = proveedorServicio.getOne(id);
+        byte[] imagen = proveedor.getImagen().getContenido();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
         return new ResponseEntity<>(imagen, headers, HttpStatus.OK);
