@@ -139,3 +139,8 @@ ul.dropdown-menu .dropdown-item:hover {
     border: 2px solid #E57C3A;
     margin-top: 10px;
 }
+
+div .btn-group{
+    position: relative;
+    padding-right: 6em;
+}
