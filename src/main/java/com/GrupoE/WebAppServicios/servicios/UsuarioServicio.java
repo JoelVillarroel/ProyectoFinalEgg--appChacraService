@@ -62,24 +62,24 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizar(MultipartFile archivo, String idUsuario, String nombre, String apellido, String barrio, String direccion, String email, String password, String password2) throws MyException {
+    public void actualizar(HttpSession session, MultipartFile archivo, String idUsuario, String nombre, String apellido, String barrio, String direccion, String email, String password, String password2) throws MyException {
 
-        validar(nombre, apellido, barrio, direccion, email, password, password2);
+        validarActualizacion(session, nombre, apellido, barrio, direccion, email, password, password2);
 
         Optional<Usuario> respuesta = usuarioRepositorio.findById(idUsuario);
         if (respuesta.isPresent()) {
-
             Usuario usuario = respuesta.get();
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+            if (!passwordEncoder.matches(password, usuario.getPassword())) {
+                throw new MyException("Has ingresado una contraseña errónea");
+            }
+
             usuario.setNombre(nombre);
             usuario.setApellido(apellido);
             usuario.setBarrio(barrio);
             usuario.setDireccion(direccion);
             usuario.setEmail(email);
-
-            usuario.setPassword(new BCryptPasswordEncoder().encode(password));
-
-            usuario.setRol(Rol.USER);
-
             String idImagen = null;
 
             if (usuario.getImagen() != null) { //si hay imagen para cargar , la cargamos
@@ -101,8 +101,7 @@ public class UsuarioServicio implements UserDetailsService {
     @Transactional//(readOnly=True)
     public List<Usuario> listarUsuarios() {
 
-        List<Usuario> usuarios =  usuarioRepositorio.findAll();
-
+        List<Usuario> usuarios = usuarioRepositorio.findAll();
 
         return usuarios;
     }
@@ -164,11 +163,70 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
         /*Validar contraseña*/
-
         if (usuarioRepositorio.buscarUsuarioPorEmail(email) != null) {
             throw new MyException("El email ya se encuentra registrado");
         }
 
+        if (password == null || password.isEmpty() || password.length() <= 5) {
+            throw new MyException("La contraseña no puede estar vacía, y debe tener más de 5 dígitos");
+        }
+        if (!password.equals(password2)) {
+            throw new MyException("Las contraseñas ingresadas deben ser iguales");
+        }
+    }
+
+    private void validarActualizacion(HttpSession session, String nombre, String apellido, 
+            String barrio, String direccion, String email, String password, String password2) throws MyException {
+
+        /*Validar Nombre*/
+        if (nombre == null || nombre.isEmpty()) {
+            throw new MyException("El nombre no pude ser nulo ni estar vacio");
+        }
+        String nombrevalidar = nombre.toUpperCase();
+        for (int i = 0; i < nombrevalidar.length(); i++) {
+            char letra = nombrevalidar.charAt(i);
+            if (letra == 32) {
+                continue;
+            }
+            if ((letra < 65 || letra > 90) && (letra != 209)) {
+                throw new MyException("El nombre contiene algo que no sea una letra");
+            }
+        }
+        /*Validar Apellido*/
+        if (apellido == null || apellido.isEmpty()) {
+            throw new MyException("El apellido no puede ser nulo o estar vacío");
+        }
+        String apellidovalidar = apellido.toUpperCase();
+        for (int i = 0; i < apellidovalidar.length(); i++) {
+            char letra = apellidovalidar.charAt(i);
+            if (letra == 32) {
+                continue;
+            }
+            if ((letra < 65 || letra > 90) && (letra != 209)) {
+                throw new MyException("El apellido contiene algo que no sea una letra");
+            }
+        }
+        /*Validar Barrio*/
+        if (barrio == null || barrio.isEmpty()) {
+            throw new MyException("Debe seleccionar un barrio");
+        }
+        /*Validar Direccion*/
+        if (direccion == null || direccion.isEmpty()) {
+            throw new MyException("La direccion no puede ser nulo o estar vacío");
+        }
+        /*Validar email*/
+        if (email == null || email.isEmpty()) {
+            throw new MyException("El email no puede ser nulo o estar vacío");
+        }
+
+        
+        Usuario logueadoUsuario = (Usuario) session.getAttribute("usuarioSession");
+        Usuario respuesta = usuarioRepositorio.buscarUsuarioPorEmail(email);
+        if (respuesta != null && !respuesta.getId().equals(logueadoUsuario.getId())) {
+            /*Se comprueba si se encontró un usuario y si su ID no es igual al ID del usuario logueado. 
+            Si ambas condiciones son verdaderas, se lanza una excepción */
+            throw new MyException("El email ya se encuentra registrado por otro usuario");
+        }
         if (password == null || password.isEmpty() || password.length() <= 5) {
             throw new MyException("La contraseña no puede estar vacía, y debe tener más de 5 dígitos");
         }
@@ -241,7 +299,6 @@ public class UsuarioServicio implements UserDetailsService {
         }
     }
 
-
     @Transactional
     public void cambiarEstado(String id) {
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
@@ -259,7 +316,7 @@ public class UsuarioServicio implements UserDetailsService {
             }
         }
     }
-    
+
     @Transactional
     public void cambiarRol(String id) {
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
@@ -268,7 +325,7 @@ public class UsuarioServicio implements UserDetailsService {
 
             Usuario usuario = respuesta.get();
 
-            if(usuario.getRol()== Rol.ADMIN){
+            if (usuario.getRol() == Rol.ADMIN) {
 
                 usuario.setRol(Rol.USER);
 
@@ -277,6 +334,5 @@ public class UsuarioServicio implements UserDetailsService {
             }
         }
     }
-
 
 }

@@ -28,7 +28,7 @@ public class TrabajoControlador {
     private PortalControlador portalControlador;
     @Autowired
     private ProveedorServicio proveedorServicio;
-    
+
     @GetMapping("/registrarTrabajo/{id}")
     public String registrarTrabajo(@PathVariable String id, HttpSession session, ModelMap modelo, ModelMap modeloUsuario) {
         Usuario logueado = (Usuario) session.getAttribute("usuarioSession");
@@ -40,10 +40,11 @@ public class TrabajoControlador {
         }
         modeloUsuario.put("logueado", logueado);
         modelo.put("proveedor", proveedorServicio.getOne(id));
-        List<Trabajo> trabajosTodos=trabajoServicio.TodosProveedor(id);
+        List<Trabajo> trabajosTodos = trabajoServicio.RealizadosProveedor(id);
         modelo.addAttribute("trabajosTodos", trabajosTodos);
         return "proveedor.html";
     }
+
     @GetMapping("/listarTrabajos/{id}")
     public String listarTrabajos(@PathVariable String id, HttpSession session, ModelMap modelo, ModelMap modeloUsuario) {
         Usuario logueado = (Usuario) session.getAttribute("usuarioSession");
@@ -55,12 +56,12 @@ public class TrabajoControlador {
         }
         modeloUsuario.put("logueado", logueado);
         modelo.put("proveedor", proveedorServicio.getOne(id));
-        List<Trabajo> trabajos=trabajoServicio.TodosProveedor(id);
+        List<Trabajo> trabajos = trabajoServicio.TodosProveedor(id);
         modelo.addAttribute("trabajos", trabajos);
         return "ListaTrabajosRealizados.html";
     }
-    
-/*
+
+    /*
     @GetMapping("/registrarTrabajo")
     public String registroTrabajo(@RequestParam(name = "id", required = false, defaultValue = "0") String id,
             ModelMap modelo, HttpSession session, ModelMap modeloUsuario) {
@@ -75,8 +76,8 @@ public class TrabajoControlador {
 
         return "registroTrabajo.html";
     }
-*/
-    /*
+     */
+ /*
     @GetMapping("vista/{id}")
     public String vista(@PathVariable String id, ModelMap modelo){
         modelo.put("noticia", noticiaServicio.getOne(id));
@@ -85,9 +86,8 @@ public class TrabajoControlador {
      */
     @PostMapping("/registroTrabajo")
     public String registroTrabajo(@RequestParam String idLogueado, @RequestParam String idProveedor, @RequestParam(required = false, defaultValue = " Sin descripcion") String descripcion,
-             ModelMap modelo,HttpSession session) throws MyException {
-        
-        
+            ModelMap modelo, HttpSession session) throws MyException {
+
         try {
             trabajoServicio.registrar(idLogueado, idProveedor, descripcion);
             modelo.put("exito", "Trabajo registrado correctamente");
@@ -111,162 +111,63 @@ public class TrabajoControlador {
         modelo.addAttribute("trabajos", trabajos);
 
         //lista los trabajos no realizados de un proveedor en particular
-
-
         return "trabajo_lista.html";
 
     }
-    
-    @GetMapping("/listaTrabajo/usuario")
-    public String listarTrabajosUsuario(ModelMap modelo, String idProveedor,  HttpSession session) {
-        
-          idProveedor = "05f79207-7383-4799-ad68-c3f92a424d0c";
-        //ESto ven los usuarios
-         //lista los trabajos que le faltan calificar al ususario logueado.
-        Usuario UsuarioLogueado = (Usuario) session.getAttribute("usuarioSession");
-        List<Trabajo> RealizadosNoCalificados = trabajoServicio.trabajosRealizadosNoCalificados(UsuarioLogueado.getId());
-        modelo.addAttribute("RealizadosNoCalificados", RealizadosNoCalificados);
 
-         List<Trabajo> TodosUsuario = trabajoServicio.TodosUsuario(UsuarioLogueado.getId());
-        modelo.addAttribute("TodosUsuario", TodosUsuario);
-        
-
-        //lista los trabajos realizados de un proveedor en particular para mostrarle al usuario
-        List<Trabajo> RealizadosProveedor = trabajoServicio.RealizadosProveedor(idProveedor);
-        modelo.addAttribute("RealizadosProveedor", RealizadosProveedor);
-        
-        return "trabajoproveedor_lista.html";
-    }
-    
-    @GetMapping("/listaTrabajo/proveedor")
-    public String listarTrabajosProveedor(ModelMap modelo, String idProveedor,  HttpSession session) {
-        
-        Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
-        List<Trabajo> NoRealizados = trabajoServicio.listarTrabajosNoRealizados(logueadoProveedor.getId());
-        modelo.addAttribute("NoRealizados", NoRealizados);
-        
-        //lista todos los trabajos de un proveedor en particular
-        List<Trabajo> trabajosProov = trabajoServicio.TodosProveedor(logueadoProveedor.getId());
-        modelo.addAttribute("trabajosProov", trabajosProov);
-
-        //lista los trabajos que no ha aceptado ni rechazado de un proveedor en particular
-        List<Trabajo> solicitudes = trabajoServicio.Solicitudes(logueadoProveedor.getId());
-        modelo.addAttribute("solicitudes", solicitudes);
-          
-        return "trabajoproveedor_lista.html";
-    }
-  
-    
 //FUNCIONALIDADES
 // RestringirComentario
     @GetMapping("/borrarComentario/{id}")
-    public String ComentarioInapropiado(@PathVariable String id){
+    public String ComentarioInapropiado(@PathVariable String id) {
         trabajoServicio.ComentarioInapropiado(id);
-        
-         return "redirect:/trabajo/listaTrabajo/allTrabajos?cache=false";
+
+        return "redirect:/trabajo/listaTrabajo/allTrabajos?cache=false";
 
     }
-    
+
     @PostMapping("/aceptarSolicitud/{id}")
     public String Aceptar(@PathVariable String id) {
         trabajoServicio.AceptarSolicitud(id);
-        
-         return "redirect:/trabajo/listaTrabajo/proveedor?cache=false";
 
+        return "redirect:/perfil/{id}?cache=false";
 
     }
-    
-     @PostMapping("/rechazarSolicitud/{id}")
+
+    @PostMapping("/rechazarSolicitud/{id}")
     public String Rechazar(@PathVariable String id) {
         trabajoServicio.RechazarSolicitud(id);
-        
-         return "redirect:/trabajo/listaTrabajo/proveedor?cache=false";
 
+        return "redirect:/perfil/{id}?cache=false";
 
     }
-    
+
     @PostMapping("/marcarRealizado/{id}")
     public String MarcarRealizado(@PathVariable String id) throws MyException {
         trabajoServicio.MarcarComoRealizado(id);
-        
-         return "redirect:/trabajo/listaTrabajo/proveedor?cache=false";
 
+        return "redirect:/perfil/{id}?cache=false";
 
     }
-    
+
     @PostMapping("/cancelarSolicitud/{id}")
     public String CancelarSolicitud(@PathVariable String id) {
         trabajoServicio.CancelarSolicitud(id);
-        
-         return "redirect:/trabajo/listaTrabajo/usuario?cache=false";
 
-
-    }
-    
-    
-     @PostMapping("/calificar/{id}")
-    public String Calificar(@PathVariable String id, @PathVariable String comentario, 
-            @PathVariable int calificacion) throws MyException {
-        trabajoServicio.Calificar(id, comentario, calificacion);
-        
-         return "redirect:/trabajo/listaTrabajo/usuario?cache=false";
-
+        return "redirect:/perfil/{id}?cache=false";
 
     }
-      
-    
-    
 
-      
-/*
-   
-        @GetMapping("/listaTrabajo/trabajoDeUnProveedor/{id}")
-    public String listarTrabajosDeUnProveedor(ModelMap modelo,@PathVariable String idProveedor, HttpSession session){
-        String redireccion = portalControlador.logueado(modelo, session);
-        if (redireccion != null) {
-            // Si el método logueado devuelve una redirección, la retornamos
-            return redireccion;
-        }
-        List<Trabajo> trabajosProov= trabajoServicio.listarTrabajosPorIdProveedor(idProveedor)
-        modelo.addAttribute("trabajosProov",trabajosProov);
-        return "trabajo_lista.html";
+    @PostMapping("/calificar")
+    public String calificarTrabajo(@RequestParam("trabajoId")String trabajoId,
+            String comentario,
+            @RequestParam("calificacion") int calificacion,
+            @RequestParam("usuarioId")String usuarioId) throws MyException {
+
+        // Llama al servicio 'trabajoServicio' para calificar el trabajo
+        trabajoServicio.Calificar(trabajoId, comentario, calificacion);
+
+        // Redirecciona a la página de perfil del usuario después de calificar
+        String redirectUrl = "/perfil/" + usuarioId + "?cache=false";
+        return "redirect:" + redirectUrl;
     }
-   
-@GetMapping("/listaTrabajo/todosLosTrabajos")
-    public String listarAllTrabajos(ModelMap modelo, HttpSession session){
-        String redireccion = portalControlador.logueado(modelo, session);
-        if (redireccion != null) {
-            // Si el método logueado devuelve una redirección, la retornamos
-            return redireccion;
-        }
-        List<Trabajo> trabajos= trabajoServicio.listarTrabajos();
-        return "trabajo_lista.html";
-    }
-    
-   @GetMapping("/listaTrabajo/trabajosNoRealizados")
-    public String listarTrabajosNoRealizados(ModelMap modelo,String idProveedor,HttpSession session){
-        String redireccion = portalControlador.logueado(modelo, session);
-        if (redireccion != null) {
-            // Si el método logueado devuelve una redirección, la retornamos
-            return redireccion;
-        }
-        List<Trabajo> NoRealizados= trabajoServicio.listarTrabajosNoRealizados(idProveedor);
-        modelo.addAttribute("NoRealizados",NoRealizados);
-        return "trabajo_lista.html";
-    }
-    
-        @GetMapping("/listaTrabajo/trabajosRealizadosNoCalificados")
-    public String trabajosRealizadosNoCalificados(ModelMap modelo,String idProveedor, HttpSession session){
-String redireccion = portalControlador.logueado(modelo, session);
-        if (redireccion != null) {
-            // Si el método logueado devuelve una redirección, la retornamos
-            return redireccion;
-        }
-         Usuario UsuarioLogueado = (Usuario) session.getAttribute("usuarioSession");
-        List<Trabajo> NoRealizados= trabajoServicio.trabajosRealizadosNoCalificados(idProveedor, UsuarioLogueado.getId());
-        modelo.addAttribute("RealizadosNoCalificados",RealizadosNoCalificados);
-        return "trabajo_lista.html";
-    }
-    */
-    
 }

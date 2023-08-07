@@ -41,7 +41,7 @@
                         <th scope="col">Cambiar estado</th>
                         <th scope="col">Rol</th>
                         <th scope="col">Cambiar Rol</th>
-                        <th scope="col">Modificar</th>
+                        
 
                     </tr>
                 </thead>
@@ -55,7 +55,7 @@
                         <td> 
                             <a><img th:src="@{/imagen/perfil/__${usuario.id}__}" th:if="${usuario.imagen != null}" class="logo" alt="Imagen de perfil" style="max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #E57C3A; margin-top: 10px;"></a>
                         </td>
-                        <td>
+                        <td > 
                             <span th:href="@{/administrador/modificarEstado/__${usuario.id}__}">
                                 <span th:text="${usuario.activo == true ? 'Alta' : 'Baja'}"></span>
                             </span>
@@ -63,24 +63,21 @@
 
 
                         <td>
-                            <a th:if="${usuario.activo == true}" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}">Inhabilitar</a>
-                            <a th:if="${usuario.activo == false}" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}">Activar</a>
+                            <a th:if="${usuario.activo == true && usuario.id != '66452b70-6435-4b31-a9de-1c66b0b3ff36' }" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}">Inhabilitar</a>
+                            <a th:if="${usuario.activo == false && usuario.id != '66452b70-6435-4b31-a9de-1c66b0b3ff36' }" th:href= "@{/administrador/modificarEstado/__${usuario.id}__}">Activar</a>
                         </td>
 
                         <td th:text="${usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).ADMIN ? 'Administrador' : 'Usuario'}"></td>
+                        
                         <td>
-                            <a th:if="${usuario.rol.toString() == 'USER'}" th:href="@{/administrador/modificarRol/__${usuario.id}__}">
-                                <i class="fas fa-feather-alt"></i>Cambiar a admin
+                            <a th:if="${usuario.rol.toString() == 'USER' && usuario.id != '66452b70-6435-4b31-a9de-1c66b0b3ff36' }" th:href="@{/administrador/modificarRol/__${usuario.id}__}">
+                                <i class="fas fa-feather-alt"></i>Cambiar a administrador
                             </a>
-                            <a th:if="${usuario.rol.toString() == 'ADMIN'}" th:href="@{/administrador/modificarRol/__${usuario.id}__}">
-                                <i class="fas fa-feather-alt"></i>Cambiar a User
+                            <a th:if="${usuario.rol.toString() == 'ADMIN' && usuario.id != '66452b70-6435-4b31-a9de-1c66b0b3ff36'}" th:href="@{/administrador/modificarRol/__${usuario.id}__}">
+                                <i class="fas fa-feather-alt"></i>Cambiar a Usuario
                             </a>
                         </td>
 
-
-                        <td>
-                            <a th:href= "@{/administrador/modificarUsuario/__${usuario.id}__}"> 🛠Modificar</a>
-                        </td>
 
                     </tr>
 

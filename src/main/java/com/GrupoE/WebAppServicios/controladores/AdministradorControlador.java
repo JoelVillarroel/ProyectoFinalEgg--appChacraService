@@ -60,29 +60,4 @@ public class AdministradorControlador {
 
     }
 
-    @GetMapping("/modificarUsuario/{id}")
-    public String modificarUsuario(@PathVariable String id, ModelMap modelo) {
-       
-       Usuario usuario = usuarioServicio.getOne(id);
-        modelo.addAttribute("usuario",usuario );
-
-        return "modificarUsuario.html";
-
-    }
-
-    @PostMapping("/modificacionUsuario/{id}")
-    public String modificarUsuario(@PathVariable String id, @RequestParam String nombre, @RequestParam String apellido, @RequestParam String barrio, @RequestParam String direccion, @RequestParam String email,
-            @RequestParam String password, @RequestParam String password2, ModelMap modelo,
-            MultipartFile archivo, HttpSession session) throws MyException {
-        try {
-            usuarioServicio.actualizar(archivo,id, nombre, apellido, barrio, direccion, email, password, password2); 
-
-            return "redirect:/administrador/usuarios?cache=false";
-            
-        } catch (MyException ex) {
-            modelo.put("error", ex.getMessage());
-            return "modificarUsuario.html";
-        }
-
-    }
 }
