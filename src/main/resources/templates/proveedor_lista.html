@@ -35,9 +35,6 @@
                         <th scope="col">Remuneracion x hora</th>
                         <th scope="col">Cantidad de Trabajos</th>
                         <th scope="col">Contactar Proveedor</th>
-                        <!--
-                        <th scope="col">Modificar</th>
-                        -->
                     </tr>
                 </thead>
                 <tbody class="table-group-divider" th:each="proveedor : ${proveedores}"> 
@@ -47,28 +44,27 @@
                         <td th:text="${proveedor.direccion}"></td>
                         <td th:text="${proveedor.email}"></td>
                         <td>
-
-                            <p>Imagen: <img th:if="${proveedor.imagen != null}" class="logo" th:src="@{/imagen//perfilProveedor/__${proveedor.id}__}"   style="max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #E57C3A; margin-top: 10px;"></p>
+                            <a><img th:src="@{/imagen/perfilProveedor/__${proveedor.id}__}" th:if="${proveedor.imagen != null}" class="logo" alt="Imagen de perfil" style="max-width: 50px; height: 50px; border-radius: 50%; border: 2px solid #E57C3A; margin-top: 10px;"></a>
                         </td>
                         <td th:text="${proveedor.servicio}"></td>
                         <td th:text="${proveedor.calificacion}"></td>
                         <td th:text="${proveedor.remuneracion}"></td>
                         <td th:text="${proveedor.cantTrabajos}"></td>
-                        <!--
-                        <td>
-                            <a th:href= "@{/admin/modificarRol/__${proveedor.id}__}"><i class="fas fa-feather-alt"></i>Cambiar</a>
-                        </td>
-                        -->
                         <td>
                             <a th:if="${rol == 'USER' || rol == 'ADMIN'}" th:href= "@{/trabajo/registrarTrabajo/__${proveedor.id}__}"><i class="fas fa-feather-alt"></i> Contactar</a>
                         </td>
-                        <!--
-                        <td>
-                            <a th:href= "@{/proveedor/modificar/__${proveedor.id}__}"><i class="fas fa-feather-alt"></i> Modificar</a>
-                        </td>
-                        -->
                     </tr>
-
+                <tfoot>
+                    <tr>
+                        <td colspan="10"><i>En esta tabla puedes ver los <b>datos más relevantes</b> para hacer una selección de los proveedores que 
+                            en principio satisfagan tus expectativas, luego pulsando <b>Contactar</b> podrás ver el perfil de el proveedor
+                            seleccionado donde podrás ver con mas detalle su forma de trabajar y <b>tendrás una descripción más 
+                            detallada de sus trabajos realizados</b>. Luego si te parece el adecuado podrás enviarle una descripción 
+                            del trabajo solicitado para pedir sus servicios.</i>
+                            
+                        </td>
+                    </tr>
+                </tfoot>
                 </tbody>
             </table>
 
