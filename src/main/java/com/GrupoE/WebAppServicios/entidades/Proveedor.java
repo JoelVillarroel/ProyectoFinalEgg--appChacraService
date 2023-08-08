@@ -24,7 +24,7 @@ public class Proveedor {
     private Integer cantTrabajos;
     private String descripcion;
     private String email;
-    private String password;
+    private String password;  
     @Enumerated(EnumType.STRING)
     private Rol rol;
     @OneToOne

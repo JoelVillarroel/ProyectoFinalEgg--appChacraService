@@ -37,7 +37,7 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/login", "/logincheck","/registroProveedor", "/registrar","/registro","/css/*","/js/*","/img/*","/fragments","/","/logo/*","/LogoChacras/*", "/conocenos")
                     .permitAll()
-                    .antMatchers("/inicio","/proveedor/**","/trabajo/**","/imagen/**","/perfil/**").hasAnyRole("USER","ADMIN", "PROVEEDOR") // Permite el acceso a /inicio solo si el usuario tiene el rol USER, ADMIN o PROVEEDOR
+                    .antMatchers("/inicio","/proveedor/**","/trabajo/**","/imagen/**","/perfil/**","/actualizarUser/**", "/actualizarProveedor/**","/actualizacionProveedor/**", "/actualizacionUser/**" ).hasAnyRole("USER","ADMIN", "PROVEEDOR") // Permite el acceso a /inicio solo si el usuario tiene el rol USER, ADMIN o PROVEEDOR
                     .antMatchers("/**").hasRole("ADMIN")
                     .anyRequest().authenticated()                  
                 .and().formLogin()
