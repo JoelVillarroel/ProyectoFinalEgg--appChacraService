@@ -88,22 +88,30 @@
                                         <h4 class="u-text u-text-default u-text-2">Datos Personales</h4>
 
                                         <p class="u-text u-text-3">
-                                            <span style="font-weight: 700;">Nombre:</span> <span
-                                                th:text="${nombre}"></span> <br>
+                                            <span style="font-weight: 700;">Nombre:</span>
+                                            <span th:text="${proveedor.nombre}"></span> <br>
 
-                                            <span style="font-weight: 700;">Apellido:</span> <span
-                                                th:text="${apellido}"></span> <br>
+                                            <span style="font-weight: 700;">Apellido: </span>
+                                            <span th:text="${proveedor.apellido}"></span> <br>
 
+                                            <span style="font-weight: 700;">Direccion: </span> 
                                             <span
-                                                th:if="${rol != T(com.GrupoE.WebAppServicios.enumeraciones.Rol).PROVEEDOR }"
-                                                style="font-weight: 700;">Barrio: </span>
-                                            <span
-                                                th:if="${rol != T(com.GrupoE.WebAppServicios.enumeraciones.Rol).PROVEEDOR }"
-                                                th:text="${barrio}"></span> <br>
+                                                th:text="${proveedor.direccion}"></span> <br>
 
-                                            <span style="font-weight: 700;">Direccion:</span> <span
-                                                th:text="${direccion}"></span>
+                                            <span style="font-weight: 700;"> Descripción: </span>
+                                            <span th:text="${proveedor.descripcion}"></span> <br>
 
+                                            <span style="font-weight: 700;">Remuneración aproximada por hora:</span>
+                                            <span th:text="${proveedor.remuneracion}"></span> <br>
+
+                                            <span style="font-weight: 700;">Servicio:</span>
+                                            <span th:text="${proveedor.servicio}"></span> <br>
+
+                                           <span style="font-weight: 700;">Cantidad de trabajos Realizados:</span>
+                                            <span th:text="${proveedor.cantTrabajos}"></span> <br>
+
+                                            <span style="font-weight: 700;">Calificación:</span>
+                                            <span th:text="${ proveedor.calificacion}"></span> <br>
                                         </p>
 
                                     </div>
@@ -121,37 +129,19 @@
                                         <p class="u-text u-text-4">
 
                                             <span style="font-weight: 700;">Rol:</span> <span
-                                                th:text="${usuario.rol.toString()}"></span><br>
+                                                th:text="${proveedor.rol.toString()}"></span><br>
 
-                                            <span style="font-weight: 700;">Estado:</span>
-                                            <span th:if="${activo == true}">Activo</span>
-                                            <span th:if="${activo == false}">Inactivo</span>
-
-                                            <span style="font-weight: 700;">Email:</span> <span
-                                                th:text="${usuario.email}"></span><br>
+                                             <span style="font-weight: 700;">Email:</span> <span
+                                                th:text="${proveedor.email}"></span><br>
 
                                             <span style="font-weight: 700;">Contraseña:</span> *******
 
                                         </p>
 
-                                        <div
-                                            th:if="${usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).PROVEEDOR }">
-                                            <a th:href="@{actualizarProveedor}" class="u-btn u-button-style u-text-body-color u-btn-1">
+                                        <div>
+                                            <a th:href="@{/perfil/actualizarProveedor}"
+                                                class="u-btn u-button-style u-text-body-color u-btn-1">
                                                 🛠 Actualizar mis datos personales
-                                            </a>
-                                        </div>
-
-                                        <div
-                                            th:if="${usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).USER or usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).ADMIN}">
-                                            <a th:href="@{/actualizarUser}"class="u-btn u-button-style u-text-body-color u-btn-1">
-                                                🛠 Actualizar mis datos personales
-                                            </a>
-                                        </div>
-
-                                        <div
-                                            th:if="${usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).USER }">
-                                            <a href="" class="u-btn u-button-style u-text-body-color u-btn-1">
-                                                ¡Quiero ser proveedor!
                                             </a>
                                         </div>
 
@@ -172,7 +162,7 @@
     </section>
 
     <!-- SOLICITUDES PROVEEDOR -->
-    <div th:if="${usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).PROVEEDOR }">
+    <div>
         <div class="container m-5">
             <h3> Mis solicitudes de empleo: </h3>
             <div th:if="${solicitudes == null || solicitudes.isEmpty()}">
@@ -212,9 +202,8 @@
             </ul>
         </div>
     </div>
-
-    <!-- pendientes PROVEEDOR-->
-    <div th:if="${usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).PROVEEDOR }">
+<!-- pendientes-->
+    <div>
         <div class="container m-5">
             <h3> Trabajos Pendientes </h3>
             <div th:if="${NoRealizados == null || NoRealizados.isEmpty()}">
@@ -257,7 +246,8 @@
         </div>
     </div>
 
-    <div th:if="${usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).PROVEEDOR }">
+    <!-- todos-->
+    <div>
         <div class="container m-5">
             <tr>
                 <h3> Aquí estan todos sus trabajos </h3>
@@ -297,110 +287,7 @@
             </table>
         </div>
     </div>
-    <!-- TRABAJOS SOLICITADOS USER-->
-    <div th:if="${usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).USER  }">
-        <div class="container m-5">
-            <h3> Aquí puede ver todos los trabajos Solicitados </h3>
-            <div th:if="${TodosUsuario.isEmpty() || TodosUsuario == null}">
-                <p> Aún no ha solicitado nungún trabajo </p>
-            </div>
-            <table class="table table-success table-hover table-striped"
-                th:if="${TodosUsuario != null && !TodosUsuario.isEmpty()}">
-                <thead class="align-items-center">
-                    <tr>
-                        <th scope="col">Proveedor</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">Estado de la Solicitud</th>
-                        <th scope="col">Realizado</th>
-                        <th scope="col">Calificación</th>
-                        <th scope="col">Comentario de la calificación</th>
-                        <th scope="col">Cancelar solicitud</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider" th:each="trabajo : ${TodosUsuario}">
-                    <tr>
-                        <th
-                            th:text="${trabajo.proveedor != null ? trabajo.proveedor.nombre + ' ' + trabajo.proveedor.apellido : 'Proveedor no disponible'}">
-                        </th>
-                        <td th:text="${trabajo.descripcion}"></td>
-                        <td>
-                            <span th:if="${trabajo.solicitud == 'ACEPTADA'}">Aceptada</span>
-                            <span th:if="${trabajo.solicitud == 'RECHAZADA'}">Rechazada</span>
-                            <span th:if="${trabajo.solicitud == '0'}"> Aún no hay respuesta del proveedor </span>
-                            <span th:if="${trabajo.solicitud == 'RECHAZADA POR USUARIO'}"> Has cancelado esta
-                                solicitud</span>
-                        </td>
-                        <td>
-                            <span th:if="${trabajo.realizado}">Finalizado</span>
-                            <span th:unless="${trabajo.realizado}">Aún no se ha marcado como finalizado</span>
-                        </td>
-                        <td
-                            th:text="${trabajo.calificacion > 0 ? trabajo.calificacion : 'Ya puede calificar este trabajo en el apartado calificaciones pendientes'}">
-                        </td>
 
-                        <td th:text="${trabajo.comentario}"></td>
-
-                        <td style="align-items: center;">
-                            <span
-                                th:if="${trabajo.realizado == false and (trabajo.solicitud != 'RECHAZADA' and trabajo.solicitud != 'RECHAZADA POR USUARIO')}">
-                                <form th:action="@{/trabajo/cancelarSolicitud/__${trabajo.id}__}" method="post">
-                                    <input type="hidden" id="trabajoId" th:value="${trabajo.id}" />
-                                    <button type="submit">Cancelar</button>
-                                </form>
-                            </span>
-                            <span
-                                th:if="${trabajo.realizado == true or trabajo.solicitud == 'RECHAZADA POR USUARIO'}">No
-                                se permite cancelar</span>
-                        </td>
-
-                    </tr>
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!--calificación USER-->
-    <div th:if="${usuario.rol == T(com.GrupoE.WebAppServicios.enumeraciones.Rol).USER  }">
-        <div class="container m-5">
-            <h3> Calificar Trabajos </h3>
-            <div th:if="${RealizadosNoCalificados == null || RealizadosNoCalificados.isEmpty()}">
-                <p> No hay trabajos para calificar en este momento...</p>
-            </div>
-            <div th:if="${RealizadosNoCalificados != null && !RealizadosNoCalificados.isEmpty()}">
-                <form th:action="@{/trabajo/calificar}" method="post">
-                    <label for="elemento"> Selecciona el trabajo que desea calificar </label>
-                    <select name="trabajoId">
-                        <option th:each="trabajo : ${RealizadosNoCalificados}" th:value="${trabajo.id}"
-                            th:text="${trabajo.proveedor != null ? trabajo.proveedor.nombre + ' ' + trabajo.proveedor.apellido : 'Nombre no disponible'} + ' - ' + ${trabajo.descripcion}">
-                        </option>
-                    </select>
-                    <div>
-                        <label for="calificacion"> Calificación: </label>
-                        <select id="calificacion" name="calificacion">
-                            <option th:value="1">1</option>
-                            <option th:value="2">2</option>
-                            <option th:value="3">3</option>
-                            <option th:value="4">4</option>
-                            <option th:value="5">5</option>
-                        </select>
-                    </div>
-                    <input type="hidden" name="usuarioId" th:value="${id}" />
-
-                    <div>
-                        <label for="comentario">Comentario:</label>
-                        <textarea id="comentario" th:name="${comentario}" rows="4" cols="50"></textarea>
-                    </div>
-
-                    <div style="align-items: center;">
-                        <button type="submit"> Enviar</button>
-                    </div>
-
-
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-------FOOTER------>
     <footer th:replace="~{/fragments/footer :: footer}"

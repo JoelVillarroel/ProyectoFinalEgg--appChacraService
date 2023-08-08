@@ -127,12 +127,14 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             
                             <!-- Elemento común que redirecciona a ver  perfil -->
-                            <li><a class="dropdown-item" th:href="@{/perfil/__${id}__}">Ver Perfil</a></li>
+                            <li><a  th:if="${rol == 'ADMIN' || rol == 'USER' }"  class="dropdown-item" th:href="@{/perfilUser/__${id}__}">Ver Perfil</a></li>
+
+                            <li><a th:if="${ rol == 'PROVEEDOR'}" class="dropdown-item" th:href="@{/perfilProveedor/__${id}__}">Ver Perfil</a></li>
                             <!-- Elemento común para todos los roles (Cerrar Sesión) -->
                             <li><a class="dropdown-item" href="/logout">Cerrar Sesión</a></li>
                         </ul>
                         <div>
-                            
+
                         </div>
                     </div>
                 </div>

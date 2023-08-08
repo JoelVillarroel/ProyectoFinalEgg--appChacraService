@@ -66,73 +66,75 @@
         <div class="form-group my-3">
             <h3 class="card-title">Actualizar tus datos personales</h3>
         </div>
-        <form class="formulario" th:action="@{/actualizacionProveedor}" method="POST" enctype="multipart/form-data">
+        <form class="formulario" th:action="@{/actualizarProveedor}" method="POST" enctype="multipart/form-data">
             
             <!-- Id -->
-            <input type="hidden" th:value="${id}" th:name="id">
+            <input type="hidden" th:value="${proveedor.id}" th:name="id">
 
             <!-- Nombre -->
             <div class="form-group my-3">
                 <label for="nombre">Nombre</label>
-                <input type="text" class="form-control" id="nombre" th:name="nombre" placeholder="Nombre"
-                    th:value="${nombre}" required>
+                <input type="text" class="form-control" id="nombre" th:name="nombre" 
+                    th:value="${proveedor.nombre}" required>
             </div>
 
             <!-- Apellido -->
             <div class="form-group my-3">
                 <label for="apellido">Apellido</label>
-                <input type="text" class="form-control" id="apellido" th:name="apellido" placeholder="Apellido"
-                    th:value="${apellido}" required>
+                <input type="text" class="form-control" id="apellido" th:name="apellido" 
+                    th:value="${proveedor.apellido}" required>
             </div>
 
             <!-- Dirección -->
             <div class="form-group my-3">
                 <label for="direccion">Dirección</label>
-                <input type="text" class="form-control" id="direccion" th:name="direccion" placeholder="Dirección"
-                    th:value="${direccion}" required>
+                <input type="text" class="form-control" id="direccion" th:name="direccion"
+                    th:value="${proveedor.direccion}" required>
             </div>
 
             <!-- Descripción -->
-            <div class="form-group my-3">
-                <label for="descripcion">Descripción de los trabajos que está dispuesto a realizar</label>
-                <textarea class="form-control" id="descripcion" th:name="descripcion"
-                    placeholder="Ejemplo: Realizo trabajos de albañilería y carpintería. Experiencia de 5 años en remodelaciones y reparaciones."
-                    rows="3" required></textarea>
+            <div>
+                <div class="form-group my-3" >
+                    <label for="descripcion ">Descripción de los trabajos que está dispuesto a realizar: </label>
+                    <textarea   class="form-control"  th:value="${proveedor.descripcion}" id="descripcion" th:name="descripcion" rows="4" cols="50" required></textarea>
+                </div>
+
             </div>
 
             <!-- Remuneración -->
             <div class="form-group my-3">
                 <label for="remuneracion">Remuneración en pesos pretendida por hora</label>
+             
                 <input type="number" class="form-control" id="remuneracion" th:name="remuneracion"
-                    placeholder="Remuneración" th:value="${remuneracion}" required>
+                     th:value="${proveedor.remuneracion}" required>
             </div>
 
             <!-- Servicio -->
             <div class="form-group my-3">
                 <label for="servicio">Servicio</label>
                 <select class="form-control" id="servicio" th:name="servicio" required>
-                    <option value="albañileria" th:selected="${servicio == 'albañileria'}">Albañilería</option>
-                    <option value="carpinteria" th:selected="${servicio == 'carpinteria'}">Carpintería</option>
-                    <option value="cerrajeria" th:selected="${servicio == 'cerrajeria'}">Cerrajería</option>
-                    <option value="climatizacion" th:selected="${servicio == 'climatizacion'}">Climatización</option>
-                    <option value="electricista" th:selected="${servicio == 'electricista'}">Electricista</option>
-                    <option value="electronica" th:selected="${servicio == 'electronica'}">Electrónica</option>
-                    <option value="fontanero" th:selected="${servicio == 'fontanero'}">Fontanero</option>
-                    <option value="grafica" th:selected="${servicio == 'grafica'}">Grafica</option>
-                    <option value="jardineria" th:selected="${servicio == 'jardineria'}">Jardineria</option>
-                    <option value="limpieza" th:selected="${servicio == 'limpieza'}">Limpieza</option>
-                    <option value="mecanica" th:selected="${servicio == 'mecanica'}">Mecánica</option>
-                    <option value="mudanzas" th:selected="${servicio == 'mudanzas'}">Mudanzas</option>
-                    <option value="pintura" th:selected="${servicio == 'pintura'}">Pintura</option>
-                    <option value="seguridad" th:selected="${servicio == 'seguridad'}">Seguridad</option>
-                    <option value="software" th:selected="${servicio == 'software'}">Software</option>
+                    <option value="albañileria" th:selected="${proveedor.servicio == 'albañileria'}">Albañilería</option>
+                    <option value="carpinteria" th:selected="${proveedor.servicio == 'carpinteria'}">Carpintería</option>
+                    <option value="cerrajeria" th:selected="${proveedor.servicio == 'cerrajeria'}">Cerrajería</option>
+                    <option value="climatizacion" th:selected="${proveedor.servicio == 'climatizacion'}">Climatización</option>
+                    <option value="electricista" th:selected="${proveedor.servicio == 'electricista'}">Electricista</option>
+                    <option value="electronica" th:selected="${proveedor.servicio == 'electronica'}">Electrónica</option>
+                    <option value="fontanero" th:selected="${proveedor.servicio == 'fontanero'}">Fontanero</option>
+                    <option value="grafica" th:selected="${proveedor.servicio == 'grafica'}">Grafica</option>
+                    <option value="jardineria" th:selected="${proveedor.servicio == 'jardineria'}">Jardineria</option>
+                    <option value="limpieza" th:selected="${proveedor.servicio == 'limpieza'}">Limpieza</option>
+                    <option value="mecanica" th:selected="${proveedor.servicio == 'mecanica'}">Mecánica</option>
+                    <option value="mudanzas" th:selected="${proveedor.servicio == 'mudanzas'}">Mudanzas</option>
+                    <option value="pintura" th:selected="${proveedor.servicio == 'pintura'}">Pintura</option>
+                    <option value="seguridad" th:selected="${proveedor.servicio == 'seguridad'}">Seguridad</option>
+                    <option value="software" th:selected="${proveedor.servicio == 'software'}">Software</option>
                 </select>
             </div>
 
             <!-- Email -->
             <div class="form-group my-3">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" th:name="email" placeholder="Email" th:value="${email}"
+                <input type="email" class="form-control" id="email" th:name="email" placeholder="Email" th:value="${proveedor.email}"
                     required>
             </div>
 
@@ -172,7 +174,6 @@
     <footer th:replace="~{/fragments/footer :: footer}"
         th:with="id=${id}, nombre=${nombre}, apellido=${apellido}, barrio=${barrio}, direccion=${direccion}, email=${email}, imagen=${imagen}, rol=${rol}">
     </footer>
-    <script th:src="@{/js/terminosYCondiciones.js}" type="text/javascript"></script>
 </body>
 
 </html>

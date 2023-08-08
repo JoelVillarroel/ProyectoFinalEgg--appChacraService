@@ -108,26 +108,31 @@ public class ProveedorServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizarProveedor(HttpSession session,MultipartFile archivo, String idProveedor, 
-            Integer cantTrabajos, String nombre, String apellido, String direccion,
+    public void actualizarProveedor(HttpSession session, MultipartFile archivo, String idProveedor,
+            String nombre, String apellido, String direccion,
             String descripcion, String remuneracion, String email,
             String password, String password2) throws MyException {
 
-        validarActualizacion(session,nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
+        validarActualizacion(session, nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
 
         Optional<Proveedor> respuesta = proveedorRepositorio.findById(idProveedor);
 
         if (respuesta.isPresent()) {
-
             Proveedor proveedor = respuesta.get();
+           
+             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+            if (!passwordEncoder.matches(password, proveedor.getPassword())) {
+                throw new MyException("Has ingresado una contraseña errónea");
+            }
+
+            
             proveedor.setNombre(nombre);
             proveedor.setEmail(email);
             proveedor.setApellido(apellido);
             proveedor.setDireccion(direccion);
-
-            proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
-
-            proveedor.setRol(Rol.PROVEEDOR);
+            proveedor.setDescripcion(descripcion);
+            proveedor.setRemuneracion(remuneracion);
 
             String idImagen = null;
 
@@ -138,7 +143,6 @@ public class ProveedorServicio implements UserDetailsService {
             Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
 
             proveedor.setImagen(imagen);
-
             proveedorRepositorio.save(proveedor);
         }
     }
@@ -319,14 +323,13 @@ public class ProveedorServicio implements UserDetailsService {
         if (email == null || email.isEmpty()) {
             throw new MyException("El email no puede ser nulo o estar vacío");
         }
-        
-        Proveedor proveedorLogueado = (Proveedor) session.getAttribute("usuarioSession");
+
+        Proveedor proveedorLogueado = (Proveedor) session.getAttribute("proveedorSession");
         Proveedor respuesta = proveedorRepositorio.buscarProveedorPorEmail(email);
-        if (respuesta != null && !respuesta.getId().equals(proveedorLogueado.getId())) {
-            
-            /*Se comprueba si se encontró un proveedor y si su ID no es igual al ID del usuario logueado. 
-            Si ambas condiciones son verdaderas, se lanza una excepción */
-            throw new MyException("El email ya se encuentra registrado por otro usuario");
+        if (respuesta != null && respuesta.getId() != null && proveedorLogueado != null && proveedorLogueado.getId() != null) {
+            if (!respuesta.getId().equals(proveedorLogueado.getId())) {
+                throw new MyException("El email ya se encuentra registrado por otro usuario");
+            }
         }
         /*Validar contraseña*/
         if (password == null || password.isEmpty() || password.length() <= 5) {
