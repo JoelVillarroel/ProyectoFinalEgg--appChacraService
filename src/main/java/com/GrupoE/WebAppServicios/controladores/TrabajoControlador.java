@@ -129,7 +129,7 @@ public class TrabajoControlador {
     public String Aceptar(@PathVariable String id) {
         trabajoServicio.AceptarSolicitud(id);
 
-        return "redirect:/perfil/{id}?cache=false";
+        return "redirect:/perfilProveedor/{id}?cache=false";
 
     }
 
@@ -137,7 +137,7 @@ public class TrabajoControlador {
     public String Rechazar(@PathVariable String id) {
         trabajoServicio.RechazarSolicitud(id);
 
-        return "redirect:/perfil/{id}?cache=false";
+        return "redirect:/perfilProveedor/{id}?cache=false";
 
     }
 
@@ -145,7 +145,7 @@ public class TrabajoControlador {
     public String MarcarRealizado(@PathVariable String id) throws MyException {
         trabajoServicio.MarcarComoRealizado(id);
 
-        return "redirect:/perfil/{id}?cache=false";
+        return "redirect:/perfilProveedor/{id}?cache=false";
 
     }
 
@@ -153,7 +153,7 @@ public class TrabajoControlador {
     public String CancelarSolicitud(@PathVariable String id) {
         trabajoServicio.CancelarSolicitud(id);
 
-        return "redirect:/perfil/{id}?cache=false";
+        return "redirect:/perfilUser/{id}?cache=false";
 
     }
 
@@ -167,7 +167,7 @@ public class TrabajoControlador {
         trabajoServicio.Calificar(trabajoId, comentario, calificacion);
 
         // Redirecciona a la página de perfil del usuario después de calificar
-        String redirectUrl = "/perfil/" + usuarioId + "?cache=false";
+        String redirectUrl = "/perfilUser/" + usuarioId + "?cache=false";
         return "redirect:" + redirectUrl;
     }
 }

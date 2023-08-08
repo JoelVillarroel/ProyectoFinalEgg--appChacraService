@@ -49,7 +49,7 @@
         <div class="form-group my-3">
             <h3 class="card-title">Modificar Usuario</h3>
         </div>
-        <form class="formulario" th:if="usuario != null" th:action="@{/actualizacionUser}" method="POST"
+        <form class="formulario" th:if="usuario != null" th:action="@{/actualizarUser}" method="POST"
             enctype="multipart/form-data">
 
             <!-- Id -->
@@ -60,7 +60,7 @@
             <div class="form-group my-3">
                 <label for="nombre">Nombre</label>
                 <input type="text" class="form-control" id="nombre" th:name="nombre" placeholder="Nombre"
-                    th:value="${nombre}" required>
+                    th:value="${usuario.nombre}" required>
 
             </div>
 
@@ -68,7 +68,7 @@
             <div class="form-group my-3">
                 <label for="apellido">Apellido</label>
                 <input type="text" class="form-control" id="apellido" th:name="apellido" placeholder="Apellido"
-                    th:value="${apellido}" required>
+                    th:value="${usuario.apellido}" required>
             </div>
 
             <!-- Barrio -->
@@ -76,9 +76,10 @@
                 <label for="barrio">Barrio</label>
                 <select class="form-control" id="barrio" th:name="barrio" required>
                     <option value="" disabled>SELECCIONE UN BARRIO</option>
-                    <option value="darragueira" th:selected="${barrio == 'darragueira'}">Darragueira Park</option>
-                    <option value="recoleta" th:selected="${barrio == 'recoleta'}">Barrio Recoleta</option>
-                    <option value="alsaga" th:selected="${barrio == 'alsaga'}">Villa Álsaga</option>
+                    <option value="darragueira" th:selected="${usuario.barrio == 'darragueira'}">Darragueira Park
+                    </option>
+                    <option value="recoleta" th:selected="${usuario.barrio == 'recoleta'}">Barrio Recoleta</option>
+                    <option value="alsaga" th:selected="${usuario.barrio == 'alsaga'}">Villa Álsaga</option>
                 </select>
             </div>
 
@@ -86,14 +87,14 @@
             <div class="form-group my-3">
                 <label for="direccion">Dirección</label>
                 <input type="text" class="form-control" id="direccion" th:name="direccion" placeholder="Dirección"
-                    th:value="${direccion}" required>
+                    th:value="${usuario.direccion}" required>
             </div>
 
             <!-- Email -->
             <div class="form-group my-3">
                 <label for="email">Email</label>
                 <input type="email" class="form-control" id="email" th:name="email" placeholder="Email"
-                    th:value="${email}" required>
+                    th:value="${usuario.email}" required>
             </div>
 
             <!-- Archivo -->
@@ -119,7 +120,6 @@
                 <input type="password" class="form-control" id="password2" th:name="password2"
                     placeholder="Repetir Contraseña" required>
             </div>
-
 
             <!-- Botón "actualizar" -->
             <button type="submit" class="btn btn-primary mt-3 botones" id="registrarme">Actualizar</button>

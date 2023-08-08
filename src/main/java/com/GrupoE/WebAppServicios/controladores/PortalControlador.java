@@ -121,34 +121,15 @@ public class PortalControlador {
     }
 
     /*-----------------------------------------------------------*/
-    @GetMapping("/perfil/{id}")
-    public String perfil(@PathVariable String id, ModelMap modelo, HttpSession session) {
-          
+    @GetMapping("/perfilUser/{id}")
+    public String perfilUser(@PathVariable String id, ModelMap modelo, HttpSession session) {
+
         String redireccion = logueado(modelo, session);
         if (redireccion != null) {
             // Si el método logueado devuelve una redirección, la retornamos
             return redireccion;
         }
-        
-        Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
-        if (logueadoProveedor != null) {
-            Proveedor usuario = logueadoProveedor;
-            modelo.addAttribute("usuario", usuario);
-            String barrio = "Barrio proveedor"; //este atributo nunca se muestra.
-            modelo.addAttribute("barrio ", barrio);
-            modelo.addAttribute("activo ", true);
 
-            List<Trabajo> NoRealizados = trabajoServicio.listarTrabajosNoRealizados(logueadoProveedor.getId());
-            modelo.addAttribute("NoRealizados", NoRealizados);
-
-            //lista todos los trabajos de un proveedor en particular
-            List<Trabajo> trabajosProov = trabajoServicio.TodosProveedor(logueadoProveedor.getId());
-            modelo.addAttribute("trabajosProov", trabajosProov);
-
-            //lista los trabajos que no ha aceptado ni rechazado de un proveedor en particular
-            List<Trabajo> solicitudes = trabajoServicio.Solicitudes(logueadoProveedor.getId());
-            modelo.addAttribute("solicitudes", solicitudes);
-        }
         //lista los trabajos que le faltan calificar al ususario logueado.
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioSession");
         if (usuarioLogueado != null) {
@@ -161,10 +142,38 @@ public class PortalControlador {
             List<Trabajo> TodosUsuario = trabajoServicio.TodosUsuario(usuarioLogueado.getId());
             modelo.addAttribute("TodosUsuario", TodosUsuario);
         }
-      
-        logueado(modelo,session);
 
-        return "Perfil.html";
+        return "perfilUsuario.html";
+    }
+
+    /*-----------------------------------------------------------*/
+    @GetMapping("/perfilProveedor/{id}")
+    public String perfilProveedor(@PathVariable String id, ModelMap modelo, HttpSession session) {
+
+        String redireccion = logueado(modelo, session);
+        if (redireccion != null) {
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
+
+        Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
+        if (logueadoProveedor != null) {
+            Proveedor proveedor = logueadoProveedor;
+            modelo.addAttribute("proveedor", proveedor);
+
+            List<Trabajo> NoRealizados = trabajoServicio.listarTrabajosNoRealizados(logueadoProveedor.getId());
+            modelo.addAttribute("NoRealizados", NoRealizados);
+
+            //lista todos los trabajos de un proveedor en particular
+            List<Trabajo> trabajosProov = trabajoServicio.TodosProveedor(logueadoProveedor.getId());
+            modelo.addAttribute("trabajosProov", trabajosProov);
+
+            //lista los trabajos que no ha aceptado ni rechazado de un proveedor en particular
+            List<Trabajo> solicitudes = trabajoServicio.Solicitudes(logueadoProveedor.getId());
+            modelo.addAttribute("solicitudes", solicitudes);
+        }
+
+        return "perfilProveedor.html";
     }
 
     @GetMapping("/login")
@@ -231,6 +240,11 @@ public class PortalControlador {
                 modelo.addAttribute("apellido", logueadoProveedor.getApellido());
                 modelo.addAttribute("direccion", logueadoProveedor.getDireccion());
                 modelo.addAttribute("descripcion", logueadoProveedor.getDescripcion());
+                modelo.addAttribute("remuneracion", logueadoProveedor.getRemuneracion());
+                modelo.addAttribute("servicio", logueadoProveedor.getServicio());
+                modelo.addAttribute("descripcion", logueadoProveedor.getDescripcion());
+                modelo.addAttribute("cantTrabajos", logueadoProveedor.getCantTrabajos());
+                modelo.addAttribute("descripcion", logueadoProveedor.getCalificacion());
 
                 if (logueadoProveedor.getImagen() != null) {
                     modelo.addAttribute("idImagen", logueadoProveedor.getImagen().getId());
@@ -251,12 +265,17 @@ public class PortalControlador {
             // Si el método logueado devuelve una redirección, la retornamos
             return redireccion;
         }
+        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioSession");
+        if (usuarioLogueado != null) {
 
-        logueado(modelo, session);
+            Usuario usuario = usuarioLogueado;
+            
+            modelo.addAttribute("usuario", usuario);
+        }
         return "modificarUsuario.html";
     }
 
-    @PostMapping("/actualizacionUser")
+    @PostMapping("/actualizarUser")
     public String Actualizacion(@RequestParam("usuarioId") String usuarioId,
             @RequestParam("nombre") String nombre,
             @RequestParam("apellido") String apellido,
@@ -271,18 +290,17 @@ public class PortalControlador {
         try {
             usuarioServicio.actualizar(session, archivo, usuarioId, nombre, apellido,
                     barrio, direccion, email, password, password2);
-             
-            return "redirect:" + "/perfil/" + usuarioId + "?cache=false";
+
+            return "redirect:" + "/perfilUser/" + usuarioId + "?cache=false";
 
         } catch (MyException ex) {
             modelo.put("error", ex.getMessage());
-           
+
             return "modificarUsuario.html";
         }
     }
 
-    
-    @GetMapping("/actualizarProveedor")
+    @GetMapping("/perfil/actualizarProveedor")
     public String ActualizarProveedor(ModelMap modelo, HttpSession session) {
         String redireccion = logueado(modelo, session);
         if (redireccion != null) {
@@ -290,31 +308,36 @@ public class PortalControlador {
             return redireccion;
         }
 
-        logueado(modelo, session);
+        Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
+
+        if (logueadoProveedor != null) {
+            Proveedor proveedor = logueadoProveedor;
+            modelo.addAttribute("proveedor", proveedor);
+            
+            }
         return "modificarProveedor.html";
     }
 
-    @PostMapping("/actualizacionProveedor")
+    @PostMapping("/actualizarProveedor")
     public String Actualizacion(@RequestParam("id") String id,
             @RequestParam("nombre") String nombre,
             @RequestParam("apellido") String apellido,
-            @RequestParam("barrio") String barrio,
             @RequestParam("direccion") String direccion,
             @RequestParam("email") String email,
-            MultipartFile archivo, @RequestParam("cantTrabajos") Integer cantTrabajos, 
-            @RequestParam("remuneración")String remuneracion, @RequestParam("descripcion")String descripcion, 
+            MultipartFile archivo,
+            @RequestParam("remuneracion") String remuneracion, @RequestParam("descripcion") String descripcion,
             @RequestParam("password") String password,
             @RequestParam("password2") String password2,
             ModelMap modelo,
             HttpSession session) throws MyException {
         try {
-            proveedorServicio.actualizarProveedor(session, archivo, direccion, cantTrabajos, nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
-           logueado(modelo,session);
-            return "redirect:" + "/perfil/" + id + "?cache=false";
+            proveedorServicio.actualizarProveedor(session, archivo, direccion,  nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
+            
+            return "redirect:" + "/perfilProveedor/" + id + "?cache=false";
 
         } catch (MyException ex) {
             modelo.put("error", ex.getMessage());
-           
+
             return "modificarProveedor.html";
         }
     }
