@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.or">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <head>
         <title>Registro de Proveedor</title>
@@ -57,7 +57,7 @@
         </div>
         <div class="container-fluid m-5 " >
             <div class="form-group my-3">
-                <h3 class="card-title">Registro de proveedor:</h3>
+                <h3 class="card-title text-center">Registro de proveedor</h3>
             </div>
             <form class="formulario" th:action="@{/registroProveedor}" method="POST" enctype="multipart/form-data">
 
