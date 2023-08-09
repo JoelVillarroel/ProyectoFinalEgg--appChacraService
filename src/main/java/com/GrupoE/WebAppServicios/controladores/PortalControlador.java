@@ -135,6 +135,11 @@ public class PortalControlador {
         if (usuarioLogueado != null) {
 
             Usuario usuario = usuarioLogueado;
+
+            if (usuarioLogueado.getImagen() != null) {
+                modelo.addAttribute("idImagen", usuarioLogueado.getImagen().getId());
+            }
+
             modelo.addAttribute("usuario", usuario);
             List<Trabajo> RealizadosNoCalificados = trabajoServicio.trabajosRealizadosNoCalificados(usuarioLogueado.getId());
             modelo.addAttribute("RealizadosNoCalificados", RealizadosNoCalificados);
@@ -159,6 +164,11 @@ public class PortalControlador {
         Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
         if (logueadoProveedor != null) {
             Proveedor proveedor = logueadoProveedor;
+
+            if (logueadoProveedor.getImagen() != null) {
+                modelo.addAttribute("idImagen", logueadoProveedor.getImagen().getId());
+            }
+
             modelo.addAttribute("proveedor", proveedor);
 
             List<Trabajo> NoRealizados = trabajoServicio.listarTrabajosNoRealizados(logueadoProveedor.getId());
@@ -269,7 +279,7 @@ public class PortalControlador {
         if (usuarioLogueado != null) {
 
             Usuario usuario = usuarioLogueado;
-            
+
             modelo.addAttribute("usuario", usuario);
         }
         return "modificarUsuario.html";
@@ -290,6 +300,8 @@ public class PortalControlador {
         try {
             usuarioServicio.actualizar(session, archivo, usuarioId, nombre, apellido,
                     barrio, direccion, email, password, password2);
+            Usuario usuarioActualizado = usuarioServicio.getOne(usuarioId);
+            session.setAttribute("usuarioSession", usuarioActualizado);
 
             return "redirect:" + "/perfilUser/" + usuarioId + "?cache=false";
 
@@ -311,10 +323,9 @@ public class PortalControlador {
         Proveedor logueadoProveedor = (Proveedor) session.getAttribute("proveedorSession");
 
         if (logueadoProveedor != null) {
-            Proveedor proveedor = logueadoProveedor;
-            modelo.addAttribute("proveedor", proveedor);
-            
-            }
+            modelo.addAttribute("proveedor", logueadoProveedor);
+
+        }
         return "modificarProveedor.html";
     }
 
@@ -325,14 +336,17 @@ public class PortalControlador {
             @RequestParam("direccion") String direccion,
             @RequestParam("email") String email,
             MultipartFile archivo,
-            @RequestParam("remuneracion") String remuneracion, @RequestParam("descripcion") String descripcion,
+            @RequestParam("remuneracion") String remuneracion,
+            @RequestParam("servicio") String servicio,
+            @RequestParam("descripcion") String descripcion,
             @RequestParam("password") String password,
             @RequestParam("password2") String password2,
             ModelMap modelo,
             HttpSession session) throws MyException {
         try {
-            proveedorServicio.actualizarProveedor(session, archivo, direccion,  nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
-            
+            proveedorServicio.actualizarProveedor(session, archivo, direccion, nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
+            Proveedor proveedorActualizado = proveedorServicio.getOne(id);
+            session.setAttribute("proveedorSession", proveedorActualizado);
             return "redirect:" + "/perfilProveedor/" + id + "?cache=false";
 
         } catch (MyException ex) {
@@ -342,4 +356,39 @@ public class PortalControlador {
         }
     }
 
+    @GetMapping("/serProveedor")
+    public String SerProveedor(ModelMap modelo, HttpSession session) {
+        String redireccion = logueado(modelo, session);
+        if (redireccion != null){
+            // Si el método logueado devuelve una redirección, la retornamos
+            return redireccion;
+        }
+        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioSession");
+        if (usuarioLogueado != null) {
+
+            Usuario usuario = usuarioLogueado;
+            modelo.addAttribute("usuario", usuario);
+        }
+        return "volverse_proveedor.html";
+    }
+
+    @PostMapping("/serProveedor")
+    public String serProveedor(@RequestParam("usuarioId") String usuarioId,
+            @RequestParam("remuneracion") String remuneracion,
+            @RequestParam("servicio") String servicio,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("password") String password,
+            @RequestParam("password2") String password2,
+            ModelMap modelo,
+            HttpSession session) throws MyException {
+        try {
+            usuarioServicio.CambiarAProveedor(descripcion, remuneracion, password, password2, usuarioId, servicio);
+
+            return "redirect:" + "/";
+
+        } catch (MyException ex) {
+            modelo.put("error", ex.getMessage());
+            return "volverse_proveedor.html";
+        }
+    }
 }

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +31,9 @@ public class UsuarioServicio implements UserDetailsService {
 
     @Autowired
     private ImagenServicio imagenServicio;
+
+    @Autowired
+    private ProveedorServicio proveedorServicio;
 
     @Transactional
     public void registrar(MultipartFile archivo, String nombre, String apellido, String barrio, String direccion, String email, String password, String password2) throws MyException {
@@ -175,7 +178,7 @@ public class UsuarioServicio implements UserDetailsService {
         }
     }
 
-    private void validarActualizacion(HttpSession session, String nombre, String apellido, 
+    private void validarActualizacion(HttpSession session, String nombre, String apellido,
             String barrio, String direccion, String email, String password, String password2) throws MyException {
 
         /*Validar Nombre*/
@@ -219,7 +222,6 @@ public class UsuarioServicio implements UserDetailsService {
             throw new MyException("El email no puede ser nulo o estar vacío");
         }
 
-        
         Usuario logueadoUsuario = (Usuario) session.getAttribute("usuarioSession");
         Usuario respuesta = usuarioRepositorio.buscarUsuarioPorEmail(email);
         if (respuesta != null && !respuesta.getId().equals(logueadoUsuario.getId())) {
@@ -332,6 +334,38 @@ public class UsuarioServicio implements UserDetailsService {
             } else if (usuario.getRol() == Rol.USER) {
                 usuario.setRol(Rol.ADMIN);
             }
+        }
+    }
+
+    @Transactional
+    public void CambiarAProveedor(String descripcion, String remuneracion,
+            String password, String password2, String usuarioId, String servicio) throws MyException {
+
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(usuarioId);
+        if (respuesta.isPresent()) {
+            Usuario usuario = respuesta.get();
+
+            String nombre = usuario.getNombre();
+            String apellido = usuario.getApellido();
+            String email = usuario.getEmail();
+            String direccion = usuario.getDireccion();
+
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+            if (!passwordEncoder.matches(password, usuario.getPassword())) {
+                throw new MyException("Has ingresado una contraseña errónea");
+            }
+            Imagen archivo = null;
+            Imagen imagenUsuario = usuario.getImagen();
+            if (imagenUsuario != null) {
+                archivo = usuario.getImagen();
+            }
+            usuario.setRol(Rol.PROVEEDOR);
+            usuario.setEmail("usuario@deshabilitado.com");
+            usuario.setActivo(false);
+            System.out.println("datos usaurio cambiados");
+            proveedorServicio.VolverseProveedor(archivo, nombre, apellido, direccion, servicio, remuneracion, descripcion, email, password, password2);
+
         }
     }
 
