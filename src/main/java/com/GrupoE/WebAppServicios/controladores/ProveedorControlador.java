@@ -238,7 +238,7 @@ public class ProveedorControlador {
     }
     @PostMapping("/calificar/{id}")
     public String calificar(@PathVariable String id, @RequestParam String comentario, @RequestParam int calificacion) throws MyException{
-        trabajoServicio.Calificar(id, comentario, calificacion);
+        trabajoServicio.Calificar(id,calificacion,comentario);;
         return "inicio.html";
     }
 

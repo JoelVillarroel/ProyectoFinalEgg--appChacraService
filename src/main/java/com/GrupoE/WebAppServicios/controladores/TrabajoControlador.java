@@ -159,13 +159,13 @@ public class TrabajoControlador {
 
     @PostMapping("/calificar")
     public String calificarTrabajo(@RequestParam("trabajoId")String trabajoId,
-            String comentario,
+            @RequestParam("comentario")String comentario,@RequestParam("proveedorId") String proveedorId,
             @RequestParam("calificacion") int calificacion,
             @RequestParam("usuarioId")String usuarioId) throws MyException {
 
         // Llama al servicio 'trabajoServicio' para calificar el trabajo
-        trabajoServicio.Calificar(trabajoId, comentario, calificacion);
-
+        trabajoServicio.Calificar(trabajoId,  calificacion,comentario);
+        proveedorServicio.calificarProveedor(trabajoId, calificacion);
         // Redirecciona a la página de perfil del usuario después de calificar
         String redirectUrl = "/perfilUser/" + usuarioId + "?cache=false";
         return "redirect:" + redirectUrl;

@@ -250,18 +250,22 @@
                             <option th:value="5">5</option>
                         </select>
                     </div>
+                    <div>
                     <input type="hidden" name="usuarioId" th:value="${id}" />
-
+                    
+                    </div>
+                    
                     <div>
                         <label for="comentario">Comentario:</label>
-                        <textarea id="comentario" th:name="comentario" rows="4" cols="50"></textarea>
+                        <textarea id="comentario" name="comentario" rows="4" cols="50"></textarea><!--th:name="${comentario}"-->
                     </div>
-
+                    <div>
+                    <input type="hidden" name="proveedorId" th:value="${id}" />
+                    
+                    </div> 
                     <div style="align-items: center;">
                         <button type="submit"> Enviar</button>
                     </div>
-
-
                 </form>
             </div>
         </div>
