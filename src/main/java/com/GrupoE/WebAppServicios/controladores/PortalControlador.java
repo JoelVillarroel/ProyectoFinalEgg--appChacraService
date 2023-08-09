@@ -344,7 +344,7 @@ public class PortalControlador {
             ModelMap modelo,
             HttpSession session) throws MyException {
         try {
-            proveedorServicio.actualizarProveedor(session, archivo, direccion, nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
+            proveedorServicio.actualizarProveedor(session, archivo, id, nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
             Proveedor proveedorActualizado = proveedorServicio.getOne(id);
             session.setAttribute("proveedorSession", proveedorActualizado);
             return "redirect:" + "/perfilProveedor/" + id + "?cache=false";
