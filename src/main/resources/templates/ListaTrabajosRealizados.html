@@ -41,7 +41,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <tr><!--
                             <th th:text="${trabajo.usuario != null ? trabajo.usuario.nombre + ' ' + trabajo.usuario.apellido : 'Usuario no disponible'}"></th>
                             -->
-                            <td th:text="${trabajo.usuario}"></td>
+                            <td th:text="${trabajo.usuario.nombre}"></td>
                             <td th:text="${trabajo.descripcion}"></td>
                             <td th:text="${trabajo.solicitud}"></td>
                             <td th:text="${trabajo.realizado}"></td>

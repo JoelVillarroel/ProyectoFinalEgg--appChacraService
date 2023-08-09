@@ -147,6 +147,27 @@ public class ProveedorServicio implements UserDetailsService {
         }
     }
 
+    @Transactional
+    public void calificarProveedor(String trabajoId,Integer calificacion) throws MyException {
+
+        //validarActualizacion(session,nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
+
+        Trabajo trabajo = trabajoRepositorio.TrabajoRealizadosProveedor(trabajoId);
+        
+            Optional<Proveedor> respuesta = proveedorRepositorio.findById(trabajo.getProveedor().getId());
+
+        if (respuesta.isPresent()) {
+            
+            Proveedor proveedor = respuesta.get();
+            
+            proveedor.setCalificacion((proveedor.getCalificacion()+calificacion)/(proveedor.getCantTrabajos()+1));
+            proveedor.setCantTrabajos(proveedor.getCantTrabajos()+1);
+            proveedorRepositorio.save(proveedor);
+        }
+        
+       
+    }
+    
     public Proveedor getOne(String id) {
         return proveedorRepositorio.getOne(id);
     }

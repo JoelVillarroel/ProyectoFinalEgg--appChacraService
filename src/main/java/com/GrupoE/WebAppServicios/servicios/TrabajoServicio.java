@@ -147,7 +147,7 @@ public class TrabajoServicio {
 
     //FUNCIONALIDADES
     @Transactional
-    public void Calificar(String id, String comentario, int calificacion) throws MyException {
+    public void Calificar(String id, int calificacion,String comentario) throws MyException {
         if (id == null || id.isEmpty()) {
             throw new MyException("El id del trabajo está vacío");
         }
@@ -157,7 +157,7 @@ public class TrabajoServicio {
             Trabajo trabajo = t.get();
             trabajo.setCalificacion(calificacion);
 
-            if (comentario != null && !comentario.isEmpty()) {
+            if (comentario != null ) {//&& !comentario.isEmpty()
                 trabajo.setComentario(comentario);
             }
 
