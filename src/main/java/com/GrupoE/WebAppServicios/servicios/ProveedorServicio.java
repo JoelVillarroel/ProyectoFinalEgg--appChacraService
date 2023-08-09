@@ -8,11 +8,11 @@ import com.GrupoE.WebAppServicios.enumeraciones.Rol;
 import com.GrupoE.WebAppServicios.errores.MyException;
 import com.GrupoE.WebAppServicios.repositorios.ProveedorRepositorio;
 import com.GrupoE.WebAppServicios.repositorios.TrabajoRepositorio;
+import com.GrupoE.WebAppServicios.repositorios.UsuarioRepositorio;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +38,10 @@ public class ProveedorServicio implements UserDetailsService {
 
     @Autowired
     private ImagenServicio imagenServicio;
-
+    
+    @Autowired
+    private UsuarioRepositorio usuarioRepositorio;
+    
     @Transactional
 
     public void registrar(MultipartFile archivo, String nombre, String apellido, String direccion, String servicio, String remuneracion, String descripcion, String email, String password, String password2) throws MyException {
@@ -65,6 +69,34 @@ public class ProveedorServicio implements UserDetailsService {
         Imagen imagen = imagenServicio.guardar(archivo);
         proveedor.setImagen(imagen);
 
+        proveedorRepositorio.save(proveedor);
+    }
+
+    @Transactional
+    public void VolverseProveedor(Imagen imagen, String nombre, String apellido, String direccion, String servicio, String remuneracion, String descripcion, String email, String password, String password2) throws MyException {
+
+        validar(nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
+
+        Proveedor proveedor = new Proveedor();
+        proveedor.setCantTrabajos(0);
+        proveedor.setCalificacion(0);
+        proveedor.setNombre(nombre);
+
+        proveedor.setApellido(apellido);
+        proveedor.setDireccion(direccion);
+        proveedor.setServicio(servicio);
+
+        proveedor.setDescripcion(descripcion);
+        proveedor.setRemuneracion(remuneracion);
+
+        proveedor.setEmail(email);
+
+        proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
+
+        proveedor.setRol(Rol.PROVEEDOR);
+
+        proveedor.setImagen(imagen);
+        System.out.println("apunto de guardar el prov nuevp");
         proveedorRepositorio.save(proveedor);
     }
 
@@ -119,14 +151,13 @@ public class ProveedorServicio implements UserDetailsService {
 
         if (respuesta.isPresent()) {
             Proveedor proveedor = respuesta.get();
-           
-             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
             if (!passwordEncoder.matches(password, proveedor.getPassword())) {
                 throw new MyException("Has ingresado una contraseña errónea");
             }
 
-            
             proveedor.setNombre(nombre);
             proveedor.setEmail(email);
             proveedor.setApellido(apellido);
@@ -199,7 +230,7 @@ public class ProveedorServicio implements UserDetailsService {
     }
 
 //VALIDACIONES
-    private void validar(String nombre, String apellido, String direccion, String descripcion, String remuneracion, String email, String password, String password2) throws MyException {
+    public void validar(String nombre,String apellido, String direccion, String descripcion, String remuneracion, String email, String password, String password2) throws MyException {
 
         /*Validar Nombre*/
         if (nombre == null || nombre.isEmpty()) {
@@ -254,6 +285,10 @@ public class ProveedorServicio implements UserDetailsService {
         if (email == null || email.isEmpty()) {
             throw new MyException("El email no puede ser nulo o estar vacío");
         }
+          if (proveedorRepositorio.buscarProveedorPorEmail(email) != null || usuarioRepositorio.buscarUsuarioPorEmail(email) != null) {
+            throw new MyException("Hay otro usuario con este email. Elija otro");
+        }  
+         
         /*Validar contraseña*/
         if (password == null || password.isEmpty() || password.length() <= 5) {
             throw new MyException("La contraseña no puede estar vacía, y debe tener más de 5 dígitos");
@@ -289,7 +324,7 @@ public class ProveedorServicio implements UserDetailsService {
         }
     }
 
-    private void validarActualizacion(HttpSession session, String nombre, String apellido, String direccion, String descripcion, String remuneracion, String email, String password, String password2) throws MyException {
+    public void validarActualizacion(HttpSession session, String nombre, String apellido, String direccion, String descripcion, String remuneracion, String email, String password, String password2) throws MyException {
 
         /*Validar Nombre*/
         if (nombre == null || nombre.isEmpty()) {
