@@ -44,7 +44,7 @@ public class TrabajoServicio {
 
         }
 
-        trabajo.setCalificacion(0);
+        trabajo.setCalificacion(0.0);
         trabajo.setComentario("Sin comentario");
         trabajo.setRealizado(false);
         trabajo.setDescripcion(descripcion);
@@ -54,7 +54,7 @@ public class TrabajoServicio {
     }
 
     @Transactional
-    public void actualizar(String idTrabajo, String idUsuario, String idProveedor, boolean realizado, int calificacion, String comentario, String descripcion) throws MyException {
+    public void actualizar(String idTrabajo, String idUsuario, String idProveedor, boolean realizado, Double calificacion, String comentario, String descripcion) throws MyException {
 
         validarTrabajo(idTrabajo, idProveedor, idUsuario, descripcion, comentario);
 
@@ -147,7 +147,7 @@ public class TrabajoServicio {
 
     //FUNCIONALIDADES
     @Transactional
-    public void Calificar(String id, int calificacion,String comentario) throws MyException {
+    public void Calificar(String id, Double calificacion,String comentario) throws MyException {
         if (id == null || id.isEmpty()) {
             throw new MyException("El id del trabajo está vacío");
         }

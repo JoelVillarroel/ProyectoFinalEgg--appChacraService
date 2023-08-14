@@ -160,7 +160,7 @@ public class TrabajoControlador {
     @PostMapping("/calificar")
     public String calificarTrabajo(@RequestParam("trabajoId")String trabajoId,
             @RequestParam("comentario")String comentario,@RequestParam("proveedorId") String proveedorId,
-            @RequestParam("calificacion") int calificacion,
+            @RequestParam("calificacion") Double calificacion,
             @RequestParam("usuarioId")String usuarioId) throws MyException {
 
         // Llama al servicio 'trabajoServicio' para calificar el trabajo

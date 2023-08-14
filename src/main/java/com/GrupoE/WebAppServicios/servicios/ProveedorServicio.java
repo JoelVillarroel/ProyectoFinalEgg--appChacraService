@@ -9,6 +9,7 @@ import com.GrupoE.WebAppServicios.errores.MyException;
 import com.GrupoE.WebAppServicios.repositorios.ProveedorRepositorio;
 import com.GrupoE.WebAppServicios.repositorios.TrabajoRepositorio;
 import com.GrupoE.WebAppServicios.repositorios.UsuarioRepositorio;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,8 +50,8 @@ public class ProveedorServicio implements UserDetailsService {
         validar(nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
 
         Proveedor proveedor = new Proveedor();
-        proveedor.setCantTrabajos(0);
-        proveedor.setCalificacion(0);
+        proveedor.setCantTrabajos(0.0);
+        proveedor.setCalificacion(0.0);
         proveedor.setNombre(nombre);
 
         proveedor.setApellido(apellido);
@@ -78,8 +79,8 @@ public class ProveedorServicio implements UserDetailsService {
         validar(nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
 
         Proveedor proveedor = new Proveedor();
-        proveedor.setCantTrabajos(0);
-        proveedor.setCalificacion(0);
+        proveedor.setCantTrabajos(0.0);
+        proveedor.setCalificacion(0.0);
         proveedor.setNombre(nombre);
 
         proveedor.setApellido(apellido);
@@ -102,7 +103,7 @@ public class ProveedorServicio implements UserDetailsService {
 
     @Transactional
     public void actualizar(MultipartFile archivo, String idProveedor, String idTrabajo, Integer cantTrabajos, String nombre, String apellido, String direccion, String descripcion, String remuneracion, String email, String password, String password2) throws MyException {
-        Integer calificacion = 0;
+        Double calificacion = 0.0;
         validar(nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
 
         Optional<Proveedor> respuesta = proveedorRepositorio.findById(idProveedor);
@@ -179,24 +180,36 @@ public class ProveedorServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void calificarProveedor(String trabajoId,Integer calificacion) throws MyException {
-
+    public void calificarProveedor(String trabajoId,Double calificacion) throws MyException {
+        
         //validarActualizacion(session,nombre, apellido, direccion, descripcion, remuneracion, email, password, password2);
-
+        Double calific=0.0;
+        
+        Double cant=0.0;
+        Double calificProm=0.0;
         Trabajo trabajo = trabajoRepositorio.TrabajoRealizadosProveedor(trabajoId);
         
             Optional<Proveedor> respuesta = proveedorRepositorio.findById(trabajo.getProveedor().getId());
-
+            
         if (respuesta.isPresent()) {
             
             Proveedor proveedor = respuesta.get();
+            List<Trabajo>trabajosProveedor=trabajoRepositorio.RealizadosProveedor(proveedor.getId());
+            for(Trabajo trabajoProv : trabajosProveedor){
+                calific=trabajoProv.getCalificacion()+ calific;
+                cant = cant +1;
+            }
+            //cant=trabajosProveedor.size();
+            proveedor.setCantTrabajos(cant);
+            //Integer calif=proveedor.getCalificacion();
+            calificProm=((double)Math.round((calific/cant)*100d)/100d);
+            //calificProm=calific/cant;
             
-            proveedor.setCalificacion((proveedor.getCalificacion()+calificacion)/(proveedor.getCantTrabajos()+1));
-            proveedor.setCantTrabajos(proveedor.getCantTrabajos()+1);
+            //calific=cant;
+            proveedor.setCalificacion(calificProm);///(cant+1)
+            
             proveedorRepositorio.save(proveedor);
         }
-        
-       
     }
     
     public Proveedor getOne(String id) {
