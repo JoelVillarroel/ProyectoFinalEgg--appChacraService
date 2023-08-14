@@ -19,9 +19,9 @@ public class Proveedor {
     private String apellido;
     private String direccion;
     private String servicio;
-    private Integer calificacion;
+    private Double calificacion;
     private String remuneracion;
-    private Integer cantTrabajos;
+    private Double cantTrabajos;
     private String descripcion;
     private String email;
     private String password;  
@@ -33,7 +33,7 @@ public class Proveedor {
     public Proveedor() {
     }
 
-    public Proveedor(String id, String nombre, String apellido, String direccion, String servicio, Integer calificacion, String remuneracion, Integer cantTrabajos, String descripcion, String email, String password, Rol rol, Imagen imagen) {
+    public Proveedor(String id, String nombre, String apellido, String direccion, String servicio, Double calificacion, String remuneracion, Double cantTrabajos, String descripcion, String email, String password, Rol rol, Imagen imagen) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -57,11 +57,11 @@ public class Proveedor {
         this.remuneracion = remuneracion;
     }
 
-    public Integer getCantTrabajos() {
+    public Double getCantTrabajos() {
         return cantTrabajos;
     }
 
-    public void setCantTrabajos(Integer cantTrabajos) {
+    public void setCantTrabajos(Double cantTrabajos) {
         this.cantTrabajos = cantTrabajos;
     }
 
@@ -75,13 +75,15 @@ public class Proveedor {
         this.servicio = servicio;
     }
 
-    public Integer getCalificacion() {
+    public Double getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(Integer calificacion) {
+    public void setCalificacion(Double calificacion) {
         this.calificacion = calificacion;
     }
+
+    
     
 
     public String getDireccion() {
