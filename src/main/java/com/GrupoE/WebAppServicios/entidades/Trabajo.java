@@ -23,7 +23,7 @@ public class Trabajo {
     private Proveedor proveedor;
     
     private boolean realizado;
-    private int calificacion; // 0 siel usuario no ingreso aún una calificación. Del 1 al 5 una vez clasificado.
+    private Double calificacion; // 0 siel usuario no ingreso aún una calificación. Del 1 al 5 una vez clasificado.
     private String comentario; //comentario de la calificación
     private String descripcion; //descripción del trabajo. Ej: Poda de arboles, Reparación de cañeria.
     private String solicitud; // 0 si no se ha aceptado y denegado. Aceptada y Rechazada.
@@ -31,7 +31,7 @@ public class Trabajo {
     public Trabajo() {
     }
 
-    public Trabajo(String id, Usuario usuario, Proveedor proveedor, boolean realizado, int calificacion, String comentario, String descripcion, String solicitud) {
+    public Trabajo(String id, Usuario usuario, Proveedor proveedor, boolean realizado, Double calificacion, String comentario, String descripcion, String solicitud) {
         this.id = id;
         this.usuario = usuario;
         this.proveedor = proveedor;
@@ -74,11 +74,11 @@ public class Trabajo {
         this.realizado = realizado;
     }
 
-    public int getCalificacion() {
+    public Double getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(int calificacion) {
+    public void setCalificacion(Double calificacion) {
         this.calificacion = calificacion;
     }
 

@@ -237,7 +237,7 @@ public class ProveedorControlador {
         return "proveedor_lista.html";
     }
     @PostMapping("/calificar/{id}")
-    public String calificar(@PathVariable String id, @RequestParam String comentario, @RequestParam int calificacion) throws MyException{
+    public String calificar(@PathVariable String id, @RequestParam String comentario, @RequestParam Double calificacion) throws MyException{
         trabajoServicio.Calificar(id,calificacion,comentario);;
         return "inicio.html";
     }
